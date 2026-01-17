@@ -5,24 +5,24 @@ site:
   language: zh
   favicon: /favicon.ico
   theme:
-    light: garden
-    dark: dracula
+    light: synthwave
+    dark: synthwave
     code: github-dark
   date_format: ddd MMM DD YYYY
   blog:
     pageSize: 8
   banner:
     enableRandom: true
-    randomUrl: https://t.alcy.cc/lai
+    randomUrl: https://pic.000.moe/random
     randomCount: 5
     height: 60vh
     images:
-      - https://tc.alcy.cc/q/20250908/b2d656670551cb9ea6eda7b46b6c8ec0.webp
+      - https://pic.000.moe/random
   icp: 萌ICP备20261117号
   icp_link: https://icp.gov.moe/?keyword=20261117
   pages:
     home:
-      title: RyuChan's Blog
+      title: Miuna's Blog
       subtitle: 欲买桂花同载酒，终不似，少年游！
       typewriterTexts:
         - 🌸 欲买桂花同载酒，终不似，少年游！
