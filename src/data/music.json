@@ -1,21 +1,5 @@
 [
     {
-        "title": "impulse",
-        "artist": "AliA",
-        "cover": "https://p3.music.126.net/pf9irFwAOevgwcw8bzSGTQ==/109951167874347450.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1349892107.mp3",
-        "duration": "03:27",
-        "lrc": "/lyrics/1349892107.lrc"
-    },
-    {
-        "title": "この広い空の下で",
-        "artist": "seven oops",
-        "cover": "https://p3.music.126.net/cqH_O0l8oBZA6zDcAukYeA==/109951167807477526.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28200261.mp3",
-        "duration": "04:33",
-        "lrc": "/lyrics/28200261.lrc"
-    },
-    {
         "title": "クリティカルヒット",
         "artist": "森羅万象",
         "cover": "https://p3.music.126.net/ADP5eL5-gtWAnH_KK_FbHA==/109951168683763774.jpg",
@@ -47,14 +31,6 @@
         "duration": "02:33"
     },
     {
-        "title": "Amazing Trees",
-        "artist": "Tielle / SawanoHiroyuki[nZk]",
-        "cover": "https://p3.music.126.net/Lzoted6jM8dlZmv1M9y1Ow==/109951167926862876.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=507116412.mp3",
-        "duration": "04:46",
-        "lrc": "/lyrics/507116412.lrc"
-    },
-    {
         "title": "Starlight Delight (feat. Moon Jelly)",
         "artist": "AIKA / Moon Jelly",
         "cover": "https://p4.music.126.net/PSE_VaOjja1jyyLW6EQ_XA==/109951167324972265.jpg",
@@ -69,22 +45,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=1999602266.mp3",
         "duration": "04:30",
         "lrc": "/lyrics/1999602266.lrc"
-    },
-    {
-        "title": "Kawaru Mirai",
-        "artist": "ChouCho",
-        "cover": "https://p4.music.126.net/8iM8tK2RlgcFK_9mwzd7hQ==/109951169820161260.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2015696922.mp3",
-        "duration": "04:05",
-        "lrc": "/lyrics/2015696922.lrc"
-    },
-    {
-        "title": "ebb and flow",
-        "artist": "Ray",
-        "cover": "https://p3.music.126.net/Z1JSJiSYDKGrFMzvINJ0bA==/109951171478743890.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28240362.mp3",
-        "duration": "04:17",
-        "lrc": "/lyrics/28240362.lrc"
     },
     {
         "title": "再会系女子はどうすりゃいいですか？",
@@ -125,43 +85,11 @@
         "lrc": "/lyrics/1413795792.lrc"
     },
     {
-        "title": "ミカヅキ-「め」弾き語りver.-",
-        "artist": "さユり",
-        "cover": "https://p4.music.126.net/XY2WL7LRm8lE4MHpZTugxg==/109951167070470666.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1452448266.mp3",
-        "duration": "04:21",
-        "lrc": "/lyrics/1452448266.lrc"
-    },
-    {
-        "title": "ひぐらしのなく頃に",
-        "artist": "島みやえい子",
-        "cover": "https://p3.music.126.net/4Ae5HXPxfGh1qYmNSIApDg==/109951171500633099.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=644507.mp3",
-        "duration": "04:27",
-        "lrc": "/lyrics/644507.lrc"
-    },
-    {
-        "title": "だんご大家族",
-        "artist": "茶太 / 真理絵 / くない瓜 / Rio / Morrigan / 藤枝あかね / 加藤恒太",
-        "cover": "https://p4.music.126.net/UVSTEnyyWfnQmhI5kqvvMQ==/109951170852620291.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=760533.mp3",
-        "duration": "04:33",
-        "lrc": "/lyrics/760533.lrc"
-    },
-    {
         "title": "Azure Lemonade 蓝色柠檬汽水",
         "artist": "纯和平",
         "cover": "https://p4.music.126.net/AmqVI1RFXI6HkJvSDIs3Zg==/109951170704735973.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=2692570609.mp3",
         "duration": "03:24"
-    },
-    {
-        "title": "ウィークエンドロール",
-        "artist": "halca",
-        "cover": "https://p4.music.126.net/7YRwTAKZfRLsi_3GoMgTbg==/109951170711821438.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2693374715.mp3",
-        "duration": "03:36",
-        "lrc": "/lyrics/2693374715.lrc"
     },
     {
         "title": "シュガーコート",
@@ -172,36 +100,12 @@
         "lrc": "/lyrics/2085560364.lrc"
     },
     {
-        "title": "アイワナムチュー",
-        "artist": "MAISONdes / asmi / すりぃ",
-        "cover": "https://p3.music.126.net/j3rrIUFEvp2fEGGlgwE_UQ==/109951168165959241.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2008521148.mp3",
-        "duration": "03:25",
-        "lrc": "/lyrics/2008521148.lrc"
-    },
-    {
-        "title": "ハッピー☆マテリアル",
-        "artist": "高倉有加 / 広瀬ゆうき / 茅野愛衣 / 小倉唯 / 原田彩楓 / 鬼頭明里",
-        "cover": "https://p3.music.126.net/bBXsCDhP0NOPDV6qNze_rA==/109951169448058263.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=517571182.mp3",
-        "duration": "03:38",
-        "lrc": "/lyrics/517571182.lrc"
-    },
-    {
         "title": "チャイムの音で",
         "artist": "ayaho",
         "cover": "https://p3.music.126.net/697LbzTIhg14xIBKSsvdQw==/109951165708029079.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=1818720669.mp3",
         "duration": "04:41",
         "lrc": "/lyrics/1818720669.lrc"
-    },
-    {
-        "title": "敢归云间宿",
-        "artist": "三无Marblue",
-        "cover": "https://p3.music.126.net/14hsp5WZKQqfJLdtQI01_Q==/109951168243210964.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2015414467.mp3",
-        "duration": "04:14",
-        "lrc": "/lyrics/2015414467.lrc"
     },
     {
         "title": "Tada Koe Hitotsu",
@@ -217,21 +121,6 @@
         "cover": "https://p4.music.126.net/8xeFOtSMVm13iHJT8fHobg==/109951171002605461.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=515278.mp3",
         "duration": "06:25"
-    },
-    {
-        "title": "天星问",
-        "artist": "洛天依Official",
-        "cover": "https://p3.music.126.net/eNjJsurOCaEfmjaK1LfXRQ==/109951172369933200.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2668141354.mp3",
-        "duration": "04:00",
-        "lrc": "/lyrics/2668141354.lrc"
-    },
-    {
-        "title": "ロック风アレンジ",
-        "artist": "麻枝准",
-        "cover": "https://p3.music.126.net/BGQqVOlq3oxDElxgngK-OA==/109951169288379659.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=425137440.mp3",
-        "duration": "03:23"
     },
     {
         "title": "Flower of Life",
@@ -297,38 +186,6 @@
         "lrc": "/lyrics/2621221156.lrc"
     },
     {
-        "title": "八月のスーベニア",
-        "artist": "水瀬いのり",
-        "cover": "https://p3.music.126.net/Kq-WU3L7_FGomSrRNTRN1A==/109951167584760428.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1958684489.mp3",
-        "duration": "05:11",
-        "lrc": "/lyrics/1958684489.lrc"
-    },
-    {
-        "title": "We are the light",
-        "artist": "miwa",
-        "cover": "https://p4.music.126.net/zXT2OFS6DZ55r5su4PgrQg==/109951170522201224.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=515143177.mp3",
-        "duration": "03:57",
-        "lrc": "/lyrics/515143177.lrc"
-    },
-    {
-        "title": "ホロウ",
-        "artist": "シユイ",
-        "cover": "https://p4.music.126.net/vmBeLIqBCOIe-Wf5iQ6PQg==/109951170034922723.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2635524310.mp3",
-        "duration": "02:48",
-        "lrc": "/lyrics/2635524310.lrc"
-    },
-    {
-        "title": "不问天",
-        "artist": "说说Crystal",
-        "cover": "https://p4.music.126.net/h9fwhS2GHKKmhhu-08MU_w==/109951165774793134.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1824454149.mp3",
-        "duration": "04:16",
-        "lrc": "/lyrics/1824454149.lrc"
-    },
-    {
         "title": "云中帆",
         "artist": "双笙（陈元汐）",
         "cover": "https://p4.music.126.net/6DxRRc7Aw3K3d54uv0Ozfg==/109951164056161958.jpg",
@@ -382,35 +239,12 @@
         "duration": "03:34"
     },
     {
-        "title": "数センチメンタル",
-        "artist": "こはならむ",
-        "cover": "https://p3.music.126.net/WYiKOoQbYGtgGM68h5iRsw==/109951168507399458.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2034851942.mp3",
-        "duration": "03:06",
-        "lrc": "/lyrics/2034851942.lrc"
-    },
-    {
         "title": "終わりの世界から",
         "artist": "麻枝准 / やなぎなぎ",
         "cover": "https://p4.music.126.net/etmWPJrI8NBwmuOJEQPHXw==/109951169976661759.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=676568.mp3",
         "duration": "06:04",
         "lrc": "/lyrics/676568.lrc"
-    },
-    {
-        "title": "恋のEveryDay☆HappyDay (Full Size)",
-        "artist": "竹達彩奈",
-        "cover": "https://p4.music.126.net/3Kh4aA_hbo8xVogR1Kj8jw==/109951167550888153.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=27488656.mp3",
-        "duration": "04:46",
-        "lrc": "/lyrics/27488656.lrc"
-    },
-    {
-        "title": "羽根",
-        "artist": "折戸伸治",
-        "cover": "https://p3.music.126.net/xzm2HOT5DpobOk73OhE9QQ==/109951170627348480.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28151052.mp3",
-        "duration": "03:28"
     },
     {
         "title": "ヒロイン (nakotanmaru ver.)",
@@ -429,28 +263,12 @@
         "lrc": "/lyrics/408522394.lrc"
     },
     {
-        "title": "真夏のフォトグラフ",
-        "artist": "azusa",
-        "cover": "https://p3.music.126.net/MjiL7geSJXewYgiBxqfTDg==/109951163598175304.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=27485090.mp3",
-        "duration": "04:26",
-        "lrc": "/lyrics/27485090.lrc"
-    },
-    {
         "title": "Letter Song",
         "artist": "ヲタみん",
         "cover": "https://p4.music.126.net/0XLP85MWPmu2LqnwUhgy_A==/109951169424855077.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=27571001.mp3",
         "duration": "05:35",
         "lrc": "/lyrics/27571001.lrc"
-    },
-    {
-        "title": "ゆりゆららららゆるゆり大事件",
-        "artist": "七森中☆ごらく部",
-        "cover": "https://p3.music.126.net/6R1bUrH1N_1yoUVS4Z_oyw==/109951165826189300.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1317109509.mp3",
-        "duration": "03:50",
-        "lrc": "/lyrics/1317109509.lrc"
     },
     {
         "title": "センチメンタルな愛慕心",
@@ -501,14 +319,6 @@
         "lrc": "/lyrics/869190.lrc"
     },
     {
-        "title": "また夏を追う",
-        "artist": "あたらよ",
-        "cover": "https://p3.music.126.net/qMj8LmjgfBHlFxOHvTIyUw==/109951167795762268.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1973608593.mp3",
-        "duration": "04:47",
-        "lrc": "/lyrics/1973608593.lrc"
-    },
-    {
         "title": "君という神話",
         "artist": "麻枝准 / やなぎなぎ",
         "cover": "https://p3.music.126.net/iIha7-piGtij9ENvcZxsrw==/109951170303380642.jpg",
@@ -533,22 +343,6 @@
         "lrc": "/lyrics/28191523.lrc"
     },
     {
-        "title": "know me...",
-        "artist": "八木海莉",
-        "cover": "https://p4.music.126.net/vG177BlInLPR5DwmuM5uuA==/109951169024604336.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2095882368.mp3",
-        "duration": "03:30",
-        "lrc": "/lyrics/2095882368.lrc"
-    },
-    {
-        "title": "大喜",
-        "artist": "泠鸢yousa / 音阙诗听",
-        "cover": "https://p4.music.126.net/4FiWdxnfnGfq0RsXpJGTXw==/109951165772596480.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1824222230.mp3",
-        "duration": "03:01",
-        "lrc": "/lyrics/1824222230.lrc"
-    },
-    {
         "title": "Summer time",
         "artist": "水瀬ましろ",
         "cover": "https://p4.music.126.net/_uMyuddHAFsA1RldHAOCtA==/7967061256980006.jpg",
@@ -557,28 +351,12 @@
         "lrc": "/lyrics/34229500.lrc"
     },
     {
-        "title": "Sister,Friend,Lover",
-        "artist": "松来未佑 / 柚木凉香",
-        "cover": "https://p3.music.126.net/kmwMm-ys24RHDVViA19HIQ==/18776360069345466.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=27853830.mp3",
-        "duration": "03:41",
-        "lrc": "/lyrics/27853830.lrc"
-    },
-    {
         "title": "stella☆",
         "artist": "SILENT SIREN",
         "cover": "https://p3.music.126.net/5j6IahfdUJZZhcSLJswatA==/19082024300060701.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=463268148.mp3",
         "duration": "04:30",
         "lrc": "/lyrics/463268148.lrc"
-    },
-    {
-        "title": "夏霞",
-        "artist": "あたらよ",
-        "cover": "https://p3.music.126.net/zi2Fm_ckfMEpkM37rZ5UEg==/109951166253940594.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1867150097.mp3",
-        "duration": "03:48",
-        "lrc": "/lyrics/1867150097.lrc"
     },
     {
         "title": "ずるいよ...",
@@ -603,14 +381,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=2011887993.mp3",
         "duration": "03:44",
         "lrc": "/lyrics/2011887993.lrc"
-    },
-    {
-        "title": "恋ゴコロ",
-        "artist": "ぷりますてら",
-        "cover": "https://p3.music.126.net/Oi4WxAuFx9i93-Zo6P6pQw==/109951163597905238.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=22751504.mp3",
-        "duration": "02:57",
-        "lrc": "/lyrics/22751504.lrc"
     },
     {
         "title": "フレグランス",
@@ -693,36 +463,12 @@
         "lrc": "/lyrics/460839654.lrc"
     },
     {
-        "title": "ときめきポポロン♪～チノver.～",
-        "artist": "水瀬いのり",
-        "cover": "https://p3.music.126.net/dz836gMoBqQkzqL2ZfMa1A==/109951171491682609.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=36492783.mp3",
-        "duration": "04:16",
-        "lrc": "/lyrics/36492783.lrc"
-    },
-    {
-        "title": "光放て！",
-        "artist": "柳麻美",
-        "cover": "https://p4.music.126.net/KNG-m7xRLgGiov4pfeMERw==/109951165392169353.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1487344240.mp3",
-        "duration": "03:51",
-        "lrc": "/lyrics/1487344240.lrc"
-    },
-    {
         "title": "終わりの世界から",
         "artist": "やなぎなぎ / 麻枝准",
         "cover": "https://p3.music.126.net/25UeRaXrC41ruSyJXwYuHw==/109951169976575790.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=676508.mp3",
         "duration": "05:57",
         "lrc": "/lyrics/676508.lrc"
-    },
-    {
-        "title": "キセキ",
-        "artist": "ケラケラ",
-        "cover": "https://p4.music.126.net/lgTTAX718Mx7aUK2PcE1Zw==/5713062418024517.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=27733050.mp3",
-        "duration": "04:39",
-        "lrc": "/lyrics/27733050.lrc"
     },
     {
         "title": "Sion",
@@ -740,14 +486,6 @@
         "lrc": "/lyrics/1343016814.lrc"
     },
     {
-        "title": "SSS",
-        "artist": "佐藤亜美菜",
-        "cover": "https://p3.music.126.net/slr8bNWLX30Tk-b2e8xL2w==/109951171501341532.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=448317244.mp3",
-        "duration": "03:55",
-        "lrc": "/lyrics/448317244.lrc"
-    },
-    {
         "title": "ハレ晴レユカイ",
         "artist": "平野綾 / 茅原実里 / 後藤邑子",
         "cover": "https://p4.music.126.net/ZD9UpeDk_-vr-hy5bfq28A==/109951163839168034.jpg",
@@ -761,13 +499,6 @@
         "cover": "https://p3.music.126.net/jnqRJD_lbRpJCvHFQQc8UQ==/109951166783005206.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=399367379.mp3",
         "duration": "02:14"
-    },
-    {
-        "title": "ぷわぷわり",
-        "artist": "中山真斗",
-        "cover": "https://p3.music.126.net/c7u7c3hJ0WW0d_PEPjr51w==/109951169433091871.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=26215065.mp3",
-        "duration": "01:36"
     },
     {
         "title": "BWLAUTE BEIRRD",
@@ -810,60 +541,12 @@
         "lrc": "/lyrics/1925759962.lrc"
     },
     {
-        "title": "Sunshine Girl",
-        "artist": "moumoon",
-        "cover": "https://p3.music.126.net/iih6tMKLw1ijczRSzChoVg==/109951164666709556.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1420082628.mp3",
-        "duration": "03:49",
-        "lrc": "/lyrics/1420082628.lrc"
-    },
-    {
-        "title": "I LOVE MEでいられるように",
-        "artist": "七音阿卡莉 / 湊あくあ",
-        "cover": "https://p3.music.126.net/qbjMQicpr-KCjCvPWpSbCA==/109951169336685883.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2126453922.mp3",
-        "duration": "03:00",
-        "lrc": "/lyrics/2126453922.lrc"
-    },
-    {
-        "title": "なかよし!〇!なかよし!",
-        "artist": "水瀬いのり / 徳井青空 / 村川梨衣",
-        "cover": "https://p4.music.126.net/kSagDIta_xNFQXYCadu4MQ==/109951171492079344.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1486728470.mp3",
-        "duration": "03:30",
-        "lrc": "/lyrics/1486728470.lrc"
-    },
-    {
-        "title": "海想列車",
-        "artist": "湊あくあ",
-        "cover": "https://p3.music.126.net/0nuiOwege6jNossbvwcPqw==/109951166341319428.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1874376792.mp3",
-        "duration": "04:09",
-        "lrc": "/lyrics/1874376792.lrc"
-    },
-    {
-        "title": "未だ、青い",
-        "artist": "湊あくあ",
-        "cover": "https://p4.music.126.net/2wv_DX9Iq1SOnXH1MBzz6A==/109951167763447129.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1970853873.mp3",
-        "duration": "03:41",
-        "lrc": "/lyrics/1970853873.lrc"
-    },
-    {
         "title": "サマータイムラブ",
         "artist": "Shiggy Jr.",
         "cover": "https://p3.music.126.net/9SEnfKIvSPpXYdu_mM_azw==/7960464185727595.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=32803125.mp3",
         "duration": "04:15",
         "lrc": "/lyrics/32803125.lrc"
-    },
-    {
-        "title": "恋愛脳",
-        "artist": "七音阿卡莉",
-        "cover": "https://p3.music.126.net/LZEe_tMtGiu53b9g_6NRmw==/109951167579026487.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1958186873.mp3",
-        "duration": "03:12",
-        "lrc": "/lyrics/1958186873.lrc"
     },
     {
         "title": "ディア♡マイフレンド (feat. かぴ)",
@@ -882,14 +565,6 @@
         "lrc": "/lyrics/1985121619.lrc"
     },
     {
-        "title": "Precious You☆",
-        "artist": "宮本侑芽 / 小澤亜李 / 藤田茜",
-        "cover": "https://p4.music.126.net/fkYT-keFQlYbdLcs0wDRBQ==/109951171350923529.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=480097172.mp3",
-        "duration": "03:51",
-        "lrc": "/lyrics/480097172.lrc"
-    },
-    {
         "title": "小さな恋のうた",
         "artist": "石見舞菜香",
         "cover": "https://p3.music.126.net/XWPdBo-oI6fWYVv5fMYoeQ==/109951168239466689.jpg",
@@ -906,28 +581,12 @@
         "lrc": "/lyrics/2077744389.lrc"
     },
     {
-        "title": "Distortion!!",
-        "artist": "結束バンド",
-        "cover": "https://p4.music.126.net/FzcLv8U63bYB5-SeoBM4EA==/109951167894195127.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1983016236.mp3",
-        "duration": "03:23",
-        "lrc": "/lyrics/1983016236.lrc"
-    },
-    {
         "title": "まっすぐ",
         "artist": "大原ゆい子",
         "cover": "https://p3.music.126.net/Wr-8-gVXJIhzxmOWHvRpWw==/109951166833441864.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=1906977699.mp3",
         "duration": "04:30",
         "lrc": "/lyrics/1906977699.lrc"
-    },
-    {
-        "title": "言わないけどね。",
-        "artist": "高橋李依",
-        "cover": "https://p3.music.126.net/GVfo5bHgiYiwCK6hOSB0hQ==/109951172214843512.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1389865087.mp3",
-        "duration": "04:30",
-        "lrc": "/lyrics/1389865087.lrc"
     },
     {
         "title": "Don’t let you down (feat. 長尾ちえみ)",
@@ -978,36 +637,12 @@
         "lrc": "/lyrics/1893308333.lrc"
     },
     {
-        "title": "僕が最高だから",
-        "artist": "ハコニワリリィ",
-        "cover": "https://p4.music.126.net/tdBhA4_YvSfaJBfBUtJAFQ==/109951167870491074.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1980732724.mp3",
-        "duration": "02:49",
-        "lrc": "/lyrics/1980732724.lrc"
-    },
-    {
-        "title": "叶わぬ恋じゃ終われない！",
-        "artist": "ハコニワリリィ",
-        "cover": "https://p4.music.126.net/DqPg17iOFXSaNwFHXra2UA==/109951167436525000.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1948539391.mp3",
-        "duration": "03:11",
-        "lrc": "/lyrics/1948539391.lrc"
-    },
-    {
         "title": "フタリ",
         "artist": "Duca",
         "cover": "https://p3.music.126.net/rztq31dCoro7np3prjjfjw==/5986840813604883.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=565712.mp3",
         "duration": "04:41",
         "lrc": "/lyrics/565712.lrc"
-    },
-    {
-        "title": "spiral",
-        "artist": "LONGMAN",
-        "cover": "https://p4.music.126.net/zFV-D4FHDQMaF3G-XHwzaA==/109951168930975735.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2084102997.mp3",
-        "duration": "03:52",
-        "lrc": "/lyrics/2084102997.lrc"
     },
     {
         "title": "decide",
@@ -1018,36 +653,12 @@
         "lrc": "/lyrics/29848622.lrc"
     },
     {
-        "title": "Shine In The Sky☆",
-        "artist": "佐藤亜美菜 / 照井春佳 / 黒沢ともよ / 集貝はな / 小市眞琴 / 今井麻夏 / 春瀬なつみ / 久野美咲 / 小森結梨",
-        "cover": "https://p4.music.126.net/2Yvghmtev7-LuSWeL6j_gw==/109951168542209212.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2038906675.mp3",
-        "duration": "04:11",
-        "lrc": "/lyrics/2038906675.lrc"
-    },
-    {
         "title": "Mermaid girl",
         "artist": "中原龍太郎 / 森永真由美",
         "cover": "https://p3.music.126.net/DZGhOnkrXm5839aUfmJpxA==/109951165675153597.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=22661082.mp3",
         "duration": "02:01",
         "lrc": "/lyrics/22661082.lrc"
-    },
-    {
-        "title": "風のたより",
-        "artist": "tayori",
-        "cover": "https://p3.music.126.net/ffdLPYP6MkLUJ3OfuwuSSA==/109951171422548740.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2065281614.mp3",
-        "duration": "04:00",
-        "lrc": "/lyrics/2065281614.lrc"
-    },
-    {
-        "title": "キョリ感",
-        "artist": "ハコニワリリィ",
-        "cover": "https://p3.music.126.net/3OdguZDnkTEKH6Tx3KUpjg==/109951167156622636.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1928722002.mp3",
-        "duration": "03:50",
-        "lrc": "/lyrics/1928722002.lrc"
     },
     {
         "title": "しゃん・だら・りん♪",
@@ -1096,38 +707,6 @@
         "lrc": "/lyrics/509106775.lrc"
     },
     {
-        "title": "カラフル。",
-        "artist": "沢井美空",
-        "cover": "https://p4.music.126.net/zQczEOMT3USQxRt17qfIpA==/109951168080744936.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=30284550.mp3",
-        "duration": "04:16",
-        "lrc": "/lyrics/30284550.lrc"
-    },
-    {
-        "title": "今日とまだバイバイしたくないの",
-        "artist": "長瀬有花",
-        "cover": "https://p3.music.126.net/6D-xI1CRAktcvJI5IVcYuQ==/109951167874353193.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1981056103.mp3",
-        "duration": "04:06",
-        "lrc": "/lyrics/1981056103.lrc"
-    },
-    {
-        "title": "最強ガール",
-        "artist": "JELEE",
-        "cover": "https://p3.music.126.net/hUUqvuC1EoRnS1dHvIxUZw==/109951169475905292.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2143243707.mp3",
-        "duration": "03:13",
-        "lrc": "/lyrics/2143243707.lrc"
-    },
-    {
-        "title": "曇り空の向こうは晴れている",
-        "artist": "22/7",
-        "cover": "https://p4.music.126.net/C87F_aVZvdbHBrlKvRM4SA==/109951167638105003.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1962120904.mp3",
-        "duration": "04:55",
-        "lrc": "/lyrics/1962120904.lrc"
-    },
-    {
         "title": "鯖鯖",
         "artist": "山崎あおい",
         "cover": "https://p4.music.126.net/bYoJAhfyTi8GRRPbEb3V4g==/109951168763469815.jpg",
@@ -1136,27 +715,11 @@
         "lrc": "/lyrics/1316563576.lrc"
     },
     {
-        "title": "願い～あの頃のキミへ～",
-        "artist": "當山みれい",
-        "cover": "https://p3.music.126.net/bfr3FRWXzPBIJSo2HCK2PA==/109951171924374807.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=488388942.mp3",
-        "duration": "05:40",
-        "lrc": "/lyrics/488388942.lrc"
-    },
-    {
         "title": "壱雫空",
         "artist": "MyGO!!!!!",
         "cover": "https://p3.music.126.net/A8n94Pitm500xJDctblC9A==/109951170100039329.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=2060086839.mp3",
         "duration": "03:09"
-    },
-    {
-        "title": "空の箱 (井芹仁菜、河原木桃香)",
-        "artist": "トゲナシトゲアリ",
-        "cover": "https://p3.music.126.net/RLet3BtcXtXCGydDLCPe8w==/109951169472319960.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2142858141.mp3",
-        "duration": "03:04",
-        "lrc": "/lyrics/2142858141.lrc"
     },
     {
         "title": "光芒",
@@ -1188,14 +751,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=530995169.mp3",
         "duration": "04:21",
         "lrc": "/lyrics/530995169.lrc"
-    },
-    {
-        "title": "永遠という光",
-        "artist": "fhána",
-        "cover": "https://p3.music.126.net/4HDqiSGYOVQemtUT1RH77Q==/109951169174299990.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2109940726.mp3",
-        "duration": "05:12",
-        "lrc": "/lyrics/2109940726.lrc"
     },
     {
         "title": "星空のいま(Full Version)",
@@ -1230,28 +785,12 @@
         "lrc": "/lyrics/1462871644.lrc"
     },
     {
-        "title": "欧若拉",
-        "artist": "张韶涵",
-        "cover": "https://p3.music.126.net/JxIljYkVznSrZTUQEAg-gg==/109951167379867279.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=327157.mp3",
-        "duration": "04:19",
-        "lrc": "/lyrics/327157.lrc"
-    },
-    {
         "title": "シンフォニック・ラブ",
         "artist": "橋本みゆき",
         "cover": "https://p3.music.126.net/7iv21KsYzMKgmVUuSz3iqw==/6034119813526501.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=4941439.mp3",
         "duration": "03:53",
         "lrc": "/lyrics/4941439.lrc"
-    },
-    {
-        "title": "サマーブリーズにのって",
-        "artist": "I WiSH",
-        "cover": "https://p4.music.126.net/vwlXuzGo1z0zW4qABp_5SQ==/109951166201305939.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=22741412.mp3",
-        "duration": "05:19",
-        "lrc": "/lyrics/22741412.lrc"
     },
     {
         "title": "雪は何色",
@@ -1284,22 +823,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=427419613.mp3",
         "duration": "04:39",
         "lrc": "/lyrics/427419613.lrc"
-    },
-    {
-        "title": "雑踏、僕らの街",
-        "artist": "トゲナシトゲアリ",
-        "cover": "https://p3.music.126.net/WZCpLIj7c9hxL8CHSthviA==/109951169472322801.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2142857204.mp3",
-        "duration": "03:04",
-        "lrc": "/lyrics/2142857204.lrc"
-    },
-    {
-        "title": "STAY",
-        "artist": "The Kid LAROI / Justin Bieber",
-        "cover": "https://p4.music.126.net/e5cvcdgeosDKTDrkTfZXnQ==/109951166155165682.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1859245776.mp3",
-        "duration": "02:21",
-        "lrc": "/lyrics/1859245776.lrc"
     },
     {
         "title": "ドーナドーナのうた",
@@ -1350,22 +873,6 @@
         "lrc": "/lyrics/1958458052.lrc"
     },
     {
-        "title": "風になる",
-        "artist": "つじあやの",
-        "cover": "https://p4.music.126.net/Nagysgn-c_pyLwHSTsFtXQ==/109951164514817375.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=643034.mp3",
-        "duration": "04:36",
-        "lrc": "/lyrics/643034.lrc"
-    },
-    {
-        "title": "an evening calm -crossroads version-",
-        "artist": "fripSide",
-        "cover": "https://p3.music.126.net/VWP8OgkkyqYuXJmUQzQyrA==/109951171495851954.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=509726725.mp3",
-        "duration": "05:50",
-        "lrc": "/lyrics/509726725.lrc"
-    },
-    {
         "title": "オレンジ",
         "artist": "釘宮理恵 / 堀江由衣 / 喜多村英梨",
         "cover": "https://p4.music.126.net/gLg_lsx2-8vi6C3FKU2wag==/109951163614964226.jpg",
@@ -1380,22 +887,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=567134.mp3",
         "duration": "04:16",
         "lrc": "/lyrics/567134.lrc"
-    },
-    {
-        "title": "アイマイモコ",
-        "artist": "水瀬いのり",
-        "cover": "https://p3.music.126.net/X4uoT9sIHmyGphl1EWYbTw==/109951163313911355.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=566519124.mp3",
-        "duration": "04:21",
-        "lrc": "/lyrics/566519124.lrc"
-    },
-    {
-        "title": "桜",
-        "artist": "堀江由衣",
-        "cover": "https://p3.music.126.net/gvVauCN2LNB7EhWOasf68w==/109951163351500137.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=574739.mp3",
-        "duration": "05:22",
-        "lrc": "/lyrics/574739.lrc"
     },
     {
         "title": "アルカテイル",
@@ -1419,14 +910,6 @@
         "cover": "https://p3.music.126.net/Vz0h5x84xoYCAJ2fI50Neg==/109951164012592144.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=1360122230.mp3",
         "duration": "03:37"
-    },
-    {
-        "title": "アンダンテ",
-        "artist": "ClariS",
-        "cover": "https://p3.music.126.net/vi4KBRW-w7a2H7XvcF5P6w==/109951169451016307.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2140376091.mp3",
-        "duration": "03:37",
-        "lrc": "/lyrics/2140376091.lrc"
     },
     {
         "title": "月笹舟",
@@ -1584,21 +1067,6 @@
         "duration": "04:16"
     },
     {
-        "title": "ストロボメモリー",
-        "artist": "内田真礼",
-        "cover": "https://p3.music.126.net/3plGXJcOwKIOcKLAYP78zA==/109951167727993190.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1834823818.mp3",
-        "duration": "04:43",
-        "lrc": "/lyrics/1834823818.lrc"
-    },
-    {
-        "title": "秋姉妹のなく顷に in the autumn sky",
-        "artist": "ばんばんしー",
-        "cover": "https://p4.music.126.net/LnqgPvfcDIe5E7LctrKvsw==/109951170048310574.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=691506.mp3",
-        "duration": "04:23"
-    },
-    {
         "title": "さくらの季節",
         "artist": "38BEETS",
         "cover": "https://p3.music.126.net/8tnNl2t-1Wsvcqn9-2XjNA==/638816255750132.jpg",
@@ -1613,44 +1081,12 @@
         "duration": "06:13"
     },
     {
-        "title": "Clear Morning",
-        "artist": "小倉唯",
-        "cover": "https://p3.music.126.net/yiN_m6EjZRinl2HFKkRbqg==/109951167027714463.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1918557924.mp3",
-        "duration": "04:36",
-        "lrc": "/lyrics/1918557924.lrc"
-    },
-    {
         "title": "今をかける少女",
         "artist": "鹿乃",
         "cover": "https://p3.music.126.net/CqnbFqDFW3Z_05HGzzcPsQ==/109951163089167594.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=525241142.mp3",
         "duration": "04:23",
         "lrc": "/lyrics/525241142.lrc"
-    },
-    {
-        "title": "三妖精SAY YA!!!",
-        "artist": "あやぽんず* / あよ",
-        "cover": "https://p4.music.126.net/Rois3Sl0SabUuDQ5Az2X9w==/109951164079708306.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1365872552.mp3",
-        "duration": "04:14",
-        "lrc": "/lyrics/1365872552.lrc"
-    },
-    {
-        "title": "Blue Canvas",
-        "artist": "ClariS",
-        "cover": "https://p4.music.126.net/7X77PZ-yxPIby1qJDlh-9w==/109951168748812845.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2065280844.mp3",
-        "duration": "03:47",
-        "lrc": "/lyrics/2065280844.lrc"
-    },
-    {
-        "title": "リテラチュア",
-        "artist": "上田麗奈",
-        "cover": "https://p3.music.126.net/AprZNEb2VKmfpFNzOPZx4w==/109951169099241216.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1484844664.mp3",
-        "duration": "04:00",
-        "lrc": "/lyrics/1484844664.lrc"
     },
     {
         "title": "リテラチュア (Anime Size)",
@@ -1667,14 +1103,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=721720.mp3",
         "duration": "05:52",
         "lrc": "/lyrics/721720.lrc"
-    },
-    {
-        "title": "こんなにも",
-        "artist": "Dream",
-        "cover": "https://p4.music.126.net/QklUdDoJTO6r83KIVihK7Q==/18678503535064789.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=29953737.mp3",
-        "duration": "04:14",
-        "lrc": "/lyrics/29953737.lrc"
     },
     {
         "title": "きみいろスノウフレーク",
@@ -1717,28 +1145,12 @@
         "lrc": "/lyrics/536623585.lrc"
     },
     {
-        "title": "あの頃~ジンジンバオヂュオニー~",
-        "artist": "whiteeeen",
-        "cover": "https://p4.music.126.net/fB7jJkRwhmACmRajZZm-Kg==/3407386534502077.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=35090707.mp3",
-        "duration": "05:47",
-        "lrc": "/lyrics/35090707.lrc"
-    },
-    {
         "title": "Stella-rium",
         "artist": "鹿乃",
         "cover": "https://p3.music.126.net/PSeybwtEjwOds9ApZ0IQuA==/7705377489089271.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=32098832.mp3",
         "duration": "04:08",
         "lrc": "/lyrics/32098832.lrc"
-    },
-    {
-        "title": "スリーピング・ワンダーランド",
-        "artist": "長縄まりあ",
-        "cover": "https://p4.music.126.net/4IQbWrWCKjw2tNdGZ8YSaA==/109951164416131056.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1395784893.mp3",
-        "duration": "03:52",
-        "lrc": "/lyrics/1395784893.lrc"
     },
     {
         "title": "春を待つ (feat. 倚水)",
@@ -1764,36 +1176,12 @@
         "lrc": "/lyrics/26201861.lrc"
     },
     {
-        "title": "銀色飛行船",
-        "artist": "supercell",
-        "cover": "https://p3.music.126.net/s-1VRCfwEumn81eXmsdD-w==/109951166201440358.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28018264.mp3",
-        "duration": "07:03",
-        "lrc": "/lyrics/28018264.lrc"
-    },
-    {
-        "title": "エース",
-        "artist": "CHiCO",
-        "cover": "https://p3.music.126.net/I2-sBLv-091Ezi-L4pz-Zw==/109951168940380745.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2085118339.mp3",
-        "duration": "03:08",
-        "lrc": "/lyrics/2085118339.lrc"
-    },
-    {
         "title": "staple stable",
         "artist": "斎藤千和",
         "cover": "https://p3.music.126.net/eVeIpAGeU0SZ_tiBUOumpg==/109951165559308772.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=650509.mp3",
         "duration": "04:33",
         "lrc": "/lyrics/650509.lrc"
-    },
-    {
-        "title": "恋音と雨空",
-        "artist": "Lefty Hand Cream",
-        "cover": "https://p3.music.126.net/SZ_7FAjIjyrJKSkGoyEdKA==/109951164637407252.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1417621861.mp3",
-        "duration": "05:18",
-        "lrc": "/lyrics/1417621861.lrc"
     },
     {
         "title": "恋をしているみたいなの",
@@ -1804,60 +1192,12 @@
         "lrc": "/lyrics/2124306759.lrc"
     },
     {
-        "title": "ハルウララ･モモラルラ",
-        "artist": "明坂聡美",
-        "cover": "https://p3.music.126.net/V2lmtjp0fbIsFXW-OWY8-Q==/18635622580993689.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=461518232.mp3",
-        "duration": "04:04",
-        "lrc": "/lyrics/461518232.lrc"
-    },
-    {
-        "title": "僕らはそれを愛と呼んだ",
-        "artist": "あたらよ",
-        "cover": "https://p3.music.126.net/knlJyWZcNXIIAunyIICZ2Q==/109951168645551891.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2051328176.mp3",
-        "duration": "05:22",
-        "lrc": "/lyrics/2051328176.lrc"
-    },
-    {
-        "title": "カーストルーム",
-        "artist": "ZAQ",
-        "cover": "https://p4.music.126.net/SV3Sf13_rAuN-CkotiCG9w==/109951169099231341.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=496617399.mp3",
-        "duration": "04:25",
-        "lrc": "/lyrics/496617399.lrc"
-    },
-    {
-        "title": "オレンジ‐citrus mix‐",
-        "artist": "釘宮理恵 / 堀江由衣 / 喜多村英梨",
-        "cover": "https://p4.music.126.net/x9QLDrBppm7fwFjq40VwJw==/109951163351726372.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=4949089.mp3",
-        "duration": "04:51",
-        "lrc": "/lyrics/4949089.lrc"
-    },
-    {
         "title": "ムスビメ",
         "artist": "大原ゆい子",
         "cover": "https://p4.music.126.net/U1PzcUqpUp7w4Cx11JSdfQ==/109951168750411830.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=2065500781.mp3",
         "duration": "04:50",
         "lrc": "/lyrics/2065500781.lrc"
-    },
-    {
-        "title": "再会 (produced by Ayase)",
-        "artist": "LiSA / Uru",
-        "cover": "https://p4.music.126.net/0738w_al-qs6YIpZbRJJJw==/109951165432523159.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1492062605.mp3",
-        "duration": "04:02",
-        "lrc": "/lyrics/1492062605.lrc"
-    },
-    {
-        "title": "oath sign",
-        "artist": "LiSA",
-        "cover": "https://p4.music.126.net/GEb2KUKBon16Pj-W_Pgt7g==/109951166670816187.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=608404.mp3",
-        "duration": "04:09",
-        "lrc": "/lyrics/608404.lrc"
     },
     {
         "title": "スカイクラッドの観測者",
@@ -1884,28 +1224,12 @@
         "lrc": "/lyrics/26259014.lrc"
     },
     {
-        "title": "ハートリアライズ",
-        "artist": "Tia",
-        "cover": "https://p4.music.126.net/HjpQDsRt6CBtEny409_S_w==/18599338697237894.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28288854.mp3",
-        "duration": "04:53",
-        "lrc": "/lyrics/28288854.lrc"
-    },
-    {
         "title": "白金ディスコ",
         "artist": "井口裕香",
         "cover": "https://p4.music.126.net/fcKsHFYb0ZlrFg-ilVddAw==/109951165559286030.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=460528.mp3",
         "duration": "04:15",
         "lrc": "/lyrics/460528.lrc"
-    },
-    {
-        "title": "恋してる自分すら愛せるんだ",
-        "artist": "こはならむ",
-        "cover": "https://p3.music.126.net/zTXSPBVec8jN2Vfg9NBVog==/109951169217400851.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2112533687.mp3",
-        "duration": "03:32",
-        "lrc": "/lyrics/2112533687.lrc"
     },
     {
         "title": "「僕は...」",
@@ -1929,14 +1253,6 @@
         "cover": "https://p3.music.126.net/8AetqSYMrRhzSf3oSYBgEw==/109951168992034244.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=2092014584.mp3",
         "duration": "01:05"
-    },
-    {
-        "title": "ミスターフィクサー",
-        "artist": "Sou",
-        "cover": "https://p4.music.126.net/z2Bqbqx20jzGv_DzAuWrvQ==/109951165159878267.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1414759694.mp3",
-        "duration": "03:39",
-        "lrc": "/lyrics/1414759694.lrc"
     },
     {
         "title": "ADAMAS (TV Size)",
@@ -1971,14 +1287,6 @@
         "lrc": "/lyrics/1951285318.lrc"
     },
     {
-        "title": "終わらないメロディーを歌いだしました。",
-        "artist": "小松未可子",
-        "cover": "https://p4.music.126.net/eur0DWs91pFw5KNPGcazjg==/109951163351891860.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28563274.mp3",
-        "duration": "05:13",
-        "lrc": "/lyrics/28563274.lrc"
-    },
-    {
         "title": "恋愛回避依存症",
         "artist": "アーモロート不動産 / Matthiola Records / 莱妮娅Rynia",
         "cover": "https://p4.music.126.net/3h5rJt-OUS085Fd83RJhxw==/109951168649691451.jpg",
@@ -1993,14 +1301,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=27548282.mp3",
         "duration": "04:38",
         "lrc": "/lyrics/27548282.lrc"
-    },
-    {
-        "title": "Birth",
-        "artist": "喜多村英梨",
-        "cover": "https://p4.music.126.net/fKohkP41nLArLH895_8lLQ==/109951163351886840.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28403045.mp3",
-        "duration": "03:59",
-        "lrc": "/lyrics/28403045.lrc"
     },
     {
         "title": "命に嫌われている。",
@@ -2027,14 +1327,6 @@
         "lrc": "/lyrics/1810759765.lrc"
     },
     {
-        "title": "again - ANIME Ver. -",
-        "artist": "YUI",
-        "cover": "https://p3.music.126.net/yFzn5Vwzmtd9-NNBK3DFaw==/109951167990328412.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=499117.mp3",
-        "duration": "01:39",
-        "lrc": "/lyrics/499117.lrc"
-    },
-    {
         "title": "酔いどれ知らず",
         "artist": "kanaria / GUMI",
         "cover": "https://p4.music.126.net/bbYCLSitZbeNymu-E9HO2g==/109951167369974792.jpg",
@@ -2051,13 +1343,6 @@
         "lrc": "/lyrics/2049291275.lrc"
     },
     {
-        "title": "アゲイン",
-        "artist": "横山克",
-        "cover": "https://p3.music.126.net/zz0Gg3yMwz3jAvvtbRknSQ==/109951169033034790.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=30245064.mp3",
-        "duration": "02:31"
-    },
-    {
         "title": "神のまにまに",
         "artist": "Sou / いすぼくろ / ウォルピスカーター",
         "cover": "https://p3.music.126.net/IbnadsARHHkT4Ql9laDxRw==/109951163558013561.jpg",
@@ -2066,108 +1351,12 @@
         "lrc": "/lyrics/1311133071.lrc"
     },
     {
-        "title": "again",
-        "artist": "YUI",
-        "cover": "https://p4.music.126.net/55OCkuuXLi5zKnWCq4mbLg==/109951167932174480.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=668479.mp3",
-        "duration": "04:17",
-        "lrc": "/lyrics/668479.lrc"
-    },
-    {
-        "title": "そばにいるね",
-        "artist": "青山テルマ / SoulJa",
-        "cover": "https://p4.music.126.net/0oJU4Gwv1hUwNp14P18wkg==/109951166230040707.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=555142.mp3",
-        "duration": "05:04",
-        "lrc": "/lyrics/555142.lrc"
-    },
-    {
-        "title": "アイウエ",
-        "artist": "MAISONdes / 美波 / SAKURAmoti",
-        "cover": "https://p3.music.126.net/T5r6pD0s4xR7XUERrVwjyA==/109951167943518527.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1987385712.mp3",
-        "duration": "03:42",
-        "lrc": "/lyrics/1987385712.lrc"
-    },
-    {
-        "title": "白金ディスコ",
-        "artist": "井口裕香",
-        "cover": "https://p4.music.126.net/luCt04AqfszEsNwlWccbFA==/109951170609878477.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=399367220.mp3",
-        "duration": "04:14",
-        "lrc": "/lyrics/399367220.lrc"
-    },
-    {
         "title": "ハレハレヤ（朗朗晴天）（翻自 v flower）",
         "artist": "猫瑾",
         "cover": "https://p4.music.126.net/mbBNJr8tGckoGsr-fSd4cQ==/109951164080199565.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=1365914380.mp3",
         "duration": "03:28",
         "lrc": "/lyrics/1365914380.lrc"
-    },
-    {
-        "title": "Rising Hope",
-        "artist": "LiSA",
-        "cover": "https://p3.music.126.net/hjVVzC0bVnaV3Jev5LAZzg==/109951165946262838.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28481264.mp3",
-        "duration": "04:12",
-        "lrc": "/lyrics/28481264.lrc"
-    },
-    {
-        "title": "緋色の空",
-        "artist": "川田まみ",
-        "cover": "https://p4.music.126.net/EGFI2dAPuCvvoee9bnDUfw==/109951163534613694.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=26118382.mp3",
-        "duration": "04:16",
-        "lrc": "/lyrics/26118382.lrc"
-    },
-    {
-        "title": "星が瞬くこんな夜に ~ゲームVer.~",
-        "artist": "supercell",
-        "cover": "https://p3.music.126.net/mmnd2-wzKU0aIRnzBsGQFQ==/109951170530147837.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=501886.mp3",
-        "duration": "03:51",
-        "lrc": "/lyrics/501886.lrc"
-    },
-    {
-        "title": "ポケット",
-        "artist": "whiteeeen",
-        "cover": "https://p3.music.126.net/udeDezY5HjLYKBGBhv0yMw==/7997847581505252.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=33085234.mp3",
-        "duration": "04:01",
-        "lrc": "/lyrics/33085234.lrc"
-    },
-    {
-        "title": "消えない feat.春茶",
-        "artist": "MIMiNARI / 春茶",
-        "cover": "https://p4.music.126.net/eXLCYWDdBLiMxOrpa3cPaA==/109951167341049419.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1941541016.mp3",
-        "duration": "03:22",
-        "lrc": "/lyrics/1941541016.lrc"
-    },
-    {
-        "title": "往け",
-        "artist": "LiSA",
-        "cover": "https://p3.music.126.net/BV0ReiA5a_OWWrKxQEENlw==/109951166466606999.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1882433311.mp3",
-        "duration": "03:48",
-        "lrc": "/lyrics/1882433311.lrc"
-    },
-    {
-        "title": "Skyreach",
-        "artist": "雨宮天",
-        "cover": "https://p4.music.126.net/uUiZggmdzNFQ2-BmhEWbHg==/109951166717934352.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=28936241.mp3",
-        "duration": "04:29",
-        "lrc": "/lyrics/28936241.lrc"
-    },
-    {
-        "title": "第六感",
-        "artist": "Reol",
-        "cover": "https://p4.music.126.net/rk7FQkUt_n99I7dOUG50iA==/109951166726790783.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1466303986.mp3",
-        "duration": "03:11",
-        "lrc": "/lyrics/1466303986.lrc"
     },
     {
         "title": "Zzz",
@@ -2202,92 +1391,12 @@
         "lrc": "/lyrics/462688888.lrc"
     },
     {
-        "title": "ヒロイン育成計画",
-        "artist": "HoneyWorks / 水瀬いのり / 佐倉綾音 / 早見沙織",
-        "cover": "https://p3.music.126.net/oKblEEHyjD0x9XKlf1s3WQ==/109951167527670447.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1954407597.mp3",
-        "duration": "03:38",
-        "lrc": "/lyrics/1954407597.lrc"
-    },
-    {
-        "title": "No.1",
-        "artist": "夏川椎菜",
-        "cover": "https://p3.music.126.net/PvS09FzcFuUb8mZUcoUbJg==/109951166102364071.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1416874718.mp3",
-        "duration": "04:34",
-        "lrc": "/lyrics/1416874718.lrc"
-    },
-    {
-        "title": "#あくあ色ぱれっと",
-        "artist": "湊あくあ",
-        "cover": "https://p3.music.126.net/gHrL99xYP3N38LeCFEROgA==/109951166844470564.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1490058118.mp3",
-        "duration": "04:32",
-        "lrc": "/lyrics/1490058118.lrc"
-    },
-    {
-        "title": "ツバメ (feat. ミドリーズ)",
-        "artist": "YOASOBI / ミドリーズ",
-        "cover": "https://p3.music.126.net/6Hrz_bIYDBJ3z272Kojvkg==/109951166514155566.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1885359359.mp3",
-        "duration": "03:37",
-        "lrc": "/lyrics/1885359359.lrc"
-    },
-    {
-        "title": "SUPERHERO",
-        "artist": "YUC’e",
-        "cover": "https://p3.music.126.net/i4OBxbLefVZeWUIDAWbsJg==/109951166381709998.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1877890839.mp3",
-        "duration": "03:13",
-        "lrc": "/lyrics/1877890839.lrc"
-    },
-    {
-        "title": "気ままな天使たち",
-        "artist": "わたてん☆5",
-        "cover": "https://p3.music.126.net/VxDnAVPTrXzrAxpoK58dEg==/109951170423058765.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1342955099.mp3",
-        "duration": "04:05",
-        "lrc": "/lyrics/1342955099.lrc"
-    },
-    {
-        "title": "Bet On Me (Organic Version)",
-        "artist": "Walk off the Earth / D Smoke",
-        "cover": "https://p4.music.126.net/KxmRsYOXXrJfuUv_0wyPaQ==/109951167301321745.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1938756186.mp3",
-        "duration": "02:51",
-        "lrc": "/lyrics/1938756186.lrc"
-    },
-    {
-        "title": "極楽浄土",
-        "artist": "GARNiDELiA",
-        "cover": "https://p3.music.126.net/T01LxKNXKebyWE0GBPzyeA==/109951167953959333.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=411907897.mp3",
-        "duration": "03:38",
-        "lrc": "/lyrics/411907897.lrc"
-    },
-    {
         "title": "ninelie",
         "artist": "Aimer / EGOIST",
         "cover": "https://p3.music.126.net/g7aakYG_Wfmrn1_IDfVUXA==/109951165050166241.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=409872504.mp3",
         "duration": "04:20",
         "lrc": "/lyrics/409872504.lrc"
-    },
-    {
-        "title": "Closer",
-        "artist": "The Chainsmokers / Halsey",
-        "cover": "https://p3.music.126.net/NAT_u_xqHJDeZeiyDls1lQ==/109951167389372164.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=423228325.mp3",
-        "duration": "04:04",
-        "lrc": "/lyrics/423228325.lrc"
-    },
-    {
-        "title": "名前のない怪物",
-        "artist": "EGOIST",
-        "cover": "https://p3.music.126.net/B7ZfH-gKIIiYCNiCRltleA==/7768049650716025.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=31066263.mp3",
-        "duration": "05:17",
-        "lrc": "/lyrics/31066263.lrc"
     },
     {
         "title": "クライヤ",
@@ -2304,14 +1413,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=1881220303.mp3",
         "duration": "03:31",
         "lrc": "/lyrics/1881220303.lrc"
-    },
-    {
-        "title": "ホーリーナイト",
-        "artist": "釘宮理恵 / 喜多村英梨",
-        "cover": "https://p3.music.126.net/x9QLDrBppm7fwFjq40VwJw==/109951163351726372.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=4949087.mp3",
-        "duration": "03:05",
-        "lrc": "/lyrics/4949087.lrc"
     },
     {
         "title": "DESIRE",
@@ -2368,13 +1469,6 @@
         "lrc": "/lyrics/1832675220.lrc"
     },
     {
-        "title": "fish in the pool・花屋敷",
-        "artist": "ヘクとパスカル",
-        "cover": "https://p4.music.126.net/QPoY7Q5CcjIdUacgPEzdeg==/109951168763573429.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=31861269.mp3",
-        "duration": "04:36"
-    },
-    {
         "title": "NEO",
         "artist": "初音ミク / 星乃一歌 / 花里みのり / 小豆沢こはね / 天馬司 / 宵崎奏 / じん",
         "cover": "https://p4.music.126.net/eM6ACRNLEhKjzmR7qkkozw==/109951168939996054.jpg",
@@ -2391,28 +1485,12 @@
         "lrc": "/lyrics/1403774122.lrc"
     },
     {
-        "title": "world.execute (me) ;",
-        "artist": "Mili",
-        "cover": "https://p4.music.126.net/-OxCLbGs-JxKtPaBCo1yuw==/18801648835570109.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=435278010.mp3",
-        "duration": "03:31",
-        "lrc": "/lyrics/435278010.lrc"
-    },
-    {
         "title": "Heaschenlied",
         "artist": "Schnuffel",
         "cover": "https://p4.music.126.net/Ut9EQKJZysCC8Zx14jMjvw==/6627856092459640.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=3423995.mp3",
         "duration": "03:33",
         "lrc": "/lyrics/3423995.lrc"
-    },
-    {
-        "title": "優しい恋人",
-        "artist": "しまも",
-        "cover": "https://p3.music.126.net/Mk3aii_HNSqPin-9806THg==/109951168258116768.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2016988838.mp3",
-        "duration": "05:42",
-        "lrc": "/lyrics/2016988838.lrc"
     },
     {
         "title": "WHITE ALBUM",
@@ -2431,28 +1509,12 @@
         "lrc": "/lyrics/2091667481.lrc"
     },
     {
-        "title": "ミチノチモシーキミノキモチ",
-        "artist": "森永千才",
-        "cover": "https://p4.music.126.net/ub63W1JCe5JYiGV5O-Pb-Q==/109951169477242290.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=418708385.mp3",
-        "duration": "03:34",
-        "lrc": "/lyrics/418708385.lrc"
-    },
-    {
         "title": "追憶 (feat. nakotanmaru)",
         "artist": "PIKASONIC / なこたんまる",
         "cover": "https://p3.music.126.net/o-vKXEDYyx_IfqljRvJIpg==/109951166279122045.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=1869161372.mp3",
         "duration": "04:09",
         "lrc": "/lyrics/1869161372.lrc"
-    },
-    {
-        "title": "明日でいいから",
-        "artist": "花守ゆみり / 白石晴香 / 安野希世乃 / 山村響 / 吉岡茉祐",
-        "cover": "https://p4.music.126.net/v73tHLIkH1UWQObhw_XK2A==/1405175869983787.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=413834666.mp3",
-        "duration": "04:54",
-        "lrc": "/lyrics/413834666.lrc"
     },
     {
         "title": "WHITE ALBUM",
@@ -2463,75 +1525,12 @@
         "lrc": "/lyrics/449824917.lrc"
     },
     {
-        "title": "おやすみパラレル",
-        "artist": "花守ゆみり",
-        "cover": "https://p3.music.126.net/D4C-2htjKuYfCBBwEx7-ZA==/109951170423275973.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=444324714.mp3",
-        "duration": "04:09",
-        "lrc": "/lyrics/444324714.lrc"
-    },
-    {
-        "title": "Wake (Live)",
-        "artist": "Hillsong Young & Free",
-        "cover": "https://p4.music.126.net/Uo7OXdK3g4LQdc2hzJ14qQ==/109951166328143737.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1873321491.mp3",
-        "duration": "04:35",
-        "lrc": "/lyrics/1873321491.lrc"
-    },
-    {
-        "title": "Hazy Lazy Doll",
-        "artist": "山下七海",
-        "cover": "https://p4.music.126.net/Lp6vXbTsiLahJe7B46574g==/1421668536904221.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=405599092.mp3",
-        "duration": "04:02",
-        "lrc": "/lyrics/405599092.lrc"
-    },
-    {
-        "title": "嘘の火花",
-        "artist": "96猫",
-        "cover": "https://p4.music.126.net/ldNsehliUH6twem5Jf1SDw==/109951167931984806.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=463842649.mp3",
-        "duration": "03:43",
-        "lrc": "/lyrics/463842649.lrc"
-    },
-    {
-        "title": "平行線",
-        "artist": "さユり",
-        "cover": "https://p4.music.126.net/NxMDZitvZ4HQkr7_J-Z95g==/109951167071028582.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=462686590.mp3",
-        "duration": "04:59",
-        "lrc": "/lyrics/462686590.lrc"
-    },
-    {
         "title": "届かない恋",
         "artist": "上原れな",
         "cover": "https://p3.music.126.net/ozuRgw3PHm3kI9760pN0UA==/109951168761255272.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=27594382.mp3",
         "duration": "05:09",
         "lrc": "/lyrics/27594382.lrc"
-    },
-    {
-        "title": "ヨスガノソラ メインテーマ -記憶-",
-        "artist": "市川淳",
-        "cover": "https://p4.music.126.net/BFAwteRYk7-dJbTWXWq-nA==/109951171299674424.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=477931.mp3",
-        "duration": "03:00"
-    },
-    {
-        "title": "フィナーレ。",
-        "artist": "eill",
-        "cover": "https://p3.music.126.net/elOSlLUcyPt_fqdluhSBBA==/109951167783001594.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1972395036.mp3",
-        "duration": "04:02",
-        "lrc": "/lyrics/1972395036.lrc"
-    },
-    {
-        "title": "あさひ",
-        "artist": "花譜 / 佐倉綾音",
-        "cover": "https://p4.music.126.net/srllDL-_P79llZYYw-PNFA==/109951168567596177.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2042046337.mp3",
-        "duration": "07:23",
-        "lrc": "/lyrics/2042046337.lrc"
     },
     {
         "title": "アスタロア",
@@ -2621,22 +1620,6 @@
         "lrc": "/lyrics/1304665120.lrc"
     },
     {
-        "title": "DAYBREAK FRONTLINE",
-        "artist": "めありー / Orangestar",
-        "cover": "https://p4.music.126.net/VaBRPQTtkEjGMUta2-f5Ow==/109951170961702497.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=557579433.mp3",
-        "duration": "03:36",
-        "lrc": "/lyrics/557579433.lrc"
-    },
-    {
-        "title": "あのね。",
-        "artist": "あれくん / 『ユイカ』",
-        "cover": "https://p4.music.126.net/lT4lIr6Wq-LZ2tm43NpbsQ==/109951167354012562.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1942631186.mp3",
-        "duration": "03:34",
-        "lrc": "/lyrics/1942631186.lrc"
-    },
-    {
         "title": "17さいのうた。",
         "artist": "『ユイカ』",
         "cover": "https://p4.music.126.net/1bcwLzrrKPWcs137biKbpw==/109951167488734005.jpg",
@@ -2645,28 +1628,12 @@
         "lrc": "/lyrics/1951665069.lrc"
     },
     {
-        "title": "花に亡霊",
-        "artist": "ヨルシカ",
-        "cover": "https://p4.music.126.net/_Os98d4NSKf-vLo_93QoEg==/109951164927614269.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1442466883.mp3",
-        "duration": "03:59",
-        "lrc": "/lyrics/1442466883.lrc"
-    },
-    {
         "title": "God knows...",
         "artist": "平野綾",
         "cover": "https://p4.music.126.net/ZRbWRuUaoGewNJLesPCCsA==/885106860383218.jpg",
         "url": "https://music.163.com/song/media/outer/url?id=22826401.mp3",
         "duration": "04:39",
         "lrc": "/lyrics/22826401.lrc"
-    },
-    {
-        "title": "カワキヲアメク",
-        "artist": "美波",
-        "cover": "https://p3.music.126.net/zqkBx9ON-d17-KSFMAARhg==/109951169290267782.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=1342950406.mp3",
-        "duration": "04:11",
-        "lrc": "/lyrics/1342950406.lrc"
     },
     {
         "title": "夜奏花",
@@ -2698,22 +1665,6 @@
         "duration": "05:10"
     },
     {
-        "title": "Release My Soul",
-        "artist": "Aimee Blackschleger",
-        "cover": "https://p4.music.126.net/JbyZBW6Th0hbW8RsRXWVdA==/109951166197895701.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=498134.mp3",
-        "duration": "04:34",
-        "lrc": "/lyrics/498134.lrc"
-    },
-    {
-        "title": "君の知らない物語",
-        "artist": "supercell",
-        "cover": "https://p3.music.126.net/luCt04AqfszEsNwlWccbFA==/109951170609878477.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=399367218.mp3",
-        "duration": "05:42",
-        "lrc": "/lyrics/399367218.lrc"
-    },
-    {
         "title": "小さなてのひら",
         "artist": "riya",
         "cover": "https://p3.music.126.net/kkkPkRGflxLurhhKBbCmPg==/109951171268737495.jpg",
@@ -2728,22 +1679,6 @@
         "url": "https://music.163.com/song/media/outer/url?id=22770026.mp3",
         "duration": "05:26",
         "lrc": "/lyrics/22770026.lrc"
-    },
-    {
-        "title": "リンク～past and future～",
-        "artist": "古賀葵",
-        "cover": "https://p3.music.126.net/MzXKbIbJxtUbpl-r-0R3Fg==/109951168944145676.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=2085716708.mp3",
-        "duration": "04:37",
-        "lrc": "/lyrics/2085716708.lrc"
-    },
-    {
-        "title": "エウテルペ (from BEST AL“ALTER EGO”)",
-        "artist": "EGOIST",
-        "cover": "https://p3.music.126.net/d3g3Wg59Ibh_DSDHy802RQ==/109951172138853772.jpg",
-        "url": "https://music.163.com/song/media/outer/url?id=525238579.mp3",
-        "duration": "03:46",
-        "lrc": "/lyrics/525238579.lrc"
     },
     {
         "title": "Departures ~あなたにおくるアイの歌~",
