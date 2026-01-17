@@ -18,7 +18,7 @@
       }
     }
     console.log('[Umami] Fetching new token for', shareId);
-    const res = await fetch(`${baseUrl}/api/share/${shareId}`);
+    const res = await fetch(`${baseUrl}/share/${shareId}`);
     if (!res.ok) {
       throw new Error('获取 Umami 分享信息失败');
     }
