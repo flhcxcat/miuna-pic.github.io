@@ -18,8 +18,8 @@ site:
     height: 60vh
     images:
       - https://pic.000.moe/random
-  icp: 萌ICP备20261117号
-  icp_link: https://icp.gov.moe/?keyword=20261117
+  icp: 萌ICP备20251991号
+  icp_link: https://icp.gov.moe/?keyword=20251991
   pages:
     home:
       title: Miuna's Blog
@@ -108,9 +108,9 @@ github:
   encryptKey: wudishiduomejimo
 umami:
   enable: true
-  baseUrl: https://cloud.umami.is
-  shareId: qzgZAXsNeH1B0zip
-  websiteId: 27f80298-2fe0-4260-a8d7-b0d746a29483
+  baseUrl: https://umami-beryl-nine.vercel.app
+  shareId: 2MeZAfNU4fEsJXT9
+  websiteId: dde75492-7adc-4254-b1d4-2cebc0e1948f
   timezone: Asia/Shanghai
 user:
   name: Miuna
