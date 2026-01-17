@@ -108,7 +108,7 @@ github:
   encryptKey: wudishiduomejimo
 umami:
   enable: true
-  baseUrl: https://umami-beryl-nine.vercel.app
+  baseUrl: https://umami.000.moe
   shareId: 2MeZAfNU4fEsJXT9
   websiteId: dde75492-7adc-4254-b1d4-2cebc0e1948f
   timezone: Asia/Shanghai
