@@ -301,6 +301,17 @@ export function ConfigPage() {
         toast.info('图片已缓存，保存配置时会统一上传')
     }
 
+    const onChoosePrivateKey = async (file: File) => {
+        try {
+            const pem = await readFileAsText(file)
+            await setPrivateKey(pem)
+            toast.success('Key imported successfully')
+        } catch (e) {
+            console.error(e)
+            toast.error('Failed to import key')
+        }
+    }
+
     const handleImportKey = () => {
         keyInputRef.current?.click()
     }
