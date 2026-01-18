@@ -163,9 +163,9 @@ export default function NavigationEditor() {
         <>
             <Toaster
                 richColors
-                position="top-center"
+                position="top-right"
                 toastOptions={{
-                    className: 'shadow-2xl border-2 border-base-200',
+                    className: 'shadow-2xl border-2 border-base-200 rounded-xl',
                     style: {
                         fontSize: '1.1rem',
                         padding: '16px 24px',
