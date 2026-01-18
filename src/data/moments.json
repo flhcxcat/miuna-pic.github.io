@@ -7,14 +7,5 @@
     ],
     "createdAt": "2026-01-18T05:11:29.528Z",
     "tags": []
-  },
-  {
-    "id": "init-seed",
-    "content": "Welcome to my new Moments feed! This is where I'll share quick updates, thoughts, and photos similar to a朋友圈 (Friends Circle) or Twitter/X.",
-    "images": [],
-    "createdAt": "2024-01-01T12:00:00Z",
-    "tags": [
-      "welcome"
-    ]
   }
 ]
