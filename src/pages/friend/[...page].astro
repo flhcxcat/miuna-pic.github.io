@@ -1,0 +1,92 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Icon } from "astro-icon/components";
+import FriendCard from "@/components/mdx/FriendCard.astro";
+import FriendEditor from "@/components/FriendEditor";
+import friendsData from "@/data/friends.json";
+import Pagination from "@/components/widgets/Pagination.astro";
+import { generatePageLinks } from "@utils/blogUtils";
+
+export async function getStaticPaths({ paginate }) {
+  // Only paginate "friends", ignore "sites" as it was requested to be removed
+  return paginate(friendsData.friends, { pageSize: 15 });
+}
+
+const { page } = Astro.props;
+const totalPages = Math.ceil(page.total / page.size);
+const pageLinks = generatePageLinks(totalPages, page.current);
+
+const friends = page.data;
+---
+
+<BaseLayout title="Friends" isIndexed={false}>
+  
+  <!-- Friends Section -->
+  <div class="mb-10 animate-fade-in-up">
+    <h1 class="text-3xl md:text-4xl font-bold mb-4 flex items-center gap-3">
+      <Icon name="lucide:users" class="text-primary" />
+      <span>Friends</span>
+    </h1>
+    <p class="text-base-content/70 text-lg mb-6">
+      记录那些珍贵的友谊，分享彼此的故事。
+    </p>
+
+    <div class="relative max-w-2xl mr-auto mt-4 mb-8 flex gap-2 items-center">
+      <div class="relative group flex-1">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <Icon name="lucide:search" class="h-5 w-5 text-base-content/40 group-focus-within:text-primary transition-colors" />
+        </div>
+        <input
+          type="text"
+          id="friend-search-input"
+          class="block w-full pl-11 pr-4 py-3 bg-base-100 border-none rounded-2xl text-base-content placeholder-base-content/40 focus:ring-2 focus:ring-primary/50 focus:bg-base-100 shadow-sm transition-all duration-300"
+          placeholder="搜索朋友或站点..."
+        />
+      </div>
+      <FriendEditor client:only="react" />
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="friends-grid">
+      {friends.map((friend) => (
+        <div class="friend-item" data-name={friend.name.toLowerCase()} data-desc={friend.description.toLowerCase()}>
+          <FriendCard
+            name={friend.name}
+            avatar={friend.avatar}
+            description={friend.description}
+            url={friend.url}
+            badge={friend.badge}
+          />
+        </div>
+      ))}
+    </div>
+    
+    <div class="mt-12">
+      <Pagination page={page} totalPages={totalPages} pageLinks={pageLinks} baseUrl="/friend" />
+    </div>
+  </div>
+
+</BaseLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const searchInput = document.getElementById('friend-search-input');
+    const friendItems = document.querySelectorAll('.friend-item');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const term = (e.target as HTMLInputElement).value.toLowerCase();
+        
+        friendItems.forEach((item) => {
+          const name = (item as HTMLElement).dataset.name || '';
+          const desc = (item as HTMLElement).dataset.desc || '';
+          
+          if (name.includes(term) || desc.includes(term)) {
+            (item as HTMLElement).style.display = '';
+          } else {
+            (item as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    }
+  });
+</script>

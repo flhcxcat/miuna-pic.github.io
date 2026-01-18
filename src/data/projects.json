@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Miunaの博客",
+        "avatar": "https://000.moe/images/uploads/1768632093006-5ozymr.jpg",
+        "description": "🏠 Miuna的个人博客喵！",
+        "url": "https://000.moe",
+        "badge": "Blog"
+    },
+    {
+        "name": "Kawaii机场",
+        "avatar": "https://pic.000.moe/pic/696b5849097b9.png",
+        "description": "🔮 开启你的异国之旅✧⁺⸜(●˙▾˙●)⸝⁺✧",
+        "url": "https://loli.000.moe",
+        "badge": "Xboard"
+    },
+    {
+        "name": "兰空图床",
+        "avatar": "https://pic.000.moe/pic/696b584856609.png",
+        "description": "✨ 私人图床喵，配备随机图api~",
+        "url": "https://pic.000.moe",
+        "badge": "Tool"
+    }
+]

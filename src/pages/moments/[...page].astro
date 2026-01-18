@@ -1,0 +1,98 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Icon } from "astro-icon/components";
+import MomentsEditor from "@/components/MomentsEditor";
+import MomentDeleteButton from "@/components/MomentDeleteButton";
+import momentsData from "@/data/moments.json";
+import Pagination from "@/components/widgets/Pagination.astro";
+import { generatePageLinks } from "@utils/blogUtils";
+import Card from "@/components/temple/Card.astro";
+import dayjs from "dayjs";
+import { marked } from "marked";
+
+export async function getStaticPaths({ paginate }) {
+  const sortedMoments = momentsData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  return paginate(sortedMoments, { pageSize: 6 });
+}
+
+const { page } = Astro.props;
+const totalPages = Math.ceil(page.total / page.size);
+const pageLinks = generatePageLinks(totalPages, page.current);
+
+async function renderContent(content: string) {
+  return await marked.parse(content);
+}
+---
+
+<BaseLayout title="Moments" isIndexed={false}>
+  <div class="max-w-4xl mx-auto space-y-8 animate-fade-up py-8 px-2 md:px-0">
+    <div class="flex items-center gap-3 mb-6">
+       <Icon name="lucide:camera" class="w-8 h-8 text-primary" />
+       <h1 class="text-3xl font-bold">Moments</h1>
+    </div>
+
+    <!-- Editor Component (Client-side) -->
+    <MomentsEditor client:only="react" />
+
+    <!-- Timeline -->
+    <div class="space-y-6">
+      {page.data.map(async (moment) => {
+        const htmlContent = await renderContent(moment.content);
+        return (
+          <Card class="p-6 transition-all hover:shadow-lg">
+            <div class="flex gap-4">
+              <div class="flex-shrink-0">
+                 <div class="w-12 h-12 rounded-full ring-2 ring-primary/20 overflow-hidden">
+                   <img src="https://000.moe/images/uploads/1768632093006-5ozymr.jpg" alt="Avatar" class="w-full h-full object-cover" />
+                 </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-bold text-lg">Miuna</span>
+                  <span class="text-xs text-base-content/60" title={dayjs(moment.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+                    {dayjs(moment.createdAt).format('MM-DD HH:mm')}
+                  </span>
+                </div>
+                
+                <div class="prose prose-base dark:prose-invert max-w-none mb-4 break-words" set:html={htmlContent} />
+                
+                {moment.images && moment.images.length > 0 && (
+                  <div class={`grid gap-2 ${moment.images.length === 1 ? 'grid-cols-1' : moment.images.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+                    {moment.images.map((img) => (
+                      <div class="aspect-square rounded-lg overflow-hidden border border-base-200 cursor-pointer group">
+                        <img src={img} alt="Moment image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+  
+                <div class="flex justify-between items-end mt-4">
+                  <div class="flex flex-wrap gap-2">
+                    {moment.tags && moment.tags.map(tag => (
+                      <span class="badge badge-ghost badge-sm text-base-content/60">#{tag}</span>
+                    ))}
+                  </div>
+                  
+                  <MomentDeleteButton client:only="react" id={moment.id} />
+                </div>
+              </div>
+            </div>
+          </Card>
+        );
+      })}
+  
+      {page.data.length === 0 && (
+        <div class="text-center py-20 text-base-content/40">
+          <Icon name="lucide:ghost" class="w-16 h-16 mx-auto mb-4" />
+          <p>No moments yet...</p>
+        </div>
+      )}
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-10">
+      <Pagination page={page} totalPages={totalPages} pageLinks={pageLinks} baseUrl="/moments" />
+    </div>
+
+  </div>
+</BaseLayout>

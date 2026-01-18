@@ -1,0 +1,223 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import NavigationCard from "@components/mdx/NavigationCard.astro";
+import NavigationEditor from "@components/NavigationEditor";
+import { Icon } from "astro-icon/components";
+import { NAV_DATA } from "../../../data/navData";
+import Pagination from "@/components/widgets/Pagination.astro";
+import { generatePageLinks } from "@utils/blogUtils";
+
+export async function getStaticPaths({ paginate }) {
+  // Generate paths for each category, paginating its items
+  return NAV_DATA.flatMap((category) => {
+    const categoryItems = category.items.map(item => ({ ...item, parentCategory: category.title }));
+    return paginate(categoryItems, {
+      params: { category: category.title },
+      pageSize: 15
+    });
+  });
+}
+
+const { page, category } = Astro.props;
+const { category: currentCategory } = Astro.params;
+
+const totalPages = Math.ceil(page.total / page.size);
+const pageLinks = generatePageLinks(totalPages, page.current);
+
+const items = page.data;
+---
+
+<BaseLayout title={`导航 - ${currentCategory}`} isIndexed={false}>
+  <div class="nav-container min-h-screen bg-base-200/30 -mt-8 pt-8 pb-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto space-y-10">
+      
+      <!-- 顶部搜索区域 -->
+      <div class="relative max-w-lg mx-auto mt-10 flex gap-2 items-center">
+        <div class="relative group flex-1">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <Icon name="lucide:search" class="h-5 w-5 text-base-content/40 group-focus-within:text-primary transition-colors" />
+          </div>
+          <input
+            type="text"
+            id="search-input"
+            class="block w-full pl-11 pr-4 py-3 bg-base-100 border-none rounded-2xl text-base-content placeholder-base-content/40 focus:ring-2 focus:ring-primary/50 focus:bg-base-100 shadow-sm transition-all duration-300"
+            placeholder="搜索资源..."
+          />
+        </div>
+        <NavigationEditor client:only="react" />
+      </div>
+
+      <!-- 分类标签栏 -->
+      <div class="flex flex-wrap justify-center gap-3" id="category-filters">
+        <a
+          href="/navigation"
+          class="category-btn px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-base-100 text-base-content/60 hover:bg-base-200 hover:text-primary hover:shadow-md hover:-translate-y-0.5"
+        >
+          全部
+        </a>
+        {NAV_DATA.map((cat) => (
+          <a
+            href={`/navigation/${cat.title}`}
+            class={`category-btn px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 ${
+                cat.title === currentCategory 
+                ? 'bg-primary text-primary-content font-bold shadow-md' 
+                : 'bg-base-100 text-base-content/60 hover:bg-base-200 hover:text-primary'
+            }`}
+          >
+            {cat.title}
+          </a>
+        ))}
+      </div>
+
+      <!-- 资源网格 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="resources-grid">
+        {items.map((item) => (
+          <div 
+            class="resource-item" 
+            data-category={item.category} 
+            data-parent-category={item.parentCategory}
+            data-name={item.name.toLowerCase()} 
+            data-desc={item.description.toLowerCase()}
+          >
+            <NavigationCard {...item} />
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12 pagination-container">
+        <Pagination page={page} totalPages={totalPages} pageLinks={pageLinks} baseUrl={`/navigation/${currentCategory}`} />
+      </div>
+
+      <!-- 无结果提示 -->
+      <div id="no-results" class="hidden text-center py-20">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-base-200 mb-4">
+          <Icon name="lucide:search-x" class="w-8 h-8 text-gray-400" />
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">未找到相关资源</h3>
+        <p class="mt-2 text-gray-500 dark:text-gray-400">请尝试更换关键词或分类</p>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ navData: NAV_DATA }}>
+  document.addEventListener('astro:page-load', () => {
+    const searchInput = document.getElementById('search-input');
+    const staticGrid = document.getElementById('resources-grid');
+    const pagination = document.querySelector('.pagination-container');
+    const noResults = document.getElementById('no-results');
+    
+    // Create dynamic grid container if it doesn't exist
+    let dynamicGrid = document.getElementById('dynamic-resources-grid');
+    if (!dynamicGrid && staticGrid) {
+      dynamicGrid = document.createElement('div');
+      dynamicGrid.id = 'dynamic-resources-grid';
+      dynamicGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+      dynamicGrid.style.display = 'none';
+      staticGrid.parentNode.insertBefore(dynamicGrid, staticGrid.nextSibling);
+    }
+
+    // Flatten all data for global search
+    const allItems = [];
+    navData.forEach(cat => {
+      cat.items.forEach(item => {
+        allItems.push({ ...item, parentCategory: cat.title });
+      });
+    });
+
+    let currentSearch = '';
+
+    function createCardHtml(item) {
+      const hostname = new URL(item.url).hostname;
+      
+      let badgeHtml = '';
+      if (item.badge) {
+        const color = item.badgeColor || 'primary';
+        const isPrimary = color === 'primary';
+        
+        let badgeClass = `text-${color}-500 bg-${color}-500/10 border-${color}-500/20`;
+        let badgeStyle = '';
+        
+        if (isPrimary) {
+            badgeClass = 'text-primary bg-primary/10 border-primary/20';
+        } else if (/^[#]|rgb|hsl|var/.test(color)) {
+            badgeClass = '';
+            badgeStyle = `color: ${color}; background-color: color-mix(in srgb, ${color}, transparent 90%); border-color: color-mix(in srgb, ${color}, transparent 80%);`;
+        }
+
+        badgeHtml = `
+        <div class="flex items-center gap-3 mb-3">
+          <div class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-xl border transition-colors ${badgeClass}" style="${badgeStyle}">
+            <span class="iconify w-3.5 h-3.5" data-icon="${item.badgeIcon || 'lucide:award'}"></span>
+            <span>${item.badge}</span>
+          </div>
+        </div>`;
+      }
+
+      const idHtml = item.id ? `<span class="px-3 py-1 text-xs font-medium rounded-full bg-base-200/50 text-base-content/60">${item.id}</span>` : '';
+
+      return `
+      <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="group block h-full">
+        <div class="relative h-full bg-base-100 rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-base-200 hover:border-primary/20">
+          <div class="relative p-6 flex flex-col h-full">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="relative shrink-0">
+                <div class="w-12 h-12 rounded-2xl overflow-hidden bg-base-100 p-1 shadow-sm ring-1 ring-base-200">
+                  <img src="${item.avatar}" class="w-full h-full object-cover rounded-xl" alt="${item.name}" loading="lazy" />
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-bold text-lg text-base-content group-hover:text-primary transition-colors duration-300 line-clamp-1">${item.name}</h3>
+                <div class="text-xs text-base-content/40 truncate font-mono mt-0.5">${hostname}</div>
+              </div>
+            </div>
+            ${badgeHtml}
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-3 py-1 text-xs font-medium rounded-full bg-base-200/50 text-base-content/60">${item.parentCategory}</span>
+              ${idHtml}
+            </div>
+            <p class="text-sm text-base-content/70 leading-relaxed line-clamp-3 flex-grow">${item.description}</p>
+          </div>
+        </div>
+      </a>
+      `;
+    }
+
+    function renderDynamicGrid(items) {
+       dynamicGrid.innerHTML = items.map(createCardHtml).join('');
+    }
+
+    function updateView() {
+      // Only trigger if writing logic
+      const isFiltering = currentSearch.trim() !== '';
+      
+      if (isFiltering) {
+        const filtered = allItems.filter(item => {
+           return item.name.toLowerCase().includes(currentSearch) || item.description.toLowerCase().includes(currentSearch);
+        });
+
+        if (staticGrid) staticGrid.style.display = 'none';
+        if (pagination) pagination.style.display = 'none';
+        if (dynamicGrid) {
+            dynamicGrid.style.display = 'grid';
+            renderDynamicGrid(filtered);
+        }
+        if (noResults) {
+            noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+        }
+      } else {
+        if (staticGrid) staticGrid.style.display = 'grid';
+        if (pagination) pagination.style.display = 'block';
+        if (dynamicGrid) dynamicGrid.style.display = 'none';
+        if (noResults) noResults.style.display = 'none';
+      }
+    }
+
+    searchInput?.addEventListener('input', (e) => {
+      currentSearch = e.target.value.toLowerCase();
+      updateView();
+    });
+    // Removed category button listener because now they act as links
+  });
+</script>

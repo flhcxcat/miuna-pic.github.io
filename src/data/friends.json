@@ -1,0 +1,17 @@
+{
+    "friends": [
+        {
+            "name": "Miuna",
+            "avatar": "https://000.moe/images/uploads/1768632093006-5ozymr.jpg",
+            "description": "喵喵，咕噜咕噜",
+            "url": "https://000.moe",
+            "badge": "自己"
+        }
+    ],
+    "sites": [
+        {
+            "name": "Ryuchan Demo",
+            "url": "https://demo.131714.xyz/"
+        }
+    ]
+}

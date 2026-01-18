@@ -5,7 +5,7 @@ site:
   language: zh
   favicon: /favicon.ico
   theme:
-    light: valentine
+    light: synthwave
     dark: synthwave
     code: github-dark
   date_format: ddd MMM DD YYYY
@@ -58,6 +58,11 @@ site:
       text: 写作
       href: /write
       svg: material-symbols:edit-square-outline-rounded
+      target: _self
+    - id: moments
+      text: 瞬间
+      href: /moments
+      svg: material-symbols:camera-outline
       target: _self
     - id: navigation
       text: 导航
@@ -120,7 +125,7 @@ user:
   avatar: /images/uploads/1768632093006-5ozymr.jpg
   sidebar:
     social:
-      - href: https://github.com/miuna-pic
+      - href: https://github.com/flhcxcat
         ariaLabel: Github
         title: Github
         svg: ri:github-line
@@ -134,7 +139,7 @@ user:
         svg: ri:rss-fill
   footer:
     social:
-      - href: https://github.com/miuna-pic
+      - href: https://github.com/flhcxcat
         ariaLabel: Github
         title: Github
         svg: ri:github-line
@@ -150,7 +155,7 @@ comments:
   enable: true
   type: giscus
   giscus:
-    repo: miuna-pic/miuna-pic.github.io
+    repo: flhcxcat/miuna-pic.github.io
     repoId: R_kgDOQ7gmgQ
     category: General
     categoryId: DIC_kwDOQ7gmgc4C1EHw

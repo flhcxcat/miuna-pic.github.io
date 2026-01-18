@@ -36,7 +36,7 @@ const cuteTags = [
   { icon: "lucide:star", text: "五星推荐", color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/20" },
 ];
 
-let tag: { icon: string; text: string; className: string; style?: any };
+let tag: { icon: string; text: string; className: string; style?: any } | undefined;
 
 if (badge) {
   // 如果提供了自定义 badge，使用自定义内容
@@ -66,14 +66,8 @@ if (badge) {
     };
   }
 } else {
-  // 否则使用随机标签
-  const tagIndex = getHash(name) % cuteTags.length;
-  const t = cuteTags[tagIndex];
-  tag = {
-    icon: t.icon,
-    text: t.text,
-    className: `${t.color} ${t.bg} ${t.border}`
-  };
+  // If no badge is provided, we don't show any tag by default
+  tag = undefined;
 }
 ---      
       
@@ -98,12 +92,14 @@ if (badge) {
       </div>
 
       <!-- 趣味标签展示 -->
-      <div class="flex items-center gap-3 mb-3">
-        <div class={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-xl border transition-colors ${tag.className}`} style={tag.style}>
-          <Icon name={tag.icon} class="w-3.5 h-3.5" />
-          <span>{tag.text}</span>
+      {tag && (
+        <div class="flex items-center gap-3 mb-3">
+          <div class={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-xl border transition-colors ${tag.className}`} style={tag.style}>
+            <Icon name={tag.icon} class="w-3.5 h-3.5" />
+            <span>{tag.text}</span>
+          </div>
         </div>
-      </div>
+      )}
 
       <!-- 标签 -->
       <div class="flex flex-wrap gap-2 mb-4">

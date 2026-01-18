@@ -15,7 +15,7 @@ import {
     type TreeItem
 } from '@/lib/github-client'
 import yaml from 'js-yaml'
-import { useAuthStore } from './hooks/use-auth'
+import { useAuthStore } from '@/components/write/hooks/use-auth'
 import { readFileAsText, fileToBase64NoPrefix } from '@/lib/file-utils'
 import { CustomSelect } from './components/ui/custom-select'
 
@@ -303,16 +303,6 @@ export function ConfigPage() {
 
     const handleImportKey = () => {
         keyInputRef.current?.click()
-    }
-
-    const onChoosePrivateKey = async (file: File) => {
-        try {
-            const pem = await readFileAsText(file)
-            await setPrivateKey(pem)
-            toast.success('密钥导入成功')
-        } catch (e) {
-            toast.error('密钥导入失败')
-        }
     }
 
     return (
@@ -746,6 +736,6 @@ export function ConfigPage() {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     )
 }
