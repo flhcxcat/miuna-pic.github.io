@@ -7,13 +7,27 @@ import projectsData from "@/data/projects.json";
 import Pagination from "@/components/widgets/Pagination.astro";
 import { generatePageLinks } from "@utils/blogUtils";
 
-export async function getStaticPaths({ paginate }) {
+import type { Page } from "astro";
+
+interface Project {
+  name: string;
+  avatar: string;
+  description: string;
+  url: string;
+  badge?: string;
+}
+
+interface Props {
+  page: Page<Project>;
+}
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
   return paginate(projectsData, { pageSize: 15 });
 }
 
-const { page } = Astro.props;
+const { page } = Astro.props as Props;
 const totalPages = Math.ceil(page.total / page.size);
-const pageLinks = generatePageLinks(totalPages, page.current);
+const pageLinks = generatePageLinks(totalPages);
 
 const projects = page.data;
 ---

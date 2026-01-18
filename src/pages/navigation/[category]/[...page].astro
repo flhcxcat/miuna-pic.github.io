@@ -7,7 +7,26 @@ import { NAV_DATA } from "../../../data/navData";
 import Pagination from "@/components/widgets/Pagination.astro";
 import { generatePageLinks } from "@utils/blogUtils";
 
-export async function getStaticPaths({ paginate }) {
+import type { Page } from "astro";
+
+interface NavItem {
+  name: string;
+  description: string;
+  url: string;
+  avatar: string;
+  category: string;
+  parentCategory?: string;
+  badge?: string;
+  badgeIcon?: string;
+  badgeColor?: string;
+  id?: string;
+}
+
+interface Props {
+  page: Page<NavItem>;
+}
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
   // Generate paths for each category, paginating its items
   return NAV_DATA.flatMap((category) => {
     const categoryItems = category.items.map(item => ({ ...item, parentCategory: category.title }));
@@ -18,11 +37,11 @@ export async function getStaticPaths({ paginate }) {
   });
 }
 
-const { page, category } = Astro.props;
+const { page } = Astro.props as Props;
 const { category: currentCategory } = Astro.params;
 
 const totalPages = Math.ceil(page.total / page.size);
-const pageLinks = generatePageLinks(totalPages, page.current);
+const pageLinks = generatePageLinks(totalPages);
 
 const items = page.data;
 ---

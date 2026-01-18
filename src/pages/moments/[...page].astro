@@ -10,14 +10,28 @@ import Card from "@/components/temple/Card.astro";
 import dayjs from "dayjs";
 import { marked } from "marked";
 
-export async function getStaticPaths({ paginate }) {
+import type { Page } from "astro";
+
+interface Moment {
+  id: string;
+  content: string;
+  images: string[];
+  createdAt: string;
+  tags: string[];
+}
+
+interface Props {
+  page: Page<Moment>;
+}
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
   const sortedMoments = momentsData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   return paginate(sortedMoments, { pageSize: 6 });
 }
 
-const { page } = Astro.props;
+const { page } = Astro.props as Props;
 const totalPages = Math.ceil(page.total / page.size);
-const pageLinks = generatePageLinks(totalPages, page.current);
+const pageLinks = generatePageLinks(totalPages);
 
 async function renderContent(content: string) {
   return await marked.parse(content);

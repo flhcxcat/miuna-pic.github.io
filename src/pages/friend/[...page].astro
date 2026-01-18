@@ -7,14 +7,28 @@ import friendsData from "@/data/friends.json";
 import Pagination from "@/components/widgets/Pagination.astro";
 import { generatePageLinks } from "@utils/blogUtils";
 
-export async function getStaticPaths({ paginate }) {
+import type { Page } from "astro";
+
+interface Friend {
+  name: string;
+  avatar: string;
+  description: string;
+  url: string;
+  badge?: string;
+}
+
+interface Props {
+  page: Page<Friend>;
+}
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
   // Only paginate "friends", ignore "sites" as it was requested to be removed
   return paginate(friendsData.friends, { pageSize: 15 });
 }
 
-const { page } = Astro.props;
+const { page } = Astro.props as Props;
 const totalPages = Math.ceil(page.total / page.size);
-const pageLinks = generatePageLinks(totalPages, page.current);
+const pageLinks = generatePageLinks(totalPages);
 
 const friends = page.data;
 ---
