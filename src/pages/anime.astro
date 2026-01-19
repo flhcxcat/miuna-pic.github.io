@@ -2,7 +2,7 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Card from "@components/temple/Card.astro";
 import { Icon } from "astro-icon/components";
-import { TMDB_CONFIG, BILIBILI_CONFIG } from "@config";
+import { TMDB_CONFIG, BILIBILI_CONFIG, BANGUMI_CONFIG } from "@config";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
@@ -112,6 +112,66 @@ if (BILIBILI_UID) {
   }
 }
 
+// 4. 如果配置了 Bangumi UID，尝试获取 Bangumi 收藏列表
+const BANGUMI_UID = BANGUMI_CONFIG?.uid;
+let bangumiItems: any[] = [];
+
+if (BANGUMI_UID) {
+  try {
+    console.log(`Fetching Bangumi list for UID: ${BANGUMI_UID}...`);
+    const limit = 50;
+    let offset = 0;
+    let hasMore = true;
+    
+    // Bangumi subject_type: 2 = Anime
+    // type: 3 = Watched (看过的), 2 = Watching (在看), 4 = On Hold (搁置), 1 = Wish (想看), 5 = Dropped (抛弃)
+    // We typically want Watching and Watched. Let's start with all collections or just watched/watching.
+    // The v0 API user collection endpoint lists subjects.
+    // https://api.bgm.tv/v0/users/{username}/collections?subject_type=2&type=2&limit=50&offset=0
+    
+    // Let's implement fetching watching (2) and watched (3)
+    const typesToFetch = [2, 3];
+    
+    for (const type of typesToFetch) {
+       let typeHasMore = true;
+       let typeOffset = 0;
+       
+       while (typeHasMore) {
+           const res = await fetch(`https://api.bgm.tv/v0/users/${BANGUMI_UID}/collections?subject_type=2&type=${type}&limit=${limit}&offset=${typeOffset}`, {
+                headers: {
+                    'User-Agent': 'flhcxcat/miuna-blog (https://github.com/flhcxcat/miuna-pic.github.io)'
+                }
+           });
+           
+           if (!res.ok) {
+               console.error(`Bangumi fetch failed for type ${type}: ${res.status}`);
+               break;
+           }
+           
+           const json = await res.json();
+           
+           if (json.data && json.data.length > 0) {
+               bangumiItems.push(...json.data);
+               if (json.total > bangumiItems.length && json.data.length === limit) {
+                    typeOffset += limit;
+               } else {
+                    typeHasMore = false;
+               }
+           } else {
+               typeHasMore = false;
+           }
+           
+           // Safety break
+           if (typeOffset > 1000) break;
+       }
+    }
+
+    console.log(`Successfully fetched ${bangumiItems.length} items from Bangumi.`);
+  } catch (e) {
+    console.error("Error fetching Bangumi list:", e);
+  }
+}
+
 // 确保 animeData 是数组（处理本地文件可能是单个对象的情况）
 if (!Array.isArray(animeData)) {
   animeData = [animeData];
@@ -158,11 +218,60 @@ if (bilibiliItems.length > 0) {
     epStatus: item.new_ep?.index_show || ''
   }));
 
-  // 去重：如果 Bilibili 中存在同名番剧，则移除 TMDB 中的对应条目，优先展示 Bilibili 数据（带进度）
+  // 去重：如果 Bilibili 中存在同名番剧，则移除 TMDB 中的对应条目
   const bilibiliTitles = new Set(bilibiliMapped.map(item => item.title));
   animeList = animeList.filter(item => !bilibiliTitles.has(item.title));
 
   animeList = [...animeList, ...bilibiliMapped];
+}
+
+// 合并 Bangumi 数据
+if (bangumiItems.length > 0) {
+    const bangumiMapped = bangumiItems.map(item => {
+        const subject = item.subject || {};
+        const title = subject.name_cn || subject.name || "未知作品";
+        // Bangumi specific logic
+        // If subject is accessible
+        return {
+            id: subject.id,
+            title: title,
+            originalTitle: subject.name || title,
+            poster: subject.images?.large || subject.images?.common || null,
+            type: 'tv', // Bangumi API result might not explicitly say 'movie' in this simplified view without looking up subject type ID map. Default to TV.
+            source: 'bangumi',
+            rating: subject.score || 0,
+            date: subject.date || '',
+            overview: subject.short_summary || "暂无简介", // v0 might provide short_summary
+            link: `https://bgm.tv/subject/${subject.id}`,
+            epStatus: item.ep_status ? `看到 ${item.ep_status} 话` : '未开始'
+        };
+    });
+    
+    // 去重与合并逻辑：
+    // 优先级: Bilibili > Bangumi > TMDB
+    // 1. 如果已经在 Bilibili 列表中，则跳过去 Bangumi 条目
+    // 2. 如果不在 Bilibili 但在 TMDB 列表中，移除 TMDB 条目（因为 Bangumi 有进度信息），使用 Bangumi 条目
+    // 3. 否则直接添加
+    
+    const bilibiliTitles = new Set(animeList.filter(item => item.source === 'bilibili').map(item => item.title));
+    
+    bangumiMapped.forEach(bangumiItem => {
+        if (bilibiliTitles.has(bangumiItem.title)) {
+            // 已存在 Bilibili 版本，跳过 Bangumi
+            return;
+        }
+        
+        // 查找是否存在同名的 TMDB 条目
+        const tmdbIndex = animeList.findIndex(item => item.source === 'tmdb' && item.title === bangumiItem.title);
+        
+        if (tmdbIndex !== -1) {
+            // 替换 TMDB 条目为 Bangumi 条目 (保留 Bangumi 的进度信息)
+            animeList[tmdbIndex] = bangumiItem;
+        } else {
+            // 新增 Bangumi 条目
+            animeList.push(bangumiItem);
+        }
+    });
 }
 
 // 统计数据
@@ -310,7 +419,7 @@ const averageRating = tmdbItems.length > 0
                 </h2>
                 <div class="flex items-center justify-between mt-auto text-xs text-base-content/60">
                   <span class="flex items-center gap-1">
-                    {anime.source === 'bilibili' && anime.epStatus ? (
+                    {(anime.source === 'bilibili' || anime.source === 'bangumi') && anime.epStatus ? (
                       <>
                         <Icon name="lucide:play-circle" class="w-3 h-3" />
                         {anime.epStatus}
@@ -324,7 +433,7 @@ const averageRating = tmdbItems.length > 0
                   </span>
                   <span class="flex items-center gap-1">
                     <Icon name="lucide:heart" class="w-3 h-3" />
-                    {anime.source === 'bilibili' ? 'Bilibili' : 'TMDB'}
+                    {anime.source === 'bilibili' ? 'Bilibili' : anime.source === 'bangumi' ? 'Bangumi' : 'TMDB'}
                   </span>
                 </div>
               </div>

@@ -103,6 +103,8 @@ site:
 anime:
   bilibili:
     uid: '344681083'
+  bangumi:
+    uid: '670344'
   tmdb:
     apiKey: 93e1f2ac94622915e8088cca7361981d
     listId: '8627053'

@@ -161,9 +161,14 @@ export interface Translations {
   [language: string]: LanguageTranslation;
 }
 
+export interface BangumiConfig {
+  uid: string;
+}
+
 export interface AnimeConfig {
   bilibili?: BilibiliConfig;
   tmdb?: TmdbConfig;
+  bangumi?: BangumiConfig;
 }
 
 import type { UmamiConfig } from "../config";

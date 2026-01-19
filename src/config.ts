@@ -39,6 +39,7 @@ export const TMDB_CONFIG = config.anime?.tmdb;
 
 // Bilibili 配置
 export const BILIBILI_CONFIG = config.anime?.bilibili;
+export const BANGUMI_CONFIG = config.anime?.bangumi;
 
 // GitHub 配置
 export const GITHUB_CONFIG = config.github;
