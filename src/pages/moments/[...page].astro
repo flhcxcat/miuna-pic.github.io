@@ -9,6 +9,7 @@ import { generatePageLinks } from "@utils/blogUtils";
 import Card from "@/components/temple/Card.astro";
 import dayjs from "dayjs";
 import { marked } from "marked";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 import type { Page } from "astro";
 
@@ -73,8 +74,10 @@ async function renderContent(content: string) {
                 {moment.images && moment.images.length > 0 && (
                   <div class={`grid gap-2 ${moment.images.length === 1 ? 'grid-cols-1' : moment.images.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
                     {moment.images.map((img) => (
-                      <div class="aspect-square rounded-lg overflow-hidden border border-base-200 cursor-pointer group">
-                        <img src={img} alt="Moment image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                      <div class="aspect-square rounded-lg overflow-hidden border border-base-200 group relative">
+                        <a href={img} data-fancybox={`gallery-${moment.id}`} class="block w-full h-full cursor-zoom-in">
+                          <img src={img} alt="Moment image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                        </a>
                       </div>
                     ))}
                   </div>
@@ -109,4 +112,28 @@ async function renderContent(content: string) {
     </div>
 
   </div>
+
+  <script>
+    import { Fancybox } from "@fancyapps/ui";
+    
+    document.addEventListener("astro:page-load", () => {
+      Fancybox.bind("[data-fancybox]", {
+        Toolbar: {
+          display: {
+            left: ["infobar"],
+            middle: [
+              "zoomIn",
+              "zoomOut",
+              "toggle1to1",
+              "rotateCCW",
+              "rotateCW",
+              "flipX",
+              "flipY",
+            ],
+            right: ["slideshow", "thumbs", "close"],
+          },
+        },
+      });
+    });
+  </script>
 </BaseLayout>

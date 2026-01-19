@@ -139,6 +139,14 @@ const themes = [
             <span class="text-sm">Primary Color</span>
             <input type="color" id="custom-primary-picker" class="w-6 h-6 rounded cursor-pointer border-none bg-transparent" />
           </div>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-sm">Background Color</span>
+            <input type="color" id="custom-bg-picker" class="w-6 h-6 rounded cursor-pointer border-none bg-transparent" />
+          </div>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-sm">Text Color</span>
+            <input type="color" id="custom-text-picker" class="w-6 h-6 rounded cursor-pointer border-none bg-transparent" />
+          </div>
           <button id="reset-custom-theme" class="btn btn-xs btn-outline w-full mt-2">Reset to Preset</button>
         </div>
       </details>
@@ -175,10 +183,9 @@ const themes = [
             <span id="network-isp" class="text-xs font-mono truncate max-w-[140px]" title="ISP">...</span>
           </div>
           <div class="flex justify-between items-center px-1">
-            <div class="tooltip tooltip-bottom z-[200]" data-tip="Public IP: No Nat | Full Cone: Open | Restricted Cone: Standard | Symmetric: Strict">
-                <span class="text-xs opacity-70 flex items-center gap-1 border-b border-dotted border-base-content/30 cursor-help">NAT</span>
-            </div>
-            <span id="network-nat" class="text-xs font-mono" title="Public IP: No Nat&#10;Full Cone: Open&#10;Restricted Cone: Standard&#10;Symmetric: Strict">...</span>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-xs opacity-70">NAT</span>
+            <span id="network-nat" class="text-xs font-mono">...</span>
           </div>
           <button id="refresh-network-status" class="btn btn-xs btn-outline w-full mt-2">Refresh</button>
         </div>
@@ -384,14 +391,15 @@ const themes = [
     // Actually, we can use a simpler sRGB to Linear to OKLCH flow.
     
     function hexToRgb(hex) {
-       const bigint = parseInt(hex.slice(1), 16);
-       const r = (bigint >> 16) & 255;
-       const g = (bigint >> 8) & 255;
-       const b = bigint & 255;
-       return [r / 255, g / 255, b / 255];
+        const bigint = parseInt(hex.slice(1), 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return [r, g, b];
     }
 
     function srgbTransfer(v) {
+        v /= 255;
         return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
     }
     
@@ -416,43 +424,89 @@ const themes = [
         let H = Math.atan2(b_, a) * 180 / Math.PI;
         if (H < 0) H += 360;
         
-        // Return format for CSS [L C H]
-        // Truncate decimals to save space
         return `${L.toFixed(3)} ${C.toFixed(3)} ${H.toFixed(3)}`;
     }
 
-    function updateCustomColor(hex) {
+    function updateCustomTheme(type, hex) {
         const [r, g, b] = hexToRgb(hex);
         const oklch = rgbToOklch(r, g, b);
-        document.documentElement.style.setProperty('--p', oklch);
-        document.documentElement.style.setProperty('--s', oklch); // Set secondary too?
-        document.documentElement.style.setProperty('--a', oklch); // Set accent too?
-        // Usually Primary is enough.
-        localStorage.setItem('custom-primary-hex', hex);
+
+        if (type === 'primary') {
+            document.documentElement.style.setProperty('--p', oklch);
+            document.documentElement.style.setProperty('--s', oklch); 
+            document.documentElement.style.setProperty('--a', oklch);
+            localStorage.setItem('custom-primary-hex', hex);
+
+            const pPicker = document.getElementById('custom-primary-picker');
+            const mPicker = document.getElementById('mobile-custom-primary-picker');
+            if (pPicker) pPicker.value = hex;
+            if (mPicker) mPicker.value = hex;
+        } else if (type === 'bg') {
+            document.documentElement.style.setProperty('--b1', oklch);
+            document.documentElement.style.setProperty('--b2', oklch);
+            document.documentElement.style.setProperty('--b3', oklch);
+            document.documentElement.style.setProperty('--n', oklch);
+            document.documentElement.style.setProperty('--neu-base', oklch); 
+            document.documentElement.style.setProperty('--neu-btn-bg', oklch);
+            localStorage.setItem('custom-bg-hex', hex);
+
+            const bPicker = document.getElementById('custom-bg-picker');
+            const mPicker = document.getElementById('mobile-custom-bg-picker');
+            if (bPicker) bPicker.value = hex;
+            if (mPicker) mPicker.value = hex;
+        } else if (type === 'text') {
+            document.documentElement.style.setProperty('--bc', oklch);
+            document.documentElement.style.setProperty('--nc', oklch);
+            document.documentElement.style.setProperty('--neu-text', oklch);
+            document.documentElement.style.setProperty('--neu-btn-text', oklch);
+            localStorage.setItem('custom-text-hex', hex);
+
+            const tPicker = document.getElementById('custom-text-picker');
+            const mPicker = document.getElementById('mobile-custom-text-picker');
+            if (tPicker) tPicker.value = hex;
+            if (mPicker) mPicker.value = hex;
+        }
     }
 
-    // Initialize Custom Color
-    const storedCustomHex = localStorage.getItem('custom-primary-hex');
-    const colorPicker = document.getElementById('custom-primary-picker');
-    if (storedCustomHex && colorPicker) {
-        colorPicker.value = storedCustomHex;
-        updateCustomColor(storedCustomHex);
-    }
+    // Initialize Custom Colors
+    const savedPrimary = localStorage.getItem('custom-primary-hex');
+    if (savedPrimary) updateCustomTheme('primary', savedPrimary);
 
-    if (colorPicker) {
-        colorPicker.addEventListener('input', (e) => {
-            updateCustomColor(e.target.value);
-        });
+    const savedBg = localStorage.getItem('custom-bg-hex');
+    if (savedBg) updateCustomTheme('bg', savedBg);
+
+    const savedText = localStorage.getItem('custom-text-hex');
+    if (savedText) updateCustomTheme('text', savedText);
+
+    // Listeners
+    const primaryPicker = document.getElementById('custom-primary-picker');
+    if (primaryPicker) {
+        primaryPicker.addEventListener('input', (e) => updateCustomTheme('primary', e.target.value));
+    }
+    const bgPicker = document.getElementById('custom-bg-picker');
+    if (bgPicker) {
+        bgPicker.addEventListener('input', (e) => updateCustomTheme('bg', e.target.value));
+    }
+    const textPicker = document.getElementById('custom-text-picker');
+    if (textPicker) {
+        textPicker.addEventListener('input', (e) => updateCustomTheme('text', e.target.value));
     }
     
     // Reset Logic
     const resetButton = document.getElementById('reset-custom-theme');
     if (resetButton) {
         resetButton.addEventListener('click', () => {
-            document.documentElement.style.removeProperty('--p');
-            document.documentElement.style.removeProperty('--s');
-            document.documentElement.style.removeProperty('--a');
+            ['--p', '--s', '--a', '--b1', '--b2', '--b3', '--n', '--bc', '--nc', '--neu-base', '--neu-text', '--neu-btn-bg', '--neu-btn-text'].forEach(prop => {
+                document.documentElement.style.removeProperty(prop);
+            });
+            
             localStorage.removeItem('custom-primary-hex');
+            localStorage.removeItem('custom-bg-hex');
+            localStorage.removeItem('custom-text-hex');
+            
+             if (primaryPicker) primaryPicker.value = '#000000';
+             if (bgPicker) bgPicker.value = '#000000';
+             if (textPicker) textPicker.value = '#000000';
         });
     }
 

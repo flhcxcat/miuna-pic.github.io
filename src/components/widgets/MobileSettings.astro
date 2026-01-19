@@ -130,7 +130,7 @@ const themes = [
       <details>
         <summary class="font-medium flex justify-between items-center p-2 hover:bg-base-300 rounded-lg w-full">
           <div class="flex items-center gap-2">
-            <Icon name="material-symbols:format-paint" class="w-6 h-6" />
+            <Icon name="material-symbols:format-paint" class="w-5 h-5" />
             Custom Theme
           </div>
         </summary>
@@ -142,21 +142,34 @@ const themes = [
             </label>
           </li>
           <li>
-            <button id="mobile-reset-custom-theme" class="btn btn-sm btn-outline btn-error w-full">Reset to Preset</button>
+            <label class="flex justify-between items-center p-2 bg-base-100 rounded-lg">
+              <span class="font-medium">Background Color</span>
+              <input type="color" id="mobile-custom-bg-picker" class="w-8 h-8 rounded cursor-pointer border-none bg-transparent" />
+            </label>
+          </li>
+          <li>
+            <label class="flex justify-between items-center p-2 bg-base-100 rounded-lg">
+              <span class="font-medium">Text Color</span>
+              <input type="color" id="mobile-custom-text-picker" class="w-8 h-8 rounded cursor-pointer border-none bg-transparent" />
+            </label>
+          </li>
+          <li>
+            <button id="mobile-reset-custom-theme" class="btn btn-sm btn-outline btn-error w-full mt-2">Reset to Preset</button>
           </li>
         </ul>
       </details>
     </li>
 
     <!-- Network Status -->
-    <div class="collapse collapse-arrow bg-base-200">
-      <input type="checkbox" /> 
-      <div class="collapse-title flex items-center gap-3 font-medium">
-        <Icon name="material-symbols:wifi" class="w-6 h-6" />
-        Network Status
-      </div>
-      <div class="collapse-content">
-        <div class="flex flex-col gap-1 pt-2 pb-2">
+    <li>
+      <details>
+        <summary class="font-medium flex justify-between items-center p-2 hover:bg-base-300 rounded-lg w-full">
+          <div class="flex items-center gap-2">
+            <Icon name="material-symbols:wifi" class="w-5 h-5" />
+            Network Status
+          </div>
+        </summary>
+        <div class="p-2 bg-base-100 rounded-box flex flex-col gap-1 cursor-default">
           <div class="flex justify-between items-center px-1">
             <span class="text-xs opacity-70">Ping</span>
             <span id="mobile-network-ping" class="text-xs font-bold font-mono">-- ms</span>
@@ -178,25 +191,25 @@ const themes = [
             <span id="mobile-network-isp" class="text-xs font-mono truncate max-w-[150px]">...</span>
           </div>
           <div class="flex justify-between items-center px-1">
-            <div class="tooltip tooltip-bottom z-[200]" data-tip="No Nat: Public IP | Full Cone: Open | Restricted Cone: Standard | Symmetric: Strict">
-                <span class="text-xs opacity-70 flex items-center gap-1 border-b border-dotted border-base-content/30 cursor-help">NAT</span>
-            </div>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-xs opacity-70">NAT</span>
             <span id="mobile-network-nat" class="text-xs font-mono">...</span>
           </div>
           <button id="mobile-refresh-network-status" class="btn btn-sm btn-outline w-full mt-2">Refresh</button>
         </div>
-      </div>
-    </div>
+      </details>
+    </li>
 
     <!-- Base64 Tool -->
-    <div class="collapse collapse-arrow bg-base-200">
-      <input type="checkbox" /> 
-      <div class="collapse-title flex items-center gap-3 font-medium">
-        <Icon name="material-symbols:code" class="w-6 h-6" />
-        Base64 Tool
-      </div>
-      <div class="collapse-content">
-        <div class="flex flex-col gap-2 pt-2 pb-2">
+    <li>
+      <details>
+        <summary class="font-medium flex justify-between items-center p-2 hover:bg-base-300 rounded-lg w-full">
+          <div class="flex items-center gap-2">
+            <Icon name="material-symbols:code" class="w-5 h-5" />
+            Base64 Tool
+          </div>
+        </summary>
+        <div class="p-2 bg-base-100 rounded-box flex flex-col gap-2">
            <textarea id="mobile-b64-input" class="textarea textarea-bordered textarea-sm w-full h-20 resize-none" placeholder="Input..."></textarea>
            <div class="grid grid-cols-2 gap-2">
              <button id="mobile-b64-encode-btn" class="btn btn-sm btn-primary">Encode</button>
@@ -209,8 +222,8 @@ const themes = [
              </button>
            </div>
         </div>
-      </div>
-    </div>
+      </details>
+    </li>
   </ul>
 </div>
 
@@ -386,7 +399,16 @@ const themes = [
        return [r / 255, g / 255, b / 255];
     }
 
+    function hexToRgb(hex) {
+        const bigint = parseInt(hex.slice(1), 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return [r, g, b];
+    }
+
     function srgbTransfer(v) {
+        v /= 255;
         return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
     }
     
@@ -414,50 +436,99 @@ const themes = [
         return `${L.toFixed(3)} ${C.toFixed(3)} ${H.toFixed(3)}`;
     }
 
-    function updateCustomColor(hex) {
+    function updateCustomTheme(type, hex) {
         const [r, g, b] = hexToRgb(hex);
         const oklch = rgbToOklch(r, g, b);
-        document.documentElement.style.setProperty('--p', oklch);
-        document.documentElement.style.setProperty('--s', oklch); 
-        document.documentElement.style.setProperty('--a', oklch);
-        localStorage.setItem('custom-primary-hex', hex);
-        
-        // Update both pickers if they exist
-        const desktopPicker = document.getElementById('custom-primary-picker');
-        const mobilePicker = document.getElementById('mobile-custom-primary-picker');
-        if (desktopPicker) desktopPicker.value = hex;
-        if (mobilePicker) mobilePicker.value = hex;
-    }
 
-    // Initialize Custom Color (Mobile)
-    const storedCustomHex = localStorage.getItem('custom-primary-hex');
-    const mobilePicker = document.getElementById('mobile-custom-primary-picker');
-    if (storedCustomHex && mobilePicker) {
-        mobilePicker.value = storedCustomHex;
-        // Don't need to call updateCustomColor here if Desktop script already ran, 
-        // but it's safe to run again to ensure consistent state.
-        updateCustomColor(storedCustomHex);
-    }
+        if (type === 'primary') {
+            document.documentElement.style.setProperty('--p', oklch);
+            document.documentElement.style.setProperty('--s', oklch); 
+            document.documentElement.style.setProperty('--a', oklch);
+            localStorage.setItem('custom-primary-hex', hex);
 
-    if (mobilePicker) {
-        mobilePicker.addEventListener('input', (e) => {
-            updateCustomColor(e.target.value);
-        });
+            const pPicker = document.getElementById('custom-primary-picker');
+            const mPicker = document.getElementById('mobile-custom-primary-picker');
+            if (pPicker) pPicker.value = hex;
+            if (mPicker) mPicker.value = hex;
+        } else if (type === 'bg') {
+            document.documentElement.style.setProperty('--b1', oklch);
+            document.documentElement.style.setProperty('--b2', oklch);
+            document.documentElement.style.setProperty('--b3', oklch);
+            document.documentElement.style.setProperty('--n', oklch);
+            document.documentElement.style.setProperty('--neu-base', oklch); 
+            document.documentElement.style.setProperty('--neu-btn-bg', oklch);
+            localStorage.setItem('custom-bg-hex', hex);
+
+            const bPicker = document.getElementById('custom-bg-picker');
+            const mPicker = document.getElementById('mobile-custom-bg-picker');
+            if (bPicker) bPicker.value = hex;
+            if (mPicker) mPicker.value = hex;
+        } else if (type === 'text') {
+            document.documentElement.style.setProperty('--bc', oklch);
+            document.documentElement.style.setProperty('--nc', oklch);
+            document.documentElement.style.setProperty('--neu-text', oklch);
+            document.documentElement.style.setProperty('--neu-btn-text', oklch);
+            localStorage.setItem('custom-text-hex', hex);
+
+            const tPicker = document.getElementById('custom-text-picker');
+            const mPicker = document.getElementById('mobile-custom-text-picker');
+            if (tPicker) tPicker.value = hex;
+            if (mPicker) mPicker.value = hex;
+        }
     }
     
+    // Initialize Custom Colors (Mobile)
+    const storedCustomHex = localStorage.getItem('custom-primary-hex');
+    if (storedCustomHex) updateCustomTheme('primary', storedCustomHex);
+
+    const storedBgHex = localStorage.getItem('custom-bg-hex');
+    if (storedBgHex) updateCustomTheme('bg', storedBgHex);
+
+    const storedTextHex = localStorage.getItem('custom-text-hex');
+    if (storedTextHex) updateCustomTheme('text', storedTextHex);
+
+    // Listeners (Mobile)
+    const mobilePrimaryPicker = document.getElementById('mobile-custom-primary-picker');
+    if (mobilePrimaryPicker) {
+        mobilePrimaryPicker.addEventListener('input', (e) => updateCustomTheme('primary', e.target.value));
+        // Init value if exists
+        if (storedCustomHex) mobilePrimaryPicker.value = storedCustomHex;
+    }
+    
+    const mobileBgPicker = document.getElementById('mobile-custom-bg-picker');
+    if (mobileBgPicker) {
+        mobileBgPicker.addEventListener('input', (e) => updateCustomTheme('bg', e.target.value));
+        if (storedBgHex) mobileBgPicker.value = storedBgHex;
+    }
+
+    const mobileTextPicker = document.getElementById('mobile-custom-text-picker');
+    if (mobileTextPicker) {
+        mobileTextPicker.addEventListener('input', (e) => updateCustomTheme('text', e.target.value));
+        if (storedTextHex) mobileTextPicker.value = storedTextHex;
+    }
+
     // Reset Logic (Mobile)
     const mobileResetButton = document.getElementById('mobile-reset-custom-theme');
     if (mobileResetButton) {
         mobileResetButton.addEventListener('click', () => {
-            document.documentElement.style.removeProperty('--p');
-            document.documentElement.style.removeProperty('--s');
-            document.documentElement.style.removeProperty('--a');
+             ['--p', '--s', '--a', '--b1', '--b2', '--b3', '--n', '--bc', '--nc', '--neu-base', '--neu-text', '--neu-btn-bg', '--neu-btn-text'].forEach(prop => {
+                document.documentElement.style.removeProperty(prop);
+            });
             localStorage.removeItem('custom-primary-hex');
+            localStorage.removeItem('custom-bg-hex');
+            localStorage.removeItem('custom-text-hex');
             
-            // Sync UI
-             const desktopPicker = document.getElementById('custom-primary-picker');
-            if (desktopPicker) desktopPicker.value = '#000000'; // formatting issues
-            if (mobilePicker) mobilePicker.value = '#000000';
+             if (mobilePrimaryPicker) mobilePrimaryPicker.value = '#000000';
+             if (mobileBgPicker) mobileBgPicker.value = '#000000';
+             if (mobileTextPicker) mobileTextPicker.value = '#000000';
+             
+             // Sync Desktop inputs as well (if needed, but usually independent view)
+             const desktopP = document.getElementById('custom-primary-picker');
+             if (desktopP) desktopP.value = '#000000';
+             const desktopB = document.getElementById('custom-bg-picker');
+             if (desktopB) desktopB.value = '#000000';
+             const desktopT = document.getElementById('custom-text-picker');
+             if (desktopT) desktopT.value = '#000000';
         });
     }
 
