@@ -156,16 +156,34 @@ const themes = [
         Network Status
       </div>
       <div class="collapse-content">
-        <div class="flex flex-col gap-2 pt-2 pb-2">
+        <div class="flex flex-col gap-1 pt-2 pb-2">
           <div class="flex justify-between items-center px-1">
-            <span class="text-sm">Ping</span>
+            <span class="text-xs opacity-70">Ping</span>
             <span id="mobile-network-ping" class="text-xs font-bold font-mono">-- ms</span>
           </div>
           <div class="flex justify-between items-center px-1">
-            <span class="text-sm">IP</span>
+            <span class="text-xs opacity-70">IP</span>
             <span id="mobile-network-ip" class="text-xs font-mono truncate max-w-[150px]">...</span>
           </div>
-          <button id="mobile-refresh-network-status" class="btn btn-sm btn-outline w-full mt-1">Refresh</button>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-xs opacity-70">Loc</span>
+            <span id="mobile-network-country" class="text-xs font-mono truncate max-w-[150px]">...</span>
+          </div>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-xs opacity-70">ASN</span>
+            <span id="mobile-network-asn" class="text-xs font-mono truncate max-w-[150px]">...</span>
+          </div>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-xs opacity-70">ISP</span>
+            <span id="mobile-network-isp" class="text-xs font-mono truncate max-w-[150px]">...</span>
+          </div>
+          <div class="flex justify-between items-center px-1">
+            <div class="tooltip tooltip-bottom z-[200]" data-tip="No Nat: Public IP | Full Cone: Open | Restricted Cone: Standard | Symmetric: Strict">
+                <span class="text-xs opacity-70 flex items-center gap-1 border-b border-dotted border-base-content/30 cursor-help">NAT</span>
+            </div>
+            <span id="mobile-network-nat" class="text-xs font-mono">...</span>
+          </div>
+          <button id="mobile-refresh-network-status" class="btn btn-sm btn-outline w-full mt-2">Refresh</button>
         </div>
       </div>
     </div>
@@ -250,11 +268,21 @@ const themes = [
     const checkMobileNetworkStatus = async () => {
         const pingEl = document.getElementById('mobile-network-ping');
         const ipEl = document.getElementById('mobile-network-ip');
+        const countryEl = document.getElementById('mobile-network-country');
+        const asnEl = document.getElementById('mobile-network-asn');
+        const ispEl = document.getElementById('mobile-network-isp');
+        const natEl = document.getElementById('mobile-network-nat');
+
         if (!pingEl || !ipEl) return;
 
-        pingEl.textContent = 'Testing...';
-        pingEl.className = 'text-xs font-bold font-mono'; // Reset color
-        ipEl.textContent = 'Loading...';
+        // Reset
+        pingEl.textContent = '...';
+        pingEl.className = 'text-xs font-bold font-mono';
+        ipEl.textContent = '...';
+        if (countryEl) countryEl.textContent = '...';
+        if (asnEl) asnEl.textContent = '...';
+        if (ispEl) ispEl.textContent = '...';
+        if (natEl) natEl.textContent = '...';
 
         // Check Ping
         const start = performance.now();
@@ -262,27 +290,83 @@ const themes = [
             await fetch(window.location.href, { method: 'HEAD', cache: 'no-store' });
             const duration = Math.round(performance.now() - start);
             pingEl.textContent = `${duration} ms`;
-            
-            // Color Logic
-            if (duration < 200) {
-                pingEl.classList.add('text-success');
-            } else if (duration < 500) {
-                pingEl.classList.add('text-warning');
-            } else {
-                pingEl.classList.add('text-error');
-            }
+            if (duration < 200) pingEl.classList.add('text-success');
+            else if (duration < 500) pingEl.classList.add('text-warning');
+            else pingEl.classList.add('text-error');
         } catch (e) {
-            pingEl.textContent = 'Error';
+            pingEl.textContent = 'Err';
             pingEl.classList.add('text-error');
         }
 
-        // Check IP
+        // Check Info (IP, Loc, ASN, ISP)
         try {
-            const res = await fetch('https://api.ipify.org?format=json');
+            const res = await fetch('https://api.ip.sb/geoip', { referrerPolicy: 'no-referrer' });
             const data = await res.json();
             ipEl.textContent = data.ip;
+            if (countryEl) countryEl.textContent = `${data.country_code}`;
+            if (asnEl) asnEl.textContent = `AS${data.asn}`;
+            if (ispEl) ispEl.textContent = data.isp.length > 15 ? data.isp.substring(0, 15) + '...' : data.isp;
         } catch (e) {
-            ipEl.textContent = 'Unknown';
+             // Fallback to Cloudflare Trace (IP only)
+            try {
+                const res = await fetch('https://www.cloudflare.com/cdn-cgi/trace');
+                const text = await res.text();
+                const ip = text.match(/ip=(.+)/)?.[1] || 'Unknown';
+                ipEl.textContent = ip;
+                if (countryEl) countryEl.textContent = text.match(/loc=(.+)/)?.[1] || '?';
+                if (asnEl) asnEl.textContent = '-';
+                if (ispEl) ispEl.textContent = '-';
+            } catch (ex) {
+                ipEl.textContent = 'Error';
+            }
+        }
+
+        // Check NAT Type (WebRTC)
+        if (natEl) {
+            natEl.textContent = '检测中...';
+            natEl.className = 'text-xs font-mono';
+            
+            const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.chat.bilibili.com:3478' }] });
+            let candidatesCount = 0;
+            const publicIpRef = ipEl.textContent; 
+
+            pc.onicecandidate = (e) => {
+                if (e.candidate) {
+                    candidatesCount++;
+                    const c = e.candidate;
+                    
+                    // Check NAT0 (Public IP) - if valid public IP matches local host candidate
+                    if (c.type === 'host' && c.address === publicIpRef && publicIpRef !== 'Switching to fallback...' && publicIpRef !== 'Unknown') {
+                         natEl.textContent = 'NAT0 (公网IP)';
+                         natEl.classList.add('text-success');
+                         pc.close();
+                         return;
+                    }
+                    
+                    if (c.type === 'srflx') {
+                         // Found a reflex candidate -> Behind NAT
+                         natEl.textContent = 'NAT1-3 (非公网)';
+                         natEl.classList.remove('text-success');
+                    }
+                } else {
+                    if (candidatesCount === 0) {
+                         natEl.textContent = 'NAT4 (连接受限)';
+                         natEl.classList.add('text-error');
+                    } else if (natEl.textContent === '检测中...') {
+                         // Fallback if we got candidates (e.g. host) but no srflx and no match
+                         natEl.textContent = 'NAT4 (连接受限)'; 
+                    }
+                    pc.close();
+                }
+            };
+            
+            try {
+                pc.createDataChannel("");
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+            } catch (e) {
+                natEl.textContent = '检测失败';
+            }
         }
     };
 
