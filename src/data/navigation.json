@@ -11,7 +11,8 @@
                 "category": "BBS",
                 "id": "NodeSeek",
                 "badge": "MJJ",
-                "badgeColor": "success"
+                "badgeColor": "",
+                "badgeIcon": "lucide:externalLink"
             },
             {
                 "name": "LinuxDo",
@@ -21,7 +22,71 @@
                 "category": "BBS",
                 "id": "LinuxDo",
                 "badge": "佬友",
-                "badgeColor": "success"
+                "badgeColor": "",
+                "badgeIcon": "lucide:externalLink"
+            },
+            {
+                "name": "天使动漫",
+                "avatar": "https://pic.000.moe/pic/696d8f34a452e.png",
+                "description": "梦开始的地方一个能轻松聊天结识同好的温馨小论坛Angel Beats|TSDM字幕组|天使动漫网",
+                "url": "https://www.tsdm39.com",
+                "category": "BBS",
+                "id": "TSDM",
+                "badge": "萌战",
+                "badgeColor": "",
+                "badgeIcon": "lucide:externalLink"
+            },
+            {
+                "name": "南+ South Plus",
+                "avatar": "https://pic.000.moe/pic/696d9167ca85e.png",
+                "description": "南+ South Plus，同人志、音声分享平台",
+                "url": "https://www.south-plus.net",
+                "category": "BBS",
+                "id": "SouthPlus",
+                "badge": "南+",
+                "badgeColor": "",
+                "badgeIcon": "lucide:externalLink"
+            },
+            {
+                "name": "NGA",
+                "avatar": "https://pic.000.moe/pic/696d929bea652.jpg",
+                "description": "NGA是国内最专业的魔兽世界，英雄联盟，炉石传说，风暴英雄，暗黑破坏神3(D3)游戏攻略讨论，以及其他热门游戏玩家社区。",
+                "url": "https://ngabbs.com",
+                "category": "BBS",
+                "id": "NGA",
+                "badge": "二次元国家地理",
+                "badgeColor": "",
+                "badgeIcon": "lucide:externalLink"
+            },
+            {
+                "name": "奶昔论坛",
+                "avatar": "https://pic.000.moe/pic/696d92f8d79db.ico",
+                "description": "奶昔论坛，Eism、美卡交流平台",
+                "url": "https://forum.naixi.net",
+                "category": "BBS",
+                "id": "806b2bee-0e6d-4755-94c5-020b0dd7f342",
+                "badgeIcon": "lucide:externalLink",
+                "badge": "奶友"
+            },
+            {
+                "name": "Kadys",
+                "avatar": "https://pic.000.moe/pic/696d95601fa41.webp",
+                "description": "ACG交流站点，绿茶汉化组等多位汉化组入驻",
+                "url": "https://bbs2.kdays.net",
+                "category": "BBS",
+                "id": "Kadys",
+                "badgeIcon": "lucide:externalLink",
+                "badge": "Kadys"
+            },
+            {
+                "name": "Project1",
+                "avatar": "https://pic.000.moe/pic/696d95a368fd1.ico",
+                "description": "Project1论坛，这里主要有RMXP、RMVX、AGM、RMVX ACE的制作交流区，游戏素材分享区和原创游戏发布区",
+                "url": "https://rpg.blue",
+                "category": "BBS",
+                "id": "Project1",
+                "badge": "Project1",
+                "badgeIcon": "lucide:externalLink"
             }
         ]
     }
