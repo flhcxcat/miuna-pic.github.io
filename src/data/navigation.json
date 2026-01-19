@@ -12,7 +12,7 @@
                 "id": "NodeSeek",
                 "badge": "MJJ",
                 "badgeColor": "",
-                "badgeIcon": "lucide:externalLink"
+                "badgeIcon": "lucide:at-sign"
             },
             {
                 "name": "LinuxDo",
@@ -23,7 +23,7 @@
                 "id": "LinuxDo",
                 "badge": "佬友",
                 "badgeColor": "",
-                "badgeIcon": "lucide:externalLink"
+                "badgeIcon": "lucide:at-sign"
             },
             {
                 "name": "天使动漫",
@@ -34,7 +34,7 @@
                 "id": "TSDM",
                 "badge": "萌战",
                 "badgeColor": "",
-                "badgeIcon": "lucide:externalLink"
+                "badgeIcon": "lucide:at-sign"
             },
             {
                 "name": "南+ South Plus",
@@ -45,7 +45,7 @@
                 "id": "SouthPlus",
                 "badge": "南+",
                 "badgeColor": "",
-                "badgeIcon": "lucide:externalLink"
+                "badgeIcon": "lucide:at-sign"
             },
             {
                 "name": "NGA",
@@ -56,7 +56,7 @@
                 "id": "NGA",
                 "badge": "二次元国家地理",
                 "badgeColor": "",
-                "badgeIcon": "lucide:externalLink"
+                "badgeIcon": "lucide:at-sign"
             },
             {
                 "name": "奶昔论坛",
@@ -65,7 +65,7 @@
                 "url": "https://forum.naixi.net",
                 "category": "BBS",
                 "id": "806b2bee-0e6d-4755-94c5-020b0dd7f342",
-                "badgeIcon": "lucide:externalLink",
+                "badgeIcon": "lucide:at-sign",
                 "badge": "奶友"
             },
             {
@@ -75,7 +75,7 @@
                 "url": "https://bbs2.kdays.net",
                 "category": "BBS",
                 "id": "Kadys",
-                "badgeIcon": "lucide:externalLink",
+                "badgeIcon": "lucide:at-sign",
                 "badge": "Kadys"
             },
             {
@@ -86,7 +86,7 @@
                 "category": "BBS",
                 "id": "Project1",
                 "badge": "Project1",
-                "badgeIcon": "lucide:externalLink"
+                "badgeIcon": "lucide:at-sign"
             }
         ]
     }
