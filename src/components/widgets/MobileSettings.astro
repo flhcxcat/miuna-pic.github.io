@@ -90,8 +90,9 @@ const themes = [
     </li>
 
     <!-- Config Button -->
+    <!-- Config Button -->
     <li>
-      <a href="/config" class="flex justify-between items-center p-2 hover:bg-base-300 rounded-lg w-full">
+      <a href="/config" class="flex justify-between items-center p-2 hover:bg-base-300 rounded-lg w-full text-base-content">
         <div class="flex items-center gap-2">
           <Icon name="material-symbols:settings-outline" class="w-5 h-5" />
           <span class="font-medium">Config</span>
@@ -245,6 +246,22 @@ const themes = [
            </select>
            <button id="mobile-animetrace-btn" class="btn btn-sm btn-primary w-full">Search</button>
            <div id="mobile-animetrace-result" class="text-xs font-mono bg-base-200 p-2 rounded max-h-40 overflow-y-auto hidden whitespace-pre-wrap"></div>
+        </div>
+      </details>
+    </li>
+    <!-- Chaos Mode -->
+    <li>
+      <details>
+        <summary class="font-bold flex justify-between items-center p-2 hover:bg-base-300 rounded-lg w-full">
+           <div class="flex items-center gap-2">
+             <Icon name="material-symbols:warning-outline" class="w-5 h-5" />
+             Don't click on it!
+           </div>
+        </summary>
+        <div class="p-2 bg-base-100 rounded-box" onclick="event.stopPropagation()">
+           <button id="mobile-chaos-btn" class="btn btn-sm btn-error w-full font-bold text-white animate-pulse">
+             DO NOT PRESS
+           </button>
         </div>
       </details>
     </li>
@@ -676,14 +693,7 @@ const themes = [
         localStorage.removeItem('custom-primary-hex');
         
         updateMobileThemeIcons(theme);
-        updateActiveThemeButton();
-      });
-    });
-
-    // Observer for external changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes') {
+            document.documentElement.style.setProperty('--s', oklchVal);
           if (mutation.attributeName === 'data-theme') {
              updateActiveThemeButton();
              const currentTheme = document.documentElement.getAttribute("data-theme");
@@ -765,6 +775,95 @@ const themes = [
                 mTraceBtn.textContent = 'Search';
             }
         });
+    }
+
+    // Chaos Mode Logic
+    const mChaosBtn = document.getElementById('mobile-chaos-btn');
+    let isMobileChaosRunning = false;
+    
+    if (mChaosBtn) {
+        mChaosBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (isMobileChaosRunning) {
+                location.reload();
+                return;
+            }
+            if (confirm("⚠️ FINAL WARNING ⚠️\nThis is a dangerous action.\nDo you really want to proceed?")) {
+                startMobileChaos(mChaosBtn);
+            }
+        });
+    }
+
+    function startMobileChaos(btn) {
+        isMobileChaosRunning = true;
+        btn.textContent = "Stop";
+        
+        // Inject Chaos Styles
+        if (!document.getElementById('mobile-chaos-style')) {
+            const style = document.createElement('style');
+            style.id = 'mobile-chaos-style';
+            style.innerHTML = `
+                :root {
+                    --chaos-color: oklch(0.7 0.3 0);
+                }
+                /* Force Input/Search/Placeholder colors */
+                input, textarea, select, ::placeholder, .input, .textarea {
+                    color: var(--chaos-color) !important;
+                    border-color: var(--chaos-color) !important;
+                }
+                ::placeholder {
+                    color: var(--chaos-color) !important;
+                    opacity: 0.7 !important;
+                }
+                /* Force Archives/Categories/Tags text */
+                .text-gray-500, .text-gray-400, .text-base-content, .text-primary, .text-secondary, a {
+                    color: var(--chaos-color) !important;
+                }
+                /* Force Borders */
+                .border-secondary, .border-base-content, .border-primary {
+                    border-color: var(--chaos-color) !important;
+                }
+                /* Force Icons (SVGs) */
+                svg, [data-icon] {
+                     color: var(--chaos-color) !important;
+                }
+                /* Force Sidebar Header Bars (Pseudo-elements) */
+                .card-base .font-bold::before {
+                    background-color: var(--chaos-color) !important;
+                }
+                /* Force Banner Title & Subtitle */
+                .title, .subtitle {
+                     color: var(--chaos-color) !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        let hue = 0;
+        let rotation = 0;
+        
+        setInterval(() => {
+            hue = (hue + 5) % 360;
+            const oklchVal = `0.7 0.3 ${hue}`;
+            const colorFunc = `oklch(${oklchVal})`;
+            
+            document.documentElement.style.setProperty('--chaos-color', colorFunc);
+
+            document.documentElement.style.setProperty('--p', oklchVal);
+            document.documentElement.style.setProperty('--s', oklchVal);
+            document.documentElement.style.setProperty('--bc', oklchVal);
+            document.documentElement.style.setProperty('--nc', oklchVal);
+            document.body.style.color = colorFunc;
+        }, 100);
+
+        const animateRotation = () => {
+             rotation += 0.5; 
+             document.body.style.transform = `rotate(${rotation}deg)`;
+             if (isMobileChaosRunning) requestAnimationFrame(animateRotation);
+        };
+        requestAnimationFrame(animateRotation);
     }
 
     observer.observe(document.documentElement, {

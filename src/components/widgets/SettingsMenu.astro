@@ -90,8 +90,9 @@ const themes = [
     </li>
 
     <!-- Config Button -->
+    <!-- Config Button -->
     <li>
-      <a href="/config" class="flex justify-between items-center p-2 hover:bg-base-200 rounded-lg w-full">
+      <a href="/config" class="flex justify-between items-center p-2 hover:bg-base-200 rounded-lg w-full text-base-content">
         <div class="flex items-center gap-2">
           <Icon name="material-symbols:settings-outline" class="w-5 h-5" />
           <span class="font-medium">Config</span>
@@ -237,6 +238,22 @@ const themes = [
           </select>
           <button id="animetrace-btn" class="btn btn-xs btn-primary w-full">Search</button>
           <div id="animetrace-result" class="text-xs font-mono bg-base-200 p-2 rounded max-h-40 overflow-y-auto hidden whitespace-pre-wrap"></div>
+        </div>
+      </details>
+    </li>
+    <!-- Chaos Mode -->
+    <li>
+      <details>
+        <summary class="font-bold flex justify-between items-center p-2 hover:bg-base-200 rounded-lg w-full">
+          <div class="flex items-center gap-2">
+             <Icon name="material-symbols:warning-outline" class="w-5 h-5" />
+             Don't click on it!
+          </div>
+        </summary>
+        <div class="p-2 bg-base-100 rounded-box" onclick="event.stopPropagation()">
+          <button id="chaos-btn" class="btn btn-sm btn-error w-full font-bold text-white animate-pulse">
+             DO NOT PRESS
+          </button>
         </div>
       </details>
     </li>
@@ -721,6 +738,100 @@ const themes = [
                 traceBtn.textContent = 'Search';
             }
         });
+    }
+
+    // Chaos Mode Logic
+    // Chaos Mode Logic
+    const chaosBtn = document.getElementById('chaos-btn');
+    let isChaosRunning = false;
+
+    if (chaosBtn) {
+        chaosBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (isChaosRunning) {
+                location.reload();
+                return;
+            }
+
+            if (confirm("⚠️ FINAL WARNING ⚠️\nThis is a dangerous action.\nDo you really want to proceed?")) {
+                startChaos(chaosBtn);
+            }
+        });
+    }
+
+    function startChaos(btn) {
+        isChaosRunning = true;
+        btn.textContent = "Stop";
+        
+        // Inject Chaos Styles
+        if (!document.getElementById('chaos-style')) {
+            const style = document.createElement('style');
+            style.id = 'chaos-style';
+            style.innerHTML = `
+                :root {
+                    --chaos-color: oklch(0.7 0.3 0);
+                }
+                /* Force Input/Search/Placeholder colors */
+                input, textarea, select, ::placeholder, .input, .textarea {
+                    color: var(--chaos-color) !important;
+                    border-color: var(--chaos-color) !important;
+                }
+                ::placeholder {
+                    color: var(--chaos-color) !important;
+                    opacity: 0.7 !important;
+                }
+                /* Force Archives/Categories/Tags text */
+                .text-gray-500, .text-gray-400, .text-base-content, .text-primary, .text-secondary, a {
+                    color: var(--chaos-color) !important;
+                }
+                /* Force Borders */
+                .border-secondary, .border-base-content, .border-primary {
+                    border-color: var(--chaos-color) !important;
+                }
+                /* Force Icons (SVGs) */
+                svg, [data-icon] {
+                     color: var(--chaos-color) !important;
+                }
+                /* Force Sidebar Header Bars (Pseudo-elements) */
+                .card-base .font-bold::before {
+                    background-color: var(--chaos-color) !important;
+                }
+                /* Force Banner Title & Subtitle */
+                .title, .subtitle {
+                     color: var(--chaos-color) !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        let hue = 0;
+        let rotation = 0;
+
+        // Visual Chaos Loop (Colors)
+        setInterval(() => {
+            hue = (hue + 5) % 360; 
+            const oklchVal = `0.7 0.3 ${hue}`;
+            const colorFunc = `oklch(${oklchVal})`;
+            
+            // Update Chaos Variable
+            document.documentElement.style.setProperty('--chaos-color', colorFunc);
+
+            document.documentElement.style.setProperty('--p', oklchVal);
+            document.documentElement.style.setProperty('--s', oklchVal);
+            document.documentElement.style.setProperty('--bc', oklchVal);
+            document.documentElement.style.setProperty('--nc', oklchVal);
+            document.body.style.color = colorFunc;
+        }, 100); 
+
+        // Smooth Rotation Loop
+        const animateRotation = () => {
+             rotation += 0.5; 
+             document.body.style.transform = `rotate(${rotation}deg)`;
+             if (isChaosRunning) requestAnimationFrame(animateRotation);
+        };
+        requestAnimationFrame(animateRotation);
     }
 
     // Observer for external changes
