@@ -290,10 +290,12 @@ if (bangumiItems.length > 0) {
 
 // 统计数据
 const totalCount = animeList.length;
-// 计算 TMDB 平均分 (使用原始 TMDB 数据，避免 Bilibili 数据拉低评分)
-const tmdbItems = animeData.flatMap((group) => group.items || []);
-const averageRating = tmdbItems.length > 0 
-  ? (tmdbItems.reduce((sum, item) => sum + (Number(item.vote_average) || 0), 0) / tmdbItems.length).toFixed(1) 
+
+// 计算平均分 (使用合并后的数据，包括 TMDB, Bilibili, Bangumi)
+// 排除评分为 0 的项目
+const ratedItems = animeList.filter(item => item.rating > 0);
+const averageRating = ratedItems.length > 0 
+  ? (ratedItems.reduce((sum, item) => sum + item.rating, 0) / ratedItems.length).toFixed(1) 
   : "0.0";
 ---
 
@@ -464,6 +466,21 @@ const averageRating = tmdbItems.length > 0
     <p class="text-lg">没有找到匹配的番剧</p>
   </div>
 
+  <!-- 分页控件 -->
+  <div id="pagination" class="flex justify-center items-center gap-4 mt-8 hidden">
+    <button id="prev-btn" class="btn btn-outline btn-sm sm:btn-md">
+      <Icon name="lucide:chevron-left" class="w-4 h-4" />
+      上一页
+    </button>
+    <span class="text-sm font-medium">
+      第 <span id="current-page">1</span> / <span id="total-pages">1</span> 页
+    </span>
+    <button id="next-btn" class="btn btn-outline btn-sm sm:btn-md">
+      下一页
+      <Icon name="lucide:chevron-right" class="w-4 h-4" />
+    </button>
+  </div>
+
   <script>
     // 客户端筛选逻辑
     document.addEventListener('astro:page-load', () => {
@@ -472,6 +489,10 @@ const averageRating = tmdbItems.length > 0
       let currentTypeValue = 'all';
       let currentSortValue = 'rating-desc';
 
+      // 分页状态
+      let currentPage = 1;
+      const itemsPerPage = 30;
+
       const typeFilterBtn = document.getElementById('type-filter-btn');
       const typeFilterMenu = document.getElementById('type-filter-menu');
       const sortFilterBtn = document.getElementById('sort-filter-btn');
@@ -479,33 +500,34 @@ const averageRating = tmdbItems.length > 0
 
       const grid = document.getElementById('anime-grid');
       const noResults = document.getElementById('no-results');
+      const pagination = document.getElementById('pagination');
+      const prevBtn = document.getElementById('prev-btn') as HTMLButtonElement;
+      const nextBtn = document.getElementById('next-btn') as HTMLButtonElement;
+      const currentPageSpan = document.getElementById('current-page');
+      const totalPagesSpan = document.getElementById('total-pages');
       
       if (!grid || !searchInput || !typeFilterBtn || !sortFilterBtn) return;
 
-      const cards = Array.from(grid.getElementsByClassName('anime-card')) as HTMLElement[];
+      // 保存初始的所有卡片元素
+      const allCards = Array.from(grid.getElementsByClassName('anime-card')) as HTMLElement[];
 
       function filterAndSort() {
         const searchTerm = searchInput.value.toLowerCase();
         const typeValue = currentTypeValue;
         const sortValue = currentSortValue;
         
-        let visibleCount = 0;
-
-        // 筛选
-        const filteredCards = cards.filter(card => {
+        // 1. 筛选
+        const filteredCards = allCards.filter(card => {
           const title = card.dataset.title || '';
           const type = card.dataset.type || '';
           
           const matchesSearch = title.includes(searchTerm);
           const matchesType = typeValue === 'all' || type === typeValue;
           
-          const isVisible = matchesSearch && matchesType;
-          card.style.display = isVisible ? '' : 'none';
-          if (isVisible) visibleCount++;
-          return isVisible;
+          return matchesSearch && matchesType;
         });
 
-        // 排序
+        // 2. 排序
         filteredCards.sort((a, b) => {
           const ratingA = parseFloat(a.dataset.rating || '0');
           const ratingB = parseFloat(b.dataset.rating || '0');
@@ -521,18 +543,74 @@ const averageRating = tmdbItems.length > 0
           }
         });
 
-        // 重新排序 DOM
-        filteredCards.forEach(card => grid?.appendChild(card));
+        // 3. 计算分页
+        const totalItems = filteredCards.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+        
+        // 确保当前页码有效
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
 
-        // 显示/隐藏无结果提示
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const pageItems = filteredCards.slice(startIndex, endIndex);
+
+        // 4. 更新 DOM
+        // 清空容器
+        grid.innerHTML = '';
+        // 添加当前页的卡片
+        pageItems.forEach(card => {
+            card.style.display = ''; // 确保显示
+            grid.appendChild(card);
+        });
+
+        // 5. 更新无结果提示
         if (noResults) {
-          noResults.style.display = visibleCount === 0 ? 'flex' : 'none';
+          noResults.style.display = totalItems === 0 ? 'flex' : 'none';
+        }
+
+        // 6. 更新分页控件
+        if (pagination && currentPageSpan && totalPagesSpan && prevBtn && nextBtn) {
+            // 只有当总页数大于1且有内容时才显示分页控件
+            const showPagination = totalPages > 1 && totalItems > 0;
+            pagination.style.display = showPagination ? 'flex' : 'none';
+            
+            if (showPagination) {
+                currentPageSpan.textContent = currentPage.toString();
+                totalPagesSpan.textContent = totalPages.toString();
+                
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+            }
         }
       }
 
       // 绑定事件
-      searchInput.addEventListener('input', filterAndSort);
+      searchInput.addEventListener('input', () => {
+          currentPage = 1; // 搜索重置页码
+          filterAndSort();
+      });
       
+      // 分页按钮事件
+      prevBtn?.addEventListener('click', () => {
+          if (currentPage > 1) {
+              currentPage--;
+              filterAndSort();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+      });
+
+      nextBtn?.addEventListener('click', () => {
+        // 重新计算总页数以确保边界正确（也可以存储 totalPages 变量）
+        // 这里简单起见从 DOM 读取或假设 filterAndSort 会处理
+        // 更严谨的做法是在 filterAndSort 外部维护 filteredCards 来计算 totalPages，
+        // 或者直接在这里触发一次逻辑。
+        // 由于 filterAndSort 会修正 currentPage，直接加 1 后调用是安全的
+        currentPage++;
+        filterAndSort();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
       // 类型筛选点击事件
       typeFilterMenu?.querySelectorAll('a').forEach(item => {
         item.addEventListener('click', (e) => {
@@ -553,6 +631,7 @@ const averageRating = tmdbItems.length > 0
                 // 关闭下拉菜单
                 (document.activeElement as HTMLElement)?.blur();
 
+                currentPage = 1; // 筛选重置页码
                 filterAndSort();
             }
         });
@@ -578,6 +657,7 @@ const averageRating = tmdbItems.length > 0
                 // 关闭下拉菜单
                 (document.activeElement as HTMLElement)?.blur();
 
+                currentPage = 1; // 排序重置页码
                 filterAndSort();
             }
         });
