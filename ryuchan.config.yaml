@@ -34,7 +34,7 @@ site:
       title: 友人帐
       subtitle: 记录那些珍贵的友谊，分享彼此的故事
     about:
-      title: About Me
+      title: 关于我
       subtitle: 一个热爱生活与技术的普通人！
     navigation:
       title: 网站导航
@@ -43,11 +43,14 @@ site:
       title: 追番
       subtitle: 记录和分享我喜欢的动漫作品
     project:
-      title: Projects
+      title: 项目
       subtitle: 展示一些个人搭建的项目，搬运工！
     music:
-      title: Cloud Music
+      title: 音乐
       subtitle: 沉浸式享受音乐时光
+    moments:
+      title: 瞬间
+      subtitle: 记录生活点点滴滴
   menu:
     - id: home
       text: 首页
