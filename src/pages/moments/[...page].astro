@@ -35,7 +35,10 @@ const totalPages = Math.ceil(page.total / page.size);
 const pageLinks = generatePageLinks(totalPages);
 
 async function renderContent(content: string) {
-  return await marked.parse(content);
+  return await marked.parse(content, {
+    breaks: true,
+    gfm: true,
+  });
 }
 ---
 

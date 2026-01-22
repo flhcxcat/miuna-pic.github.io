@@ -216,7 +216,7 @@ export default function FriendEditor() {
                                                         className="input input-sm input-bordered w-full font-bold"
                                                     />
                                                 </div>
-                                                <div className="col-span-12 md:col-span-4">
+                                                <div className="col-span-12 md:col-span-3">
                                                     <input
                                                         placeholder="Description"
                                                         value={item.description}
@@ -237,6 +237,14 @@ export default function FriendEditor() {
                                                         placeholder="Avatar URL"
                                                         value={item.avatar}
                                                         onChange={e => updateFriend(index, 'avatar', e.target.value)}
+                                                        className="input input-sm input-bordered w-full text-xs"
+                                                    />
+                                                </div>
+                                                <div className="col-span-12 md:col-span-1">
+                                                    <input
+                                                        placeholder="Badge"
+                                                        value={item.badge || ''}
+                                                        onChange={e => updateFriend(index, 'badge', e.target.value)}
                                                         className="input input-sm input-bordered w-full text-xs"
                                                     />
                                                 </div>
