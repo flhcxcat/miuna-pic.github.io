@@ -13,7 +13,7 @@ const { envId } = Astro.props;
 
 <script is:inline defer src="https://cdn.staticfile.org/twikoo/1.6.44/twikoo.all.min.js"></script>
 
-<script define:vars={{ envId }}>
+<script is:inline define:vars={{ envId }}>
   function initTwikoo() {
     if (typeof twikoo !== 'undefined') {
       twikoo.init({
