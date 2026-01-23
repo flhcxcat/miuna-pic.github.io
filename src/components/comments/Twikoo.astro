@@ -16,16 +16,20 @@ const { envId } = Astro.props;
 
 <script is:inline define:vars={{ envId }}>
   function initTwikoo() {
+    const container = document.getElementById('tcomment');
+    if (!container || container.classList.contains('twikoo-init')) return;
+
     if (typeof twikoo !== 'undefined') {
       twikoo.init({
         envId: envId,
         el: '#tcomment',
       });
+      container.classList.add('twikoo-init');
     }
   }
 
-  // 视图转换兼容
-  document.addEventListener('astro:page-load', initTwikoo, { once: true });
+  // 视图转换兼容 - 移除 once: true，通过 class 防止重复初始化
+  document.addEventListener('astro:page-load', initTwikoo);
 </script>
 
 
