@@ -1,0 +1,277 @@
+/* Extracted Twikoo CSS */
+.tk-avatar {
+    flex-shrink: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    overflow: hidden;
+    text-align: center;
+    border-radius: 5px;
+    margin-right: 1rem;
+}
+
+.tk-comment .tk-submit .tk-avatar,
+.tk-replies .tk-avatar {
+    height: 1.6rem;
+    width: 1.6rem;
+}
+
+.tk-avatar.tk-has-avatar {
+    background-color: rgba(144, 147, 153, 0.13);
+}
+
+.tk-avatar.tk-clickable {
+    cursor: pointer;
+}
+
+.tk-avatar .tk-avatar-img {
+    height: 2.5rem;
+    color: #c0c4cc;
+}
+
+.tk-comment .tk-submit .tk-avatar .tk-avatar-img,
+.tk-replies .tk-avatar .tk-avatar-img {
+    height: 1.6rem;
+}
+
+.tk-main {
+    flex: 1;
+    width: 0;
+}
+
+.tk-row {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.tk-nick-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.tk-replies .tk-nick-link {
+    font-size: .9em;
+}
+
+.tk-nick-link:hover {
+    color: #409eff;
+}
+
+.tk-actions {
+    display: none;
+    margin-left: 1em;
+}
+
+.tk-comment:hover .tk-actions {
+    display: inline;
+}
+
+.tk-extras {
+    color: #999999;
+    font-size: 0.875em;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tk-extra {
+    margin-top: 0.5rem;
+    margin-right: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.tk-icon.__comment {
+    height: 1em;
+    width: 1em;
+    line-height: 1;
+}
+
+.tk-extra-text {
+    line-height: 1;
+}
+
+.tk-tag {
+    display: inline-block;
+    padding: 0 0.5em;
+    font-size: 0.75em;
+    background-color: #f2f6fc;
+}
+
+.tk-tag-green {
+    background-color: rgba(103, 194, 58, 0.13);
+    border: 1px solid rgba(103, 194, 58, 0.50);
+    border-radius: 2px;
+    color: #67c23a;
+}
+
+.tk-tag-yellow {
+    background-color: rgba(230, 162, 60, 0.13);
+    border: 1px solid rgba(230, 162, 60, 0.50);
+    border-radius: 2px;
+    color: #e6a23c;
+}
+
+.tk-tag-blue {
+    background-color: rgba(64, 158, 255, 0.13);
+    border: 1px solid rgba(64, 158, 255, 0.50);
+    border-radius: 2px;
+    color: #409eff;
+}
+
+.tk-tag-red {
+    background-color: rgba(245, 108, 108, 0.13);
+    border: 1px solid rgba(245, 108, 108, 0.50);
+    border-radius: 2px;
+    color: #f56c6c;
+}
+
+.tk-comment {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    word-break: break-all;
+}
+
+.tk-content {
+    margin-top: 0.5rem;
+    overflow: hidden;
+    max-height: 500px;
+    position: relative;
+}
+
+.tk-content-expand {
+    max-height: none;
+}
+
+.tk-replies .tk-content {
+    font-size: .9em;
+}
+
+.tk-comment .vemoji {
+    max-height: 2em;
+    vertical-align: middle;
+}
+
+.tk-replies {
+    max-height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.tk-replies-expand {
+    max-height: none;
+    overflow: unset;
+}
+
+.tk-submit {
+    margin-top: 1rem;
+}
+
+.tk-expand {
+    font-size: 0.75em;
+}
+
+.tk-lightbox {
+    display: block;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.3);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+.tk-lightbox-image {
+    min-width: 100px;
+    min-height: 30px;
+    width: auto;
+    height: auto;
+    max-width: 95%;
+    max-height: 95%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(90deg, #eeeeee 50%, #e3e3e3 0);
+    background-size: 40px 100%;
+}
+
+.tk-comments-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.tk-comments-count.__hidden {
+    visibility: hidden;
+}
+
+.tk-comments-container {
+    min-height: 10rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.tk-comments-no {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tk-comments-error {
+    font-size: 0.75em;
+    color: #ff0000;
+}
+
+.tk-icon.__comments {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: sub;
+    margin-left: 0.5em;
+    height: 0.75em;
+    width: 0.75em;
+    line-height: 0;
+    cursor: pointer;
+    color: #409eff;
+}
+
+.twikoo div.code-toolbar {
+    position: relative;
+    border-radius: .3em
+}
+
+.twikoo div.code-toolbar>.toolbar {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    font-size: .8125rem;
+    font-weight: 500;
+    display: flex;
+}
+
+.twikoo div.code-toolbar>.toolbar>.toolbar-item {
+    margin-left: .3em
+}
+
+.twikoo div.code-toolbar>.toolbar>.toolbar-item>a,
+.twikoo div.code-toolbar>.toolbar>.toolbar-item>button,
+.twikoo div.code-toolbar>.toolbar>.toolbar-item>span {
+    padding: 2px 4px;
+    border-radius: .3em;
+}
+
+.twikoo div.code-toolbar>.toolbar>.toolbar-item>button {
+    border: 1px solid rgba(128, 128, 128, 0.31);
+}
+
+.twikoo div.code-toolbar>.toolbar>.toolbar-item>button:hover {
+    cursor: pointer;
+}
