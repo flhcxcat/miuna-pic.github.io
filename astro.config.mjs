@@ -30,11 +30,19 @@ export default defineConfig({
       },
     },
     build: {
-      chunkSizeWarningLimit: 1000,
+      chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {
           manualChunks: {
-            'vendor-qrcode': ['qrcode']
+            'vendor-qrcode': ['qrcode'],
+            'vendor-markdown': [
+              'react-markdown',
+              'react-syntax-highlighter',
+              'rehype-katex',
+              'remark-gfm',
+              'remark-math',
+              'katex'
+            ]
           }
         }
       }

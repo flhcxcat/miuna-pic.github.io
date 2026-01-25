@@ -5,10 +5,11 @@ import { usePreviewStore } from './stores/preview-store'
 import { WriteEditor } from './components/editor'
 import { WriteSidebar } from './components/sidebar'
 import { WriteActions } from './components/actions'
-import { WritePreview } from './components/preview'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { Toaster } from 'sonner'
 import { useLoadBlog } from './hooks/use-load-blog'
+
+const WritePreview = lazy(() => import('./components/preview').then(module => ({ default: module.WritePreview })))
 
 type WritePageProps = {
     categories?: string[]
@@ -55,7 +56,16 @@ export default function WritePage({ categories = [] }: WritePageProps) {
                 }}
             />
             {isPreview ? (
-                <WritePreview form={form} coverPreviewUrl={coverPreviewUrl} onClose={closePreview} slug={slug || undefined} />
+                <Suspense fallback={
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-base-100/90 backdrop-blur-sm">
+                        <div className="flex flex-col items-center gap-4">
+                            <span className="loading loading-spinner loading-lg text-primary"></span>
+                            <p className="text-sm font-medium opacity-70">加载预览...</p>
+                        </div>
+                    </div>
+                }>
+                    <WritePreview form={form} coverPreviewUrl={coverPreviewUrl} onClose={closePreview} slug={slug || undefined} />
+                </Suspense>
             ) : (
                 <>
                     <div className='flex flex-col md:flex-row h-full justify-center gap-6 px-4 md:px-6 pt-24 pb-12'>
