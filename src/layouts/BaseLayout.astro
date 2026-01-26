@@ -76,38 +76,29 @@ const bannerSubtitle = pageConfig?.subtitle || "";
 
 
 
-    <!-- 主题管理脚本 -->
-    <script define:vars={{ SITE_THEME }} is:inline>
-      (function () {
-        const storedBannerMode = localStorage.getItem("banner-mode") || "normal";
+    <script is:inline data-light={SITE_THEME.light} data-dark={SITE_THEME.dark} id="theme-init">
+      (function() {
+        if (window.__THEME_INIT_V2__) return;
+        window.__THEME_INIT_V2__ = true;
+
+        var storedBannerMode = localStorage.getItem("banner-mode") || "normal";
+        var t = localStorage.getItem("theme");
         
-        let theme;
-        if (storedTheme) {
-          theme = storedTheme;
-        } else {
-          theme = SITE_THEME.light;
-          localStorage.setItem("theme", theme);
+        // 从当前脚本标签获取配置的默认主题
+        var script = document.getElementById("theme-init");
+        var light = script ? script.getAttribute("data-light") : "light";
+        var dark = script ? script.getAttribute("data-dark") : "dark";
+        
+        if (!t) {
+          t = light;
+          localStorage.setItem("theme", t);
         }
-        document.documentElement.setAttribute("data-theme", theme);
+        
+        document.documentElement.setAttribute("data-theme", t);
         document.documentElement.setAttribute("data-banner-mode", storedBannerMode);
         
-        const isDark = theme === SITE_THEME.dark || ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(theme);
-        const themeType = isDark ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme-type", themeType);
-        window
-          .matchMedia("(prefers-color-scheme: dark)")
-          .addEventListener("change", (e) => {
-            if (!localStorage.getItem("theme")) {
-              const newTheme = e.matches ? SITE_THEME.dark : SITE_THEME.light;
-              document.documentElement.setAttribute("data-theme", newTheme);
-              const newThemeType = e.matches ? "dark" : "light";
-              document.documentElement.setAttribute(
-                "data-theme-type",
-                newThemeType,
-              );
-              localStorage.setItem("theme", newTheme);
-            }
-          });
+        var isDark = t === dark || ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(t);
+        document.documentElement.setAttribute("data-theme-type", isDark ? "dark" : "light");
       })();
     </script>
   </head>
@@ -145,26 +136,28 @@ const bannerSubtitle = pageConfig?.subtitle || "";
 
     <!-- <MobileTOC headings={headings} showTOC={showTOC} /> -->
     <GlobalAudio />
-    <div transition:persist="toaster-container">
-      <GlobalToaster client:load />
-    </div>
     <!-- <SakanaWidget /> -->
 
     <!-- 其余脚本保持不变 -->
-    <script define:vars={{ SITE_THEME }} is:inline>
-      document.addEventListener("astro:after-swap", () => {
-        const storedTheme = localStorage.getItem("theme");
-        const storedBannerMode = localStorage.getItem("banner-mode") || "normal";
+    <GlobalToaster client:only="react" />
+    <script is:inline>
+      (function() {
+        if (window.__THEME_SWAP_INIT__) return;
+        window.__THEME_SWAP_INIT__ = true;
+
+        document.addEventListener("astro:after-swap", () => {
+        var t = localStorage.getItem("theme");
+        var m = localStorage.getItem("banner-mode") || "normal";
         
-        if (storedTheme) {
-          document.documentElement.setAttribute("data-theme", storedTheme);
-          const isDark = storedTheme === SITE_THEME.dark || ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(storedTheme);
-          const themeType = isDark ? "dark" : "light";
-          document.documentElement.setAttribute("data-theme-type", themeType);
+        if (t) {
+          document.documentElement.setAttribute("data-theme", t);
+          var isDark = t === 'dark' || ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(t);
+          document.documentElement.setAttribute("data-theme-type", isDark ? "dark" : "light");
         }
         
-        document.documentElement.setAttribute("data-banner-mode", storedBannerMode);
+        document.documentElement.setAttribute("data-banner-mode", m);
       });
+      })();
     </script>
 
     <script is:inline>

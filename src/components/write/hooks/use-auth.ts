@@ -41,11 +41,31 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 if (typeof window !== 'undefined') {
 	const initAuth = async () => {
 		const key = await getPemFromCache()
-		const isAuth = await checkAuth()
+		const hasPossibleAuth = await checkAuth()
+		let isAuth = false
+
+		if (hasPossibleAuth) {
+			try {
+				// 尝试获取 Token，如果成功，getToken 内部会触发“已自动登录”通知
+				await getToken()
+				isAuth = true
+			} catch (e) {
+				isAuth = false
+			}
+		}
+
 		useAuthStore.setState({ privateKey: key, isAuth })
 	}
 
+	// 初始化
 	initAuth()
+
+	document.addEventListener('astro:page-load', () => {
+		// 稍微延迟一下，确保 React 组件（GlobalToaster）已挂载并开始监听
+		setTimeout(() => {
+			initAuth()
+		}, 500);
+	})
 
 	// 监听同页面不同孤岛之间的同步
 	window.addEventListener('auth-state-changed', () => {

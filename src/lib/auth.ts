@@ -1,6 +1,6 @@
 import { createInstallationToken, getInstallationId, signAppJwt } from './github-client'
 import { GITHUB_CONFIG } from '@/consts'
-
+import { showToast as toast } from '@/components/GlobalToaster';
 import { decrypt, encrypt } from './aes256-util'
 
 const GITHUB_TOKEN_CACHE_KEY = 'github_token'
@@ -23,6 +23,8 @@ function saveTokenToCache(token: string): void {
 		console.error('Failed to save token to cache:', error)
 	}
 }
+
+
 
 function clearTokenCache(): void {
 	if (typeof sessionStorage === 'undefined') return
@@ -83,11 +85,14 @@ export async function hasAuth(): Promise<boolean> {
  * @param manualPrivateKey 可选，手动传入私钥进行验证（不使用缓存/Store中的私钥）
  * @returns GitHub Installation Token
  */
+let lastAutoLoginToastTime = 0;
+
 export async function getAuthToken(manualPrivateKey?: string): Promise<string> {
 	// 1. 如果没有手动传入私钥，先尝试从缓存获取 token
 	if (!manualPrivateKey) {
 		const cachedToken = getTokenFromCache()
 		if (cachedToken) {
+			toast.success('已自动登录', { duration: 1500 })
 			return cachedToken
 		}
 	}
@@ -98,16 +103,19 @@ export async function getAuthToken(manualPrivateKey?: string): Promise<string> {
 		throw new Error('需要先设置私钥。请先导入 PEM 密钥。')
 	}
 
-	const jwt = signAppJwt(GITHUB_CONFIG.APP_ID, privateKey)
+	const toastId = toast.loading('正在验证 GitHub 身份...')
+	try {
+		const jwt = signAppJwt(GITHUB_CONFIG.APP_ID, privateKey)
+		const installationId = await getInstallationId(jwt, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO)
+		const token = await createInstallationToken(jwt, installationId)
 
-	const installationId = await getInstallationId(jwt, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO)
-
-	const token = await createInstallationToken(jwt, installationId)
-
-	// 只有在非手动验证的情况下才保存到缓存
-	if (!manualPrivateKey) {
-		saveTokenToCache(token)
+		if (!manualPrivateKey) {
+			saveTokenToCache(token)
+		}
+		toast.success('身份验证成功', { id: toastId })
+		return token
+	} catch (error: any) {
+		toast.error('认证失败: ' + error.message, { id: toastId })
+		throw error
 	}
-
-	return token
 }
