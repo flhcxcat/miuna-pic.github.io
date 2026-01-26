@@ -1,6 +1,6 @@
 import { createInstallationToken, getInstallationId, signAppJwt } from './github-client'
 import { GITHUB_CONFIG } from '@/consts'
-import { showToast as toast } from '@/components/GlobalToaster';
+
 import { decrypt, encrypt } from './aes256-util'
 
 const GITHUB_TOKEN_CACHE_KEY = 'github_token'
