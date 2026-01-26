@@ -23,6 +23,18 @@ export default function GlobalToaster() {
             richColors
             position="top-right"
             closeButton
+            toastOptions={{
+                className: 'bg-base-100 border border-base-200 shadow-xl text-base-content',
+                style: {
+                    background: 'var(--fallback-b1,oklch(var(--b1)/1))',
+                    color: 'var(--fallback-bc,oklch(var(--bc)/1))',
+                    border: '1px solid var(--fallback-b2,oklch(var(--b2)/1))',
+                },
+                classNames: {
+                    title: 'text-base font-bold',
+                    description: 'text-sm opacity-90',
+                }
+            }}
         />
     );
 }

@@ -8,6 +8,11 @@ import Pagination from "@/components/widgets/Pagination.astro";
 import { generatePageLinks } from "@utils/blogUtils";
 import Card from "@/components/temple/Card.astro";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 import { marked } from "marked";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import { getSteamGameInfo, extractSteamAppId } from "@utils/steamApi";
@@ -266,8 +271,8 @@ async function renderContent(content: string, momentId: string) {
               <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between mb-2">
                   <span class="font-bold text-lg">Miuna</span>
-                  <span class="text-xs text-base-content/60" title={dayjs(moment.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
-                    {dayjs(moment.createdAt).format('MM-DD HH:mm')}
+                  <span class="text-xs text-base-content/60" title={dayjs(moment.createdAt).tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}>
+                    {dayjs(moment.createdAt).tz('Asia/Shanghai').format('MM-DD HH:mm')}
                   </span>
                 </div>
                 
