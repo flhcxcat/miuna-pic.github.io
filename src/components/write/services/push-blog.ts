@@ -4,7 +4,7 @@ import { getAuthToken } from '@/lib/auth'
 import { GITHUB_CONFIG } from '@/consts'
 import type { ImageItem, PublishForm } from '../types'
 import { getFileExt, formatDateTimeLocal } from '@/lib/utils'
-import { toast } from 'sonner'
+import { showToast as toast } from '@/components/GlobalToaster'
 import { stringifyFrontmatter } from '@/lib/frontmatter'
 
 export type PushBlogParams = {

@@ -1,8 +1,7 @@
 import { createInstallationToken, getInstallationId, signAppJwt } from './github-client'
 import { GITHUB_CONFIG } from '@/consts'
-import { toast } from 'sonner'
-import { decrypt,encrypt } from './aes256-util'
-import { useAuthStore } from '@/components/write/hooks/use-auth'
+import { showToast as toast } from '@/components/GlobalToaster';
+import { decrypt, encrypt } from './aes256-util'
 
 const GITHUB_TOKEN_CACHE_KEY = 'github_token'
 const GITHUB_PEM_CACHE_KEY = 'p_info'
@@ -35,10 +34,10 @@ function clearTokenCache(): void {
 }
 
 export async function getPemFromCache(): Promise<string | null> {
-	if (typeof sessionStorage === 'undefined') return null
+	if (typeof localStorage === 'undefined') return null
 	try {
 		// 解密缓存中的 pem
-		const encryptedPem = sessionStorage.getItem(GITHUB_PEM_CACHE_KEY)
+		const encryptedPem = localStorage.getItem(GITHUB_PEM_CACHE_KEY)
 		if (!encryptedPem) return null
 		return await decrypt(encryptedPem, GITHUB_CONFIG.ENCRYPT_KEY)
 	} catch {
@@ -47,20 +46,23 @@ export async function getPemFromCache(): Promise<string | null> {
 }
 
 export async function savePemToCache(pem: string): Promise<void> {
-	if (typeof sessionStorage === 'undefined') return
+	if (typeof localStorage === 'undefined') return
 	try {
 		// 加密 pem 后存储
 		const encryptedPem = await encrypt(pem, GITHUB_CONFIG.ENCRYPT_KEY)
-		sessionStorage.setItem(GITHUB_PEM_CACHE_KEY, encryptedPem)
+		localStorage.setItem(GITHUB_PEM_CACHE_KEY, encryptedPem)
+		// 触发自定义事件通知其他孤岛
+		window.dispatchEvent(new Event('auth-state-changed'));
 	} catch (error) {
 		console.error('Failed to save pem to cache:', error)
 	}
 }
 
 function clearPemCache(): void {
-	if (typeof sessionStorage === 'undefined') return
+	if (typeof localStorage === 'undefined') return
 	try {
-		sessionStorage.removeItem(GITHUB_PEM_CACHE_KEY)
+		localStorage.removeItem(GITHUB_PEM_CACHE_KEY)
+		window.dispatchEvent(new Event('auth-state-changed'));
 	} catch (error) {
 		console.error('Failed to clear pem cache:', error)
 	}
@@ -78,20 +80,23 @@ export async function hasAuth(): Promise<boolean> {
 /**
  * 统一的认证 Token 获取
  * 自动处理缓存、签发等逻辑
+ * @param manualPrivateKey 可选，手动传入私钥进行验证（不使用缓存/Store中的私钥）
  * @returns GitHub Installation Token
  */
-export async function getAuthToken(): Promise<string> {
-	// 1. 先尝试从缓存获取 token
-	const cachedToken = getTokenFromCache()
-	if (cachedToken) {
-		toast.info('使用缓存的令牌...')
-		return cachedToken
+export async function getAuthToken(manualPrivateKey?: string): Promise<string> {
+	// 1. 如果没有手动传入私钥，先尝试从缓存获取 token
+	if (!manualPrivateKey) {
+		const cachedToken = getTokenFromCache()
+		if (cachedToken) {
+			toast.info('正在使用缓存令牌...')
+			return cachedToken
+		}
 	}
 
-	// 2. 获取私钥（从缓存）
-	const privateKey = useAuthStore.getState().privateKey
+	// 2. 获取私钥
+	const privateKey = manualPrivateKey || await getPemFromCache()
 	if (!privateKey) {
-		throw new Error('需要先设置私钥。请使用 useAuth().setPrivateKey()')
+		throw new Error('需要先设置私钥。请先导入 PEM 密钥。')
 	}
 
 	toast.info('正在签发 JWT...')
@@ -103,7 +108,10 @@ export async function getAuthToken(): Promise<string> {
 	toast.info('正在创建安装令牌...')
 	const token = await createInstallationToken(jwt, installationId)
 
-	saveTokenToCache(token)
+	// 只有在非手动验证的情况下才保存到缓存
+	if (!manualPrivateKey) {
+		saveTokenToCache(token)
+	}
 
 	return token
 }

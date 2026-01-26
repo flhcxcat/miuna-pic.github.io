@@ -6,6 +6,7 @@ import {
   SITE_LANGUAGE,
   SITE_THEME,
   SITE_PAGES,
+  umamiConfig,
 } from "@config";
 import { ClientRouter } from "astro:transitions";
 // import ElementCrossing from "astro-vtbot/components/ElementCrossing.astro";
@@ -17,6 +18,7 @@ import Navbar from "@components/Navbar.astro";
 
 import Banner from "@components/Banner.astro";
 import GlobalAudio from "@components/widgets/GlobalAudio.astro";
+import GlobalToaster from "@components/GlobalToaster";
 
 const {
   title,
@@ -55,7 +57,7 @@ const bannerSubtitle = pageConfig?.subtitle || "";
     <title>{`${title} - ${SITE_TAB}`}</title>
 
     <!-- Umami分析（自建） -->
-    <!-- {
+    {
       umamiConfig.enable && umamiConfig.websiteId && (
         <script
           is:inline
@@ -69,7 +71,8 @@ const bannerSubtitle = pageConfig?.subtitle || "";
       umamiConfig.enable && (
         <script is:inline defer src="/js/umami-share.js"></script>
       )
-    } -->
+    }
+
 
 
 
@@ -142,6 +145,7 @@ const bannerSubtitle = pageConfig?.subtitle || "";
 
     <!-- <MobileTOC headings={headings} showTOC={showTOC} /> -->
     <GlobalAudio />
+    <GlobalToaster client:load />
     <!-- <SakanaWidget /> -->
 
     <!-- 其余脚本保持不变 -->

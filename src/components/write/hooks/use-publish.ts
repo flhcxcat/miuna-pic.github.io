@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { readFileAsText } from '@/lib/file-utils'
-import { toast } from 'sonner'
+import { showToast as toast } from '@/components/GlobalToaster'
 import { pushBlog } from '../services/push-blog'
 import { deleteBlog } from '../services/delete-blog'
 import { useWriteStore } from '../stores/write-store'
@@ -8,14 +8,25 @@ import { useAuthStore } from './use-auth'
 
 export function usePublish() {
 	const { loading, setLoading, form, cover, images, mode, originalSlug } = useWriteStore()
-	const { isAuth, setPrivateKey } = useAuthStore()
+	const { isAuth, setPrivateKey, getAuthToken } = useAuthStore()
 
 	const onChoosePrivateKey = useCallback(
 		async (file: File) => {
-			const pem = await readFileAsText(file)
-			setPrivateKey(pem)
+			try {
+				const pem = await readFileAsText(file)
+				// 立即尝试获取 Token 以验证密钥并显示认证进度通知
+				// 如果验证失败，会抛出错误并进入 catch 块，不会执行后续的 setPrivateKey
+				await getAuthToken(pem)
+
+				// 验证通过后，再保存到 Store 和缓存
+				await setPrivateKey(pem)
+				toast.success('🔑 私钥导入成功')
+			} catch (e) {
+				console.error(e)
+				toast.error('❌ 密钥验证失败，请检查密钥是否正确')
+			}
 		},
-		[setPrivateKey]
+		[setPrivateKey, getAuthToken]
 	)
 
 	const onPublish = useCallback(async () => {

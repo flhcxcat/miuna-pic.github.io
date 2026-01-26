@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { toast } from 'sonner'
+import { showToast as toast } from '@/components/GlobalToaster'
 import { hashFileSHA256 } from '@/lib/file-utils'
 import { loadBlog } from '@/lib/load-blog'
 import type { PublishForm, ImageItem } from '../types'

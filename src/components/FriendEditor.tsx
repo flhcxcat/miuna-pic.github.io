@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { toast, Toaster } from 'sonner';
+import { showToast as toast } from './GlobalToaster';
 import { Loader2, Plus, GripVertical, Trash2, X } from 'lucide-react';
 import { putFile, readTextFileFromRepo, toBase64Utf8 } from '@/lib/github-client';
 import { useAuthStore } from '@/components/write/hooks/use-auth';
@@ -70,12 +69,16 @@ export default function FriendEditor() {
     const onChoosePrivateKey = async (file: File) => {
         try {
             const pem = await readFileAsText(file);
+            // 立即尝试获取 Token 以验证密钥并显示认证进度通知
+            await getAuthToken(pem);
+
+            // 验证通过后，再保存到 Store 和缓存
             await setPrivateKey(pem);
-            toast.success('Key imported successfully');
+            toast.success('🔑 私钥导入成功');
             setIsOpen(true);
         } catch (e) {
             console.error(e);
-            toast.error('Failed to import key');
+            toast.error('❌ 密钥验证失败，请检查密钥是否正确');
         }
     };
 
@@ -138,25 +141,7 @@ export default function FriendEditor() {
 
     return (
         <>
-            <Toaster
-                richColors
-                position="top-right"
-                toastOptions={{
-                    className: 'shadow-2xl border-2 border-base-200 rounded-xl',
-                    style: {
-                        fontSize: '1.1rem',
-                        padding: '16px 24px',
-                    },
-                    classNames: {
-                        title: 'text-lg font-bold',
-                        description: 'text-base font-medium',
-                        error: 'bg-error text-error-content border-error',
-                        success: 'bg-success text-success-content border-success',
-                        warning: 'bg-warning text-warning-content border-warning',
-                        info: 'bg-info text-info-content border-info',
-                    }
-                }}
-            />
+
             {!isOpen ? (
                 <>
                     <button

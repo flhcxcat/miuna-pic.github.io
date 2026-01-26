@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { toast } from 'sonner';
+import { showToast as toast } from './GlobalToaster';
 import { Trash2, Loader2 } from 'lucide-react';
 import { putFile, readTextFileFromRepo, toBase64Utf8 } from '@/lib/github-client';
 import { useAuthStore } from '@/components/write/hooks/use-auth';
@@ -75,13 +74,16 @@ export default function MomentDeleteButton({ id, className = '' }: MomentDeleteB
     if (!isAuth) return null;
 
     return (
-        <button
-            onClick={handleDelete}
-            disabled={loading}
-            className={`btn btn-ghost btn-xs text-error opacity-50 hover:opacity-100 transition-opacity ${className}`}
-            title="Delete Moment"
-        >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-        </button>
+        <>
+
+            <button
+                onClick={handleDelete}
+                disabled={loading}
+                className={`btn btn-ghost btn-xs text-error opacity-50 hover:opacity-100 transition-opacity ${className}`}
+                title="Delete Moment"
+            >
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+            </button>
+        </>
     );
 }

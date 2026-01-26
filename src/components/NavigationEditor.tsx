@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { toast, Toaster } from 'sonner';
+import { showToast as toast } from './GlobalToaster';
 import { Loader2, Plus, GripVertical, Trash2, X } from 'lucide-react';
 import { putFile, readTextFileFromRepo, toBase64Utf8 } from '@/lib/github-client';
 import { useAuthStore } from '@/components/write/hooks/use-auth';
 import { GITHUB_CONFIG } from '@/consts';
 import { readFileAsText } from '@/lib/file-utils';
 import localData from '@/data/navigation.json';
+
 
 interface NavItem {
     name: string;
@@ -52,7 +52,7 @@ export default function NavigationEditor() {
             }
         } catch (e: any) {
             console.error('Error loading remote data, using local fallback:', e);
-            toast.error('Could not load latest data from GitHub, editing local copy.');
+            toast.error('无法从 GitHub 加载最新数据，将编辑本地副本。');
             // We already have localData in state, so we just let the user edit that.
         } finally {
             setLoading(false);
@@ -76,20 +76,24 @@ export default function NavigationEditor() {
     const onChoosePrivateKey = async (file: File) => {
         try {
             const pem = await readFileAsText(file);
+            // 立即尝试获取 Token 以验证密钥并显示认证进度通知
+            await getAuthToken(pem);
+
+            // 验证通过后，再保存到 Store 和缓存
             await setPrivateKey(pem);
-            toast.success('Key imported successfully');
+            toast.success('🔑 私钥导入成功');
             setIsOpen(true);
         } catch (e) {
             console.error(e);
-            toast.error('Failed to import key');
+            toast.error('❌ 密钥验证失败，请检查密钥是否正确');
         }
     };
 
     const handleSave = async () => {
-        if (!confirm('Are you sure you want to save changes? This will commit to GitHub.')) return;
+        if (!confirm('确定保存更改吗？这将直接推送到 GitHub。')) return;
 
         setLoading(true);
-        const toastId = toast.loading('Saving changes...');
+        const toastId = toast.loading('正在保存更改...');
 
         try {
             const token = await getAuthToken();
@@ -105,11 +109,11 @@ export default function NavigationEditor() {
                 BRANCH
             );
 
-            toast.success('Changes saved successfully!', { id: toastId });
+            toast.success('更改保存成功！', { id: toastId });
             setTimeout(() => window.location.reload(), 1500);
         } catch (e: any) {
             console.error(e);
-            toast.error('Failed to save: ' + e.message, { id: toastId });
+            toast.error('保存失败: ' + e.message, { id: toastId });
         } finally {
             setLoading(false);
         }
@@ -161,30 +165,12 @@ export default function NavigationEditor() {
 
     return (
         <>
-            <Toaster
-                richColors
-                position="top-right"
-                toastOptions={{
-                    className: 'shadow-2xl border-2 border-base-200 rounded-xl',
-                    style: {
-                        fontSize: '1.1rem',
-                        padding: '16px 24px',
-                    },
-                    classNames: {
-                        title: 'text-lg font-bold',
-                        description: 'text-base font-medium',
-                        error: 'bg-error text-error-content border-error',
-                        success: 'bg-success text-success-content border-success',
-                        warning: 'bg-warning text-warning-content border-warning',
-                        info: 'bg-info text-info-content border-info',
-                    }
-                }}
-            />
+
             {!isOpen ? (
                 <>
                     <button
                         onClick={handleOpen}
-                        className={`btn btn-circle shadow-sm ${isAuth ? 'btn-primary' : 'btn-ghost bg-base-100'}`}
+                        className={`btn btn - circle shadow - sm ${isAuth ? 'btn-primary' : 'btn-ghost bg-base-100'} `}
                         title={isAuth ? "Edit Navigation" : "Import Key to Edit"}
                     >
                         <GripVertical className="w-5 h-5" />

@@ -10,7 +10,7 @@ interface AuthStore {
 	setPrivateKey: (key: string) => Promise<void>
 	clearAuth: () => void
 	refreshAuthState: () => void
-	getAuthToken: () => Promise<string>
+	getAuthToken: (manualPrivateKey?: string) => Promise<string>
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -31,23 +31,31 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 		set({ isAuth: await checkAuth() })
 	},
 
-	getAuthToken: async () => {
-		const token = await getToken()
+	getAuthToken: async (manualPrivateKey?: string) => {
+		const token = await getToken(manualPrivateKey)
 		get().refreshAuthState()
 		return token
 	}
 }))
 
 if (typeof window !== 'undefined') {
-	getPemFromCache().then((key) => {
-		if (key) {
-			useAuthStore.setState({ privateKey: key })
-		}
+	const initAuth = async () => {
+		const key = await getPemFromCache()
+		const isAuth = await checkAuth()
+		useAuthStore.setState({ privateKey: key, isAuth })
+	}
+
+	initAuth()
+
+	// 监听同页面不同孤岛之间的同步
+	window.addEventListener('auth-state-changed', () => {
+		initAuth()
 	})
 
-	checkAuth().then((isAuth) => {
-		if (isAuth) {
-			useAuthStore.setState({ isAuth })
+	// 监听不同标签页之间的同步
+	window.addEventListener('storage', (e) => {
+		if (e.key === 'p_info') {
+			initAuth()
 		}
 	})
 }

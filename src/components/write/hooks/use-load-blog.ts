@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useWriteStore } from '../stores/write-store'
-import { toast } from 'sonner'
+import { showToast as toast } from '@/components/GlobalToaster'
 
 export function useLoadBlog(slug?: string) {
 	const { loadBlogForEdit, loading } = useWriteStore()

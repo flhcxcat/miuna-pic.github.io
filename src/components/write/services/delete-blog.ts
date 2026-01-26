@@ -1,12 +1,12 @@
-import { toast } from 'sonner'
+import { showToast as toast } from '@/components/GlobalToaster'
 import { getAuthToken } from '@/lib/auth'
 import { GITHUB_CONFIG } from '@/consts'
 import { createCommit, createTree, getRef, getCommit, listRepoFilesRecursive, listRepoDir, type TreeItem, updateRef } from '@/lib/github-client'
 
 export async function deleteBlog(slug: string): Promise<void> {
-	if (!slug) throw new Error('需要 slug')
+    if (!slug) throw new Error('需要 slug')
 
-	const token = await getAuthToken()
+    const token = await getAuthToken()
     const toastId = toast.loading('正在初始化删除...')
 
     try {
@@ -56,7 +56,7 @@ export async function deleteBlog(slug: string): Promise<void> {
 
         toast.loading('正在创建文件树...', { id: toastId })
         const treeData = await createTree(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, treeItems, baseTreeSha)
-        
+
         toast.loading('正在创建提交...', { id: toastId })
         const newCommitData = await createCommit(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, `删除文章: ${slug}`, treeData.sha, [latestCommitSha])
 

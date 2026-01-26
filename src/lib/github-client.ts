@@ -2,7 +2,7 @@
 
 import { useAuthStore } from '@/components/write/hooks/use-auth'
 import { KJUR, KEYUTIL } from 'jsrsasign'
-import { toast } from 'sonner'
+import { showToast as toast } from '@/components/GlobalToaster';
 
 export const GH_API = 'https://api.github.com'
 

@@ -1,6 +1,5 @@
-
 import React, { useState, useRef } from 'react';
-import { toast, Toaster } from 'sonner';
+import { showToast as toast } from './GlobalToaster';
 import { Loader2, Image as ImageIcon, Send, X } from 'lucide-react';
 import { putFile, readTextFileFromRepo, toBase64Utf8 } from '@/lib/github-client';
 import { readFileAsText } from '@/lib/file-utils';
@@ -30,14 +29,16 @@ export default function MomentsEditor() {
     const onChoosePrivateKey = async (file: File) => {
         try {
             const pem = await readFileAsText(file);
-            if (!pem.includes('BEGIN RSA PRIVATE KEY') && !pem.includes('BEGIN PRIVATE KEY')) {
-                throw new Error('Invalid PEM file');
-            }
-            setPrivateKey(pem);
-            toast.success('密钥导入成功');
+            // 立即尝试获取 Token 以验证密钥并显示认证进度通知
+            // 如果验证失败，会抛出错误并进入 catch 块
+            await getAuthToken(pem);
+
+            // 验证通过后，再保存到 Store 和缓存
+            await setPrivateKey(pem);
+            toast.success('🔑 私钥导入成功');
         } catch (e) {
             console.error(e);
-            toast.error('密钥导入失败');
+            toast.error('❌ 密钥验证失败，请检查密钥是否正确');
         }
     };
 
@@ -60,14 +61,14 @@ export default function MomentsEditor() {
     };
 
     const handleSubmit = async () => {
-        if (!content.trim() && files.length === 0) return toast.error('Content cannot be empty');
+        if (!content.trim() && files.length === 0) return toast.error('⚠️ 内容不能为空');
         if (APP_ID === '-' || !OWNER || !REPO) {
-            toast.error('Missing configuration for GitHub App');
+            toast.error('❌ GitHub App 配置缺失');
             return;
         }
 
         setLoading(true);
-        setStatus('Authenticating...');
+        setStatus('正在认证...');
 
         try {
             // 1. Authenticate
@@ -76,7 +77,7 @@ export default function MomentsEditor() {
             // 2. Upload Images
             const uploadedImages: string[] = [];
             if (files.length > 0) {
-                setStatus(`Uploading ${files.length} images...`);
+                setStatus(`正在上传 ${files.length} 张图片...`);
                 for (const file of files) {
                     const buffer = await file.arrayBuffer();
                     const base64 = btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
@@ -98,7 +99,7 @@ export default function MomentsEditor() {
             }
 
             // 3. Update JSON
-            setStatus('Updating feed...');
+            setStatus('正在更新动态...');
             const jsonPath = 'src/data/moments.json';
 
             // Get current content
@@ -134,13 +135,13 @@ export default function MomentsEditor() {
                 BRANCH
             );
 
-            toast.success('Moment published! It may take a few minutes to appear.');
+            toast.success('🎉 动态发布成功！可能需要几分钟才能显示。');
             setContent('');
             setFiles([]);
             setStatus('');
         } catch (err: any) {
             console.error(err);
-            toast.error('Failed to publish: ' + err.message);
+            toast.error('❌ 发布失败: ' + err.message);
         } finally {
             setLoading(false);
         }
@@ -148,25 +149,7 @@ export default function MomentsEditor() {
 
     return (
         <div className="bg-base-100 border border-base-200 shadow-sm rounded-xl p-4 mb-8 transition-all hover:shadow-md">
-            <Toaster
-                richColors
-                position="top-right"
-                toastOptions={{
-                    className: 'shadow-2xl border-2 border-base-200 rounded-xl',
-                    style: {
-                        fontSize: '1.1rem',
-                        padding: '16px 24px',
-                    },
-                    classNames: {
-                        title: 'text-lg font-bold',
-                        description: 'text-base font-medium',
-                        error: 'bg-error text-error-content border-error',
-                        success: 'bg-success text-success-content border-success',
-                        warning: 'bg-warning text-warning-content border-warning',
-                        info: 'bg-info text-info-content border-info',
-                    }
-                }}
-            />
+
             {/* Hidden Key Input */}
             <input
                 ref={keyInputRef}

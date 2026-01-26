@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
-import { useRef } from 'react'
-import { toast } from 'sonner'
+import { useRef, useState } from 'react'
+import { showToast as toast } from '@/components/GlobalToaster'
 import { useWriteStore } from '../stores/write-store'
 import { usePreviewStore } from '../stores/preview-store'
 import { usePublish } from '../hooks/use-publish'
@@ -9,6 +9,7 @@ export function WriteActions() {
 	const { loading, mode, form, originalSlug, updateForm } = useWriteStore()
 	const { openPreview } = usePreviewStore()
 	const { isAuth, onChoosePrivateKey, onPublish, onDelete } = usePublish()
+	const [saving] = useState(false)
 	const keyInputRef = useRef<HTMLInputElement>(null)
 	const mdInputRef = useRef<HTMLInputElement>(null)
 
@@ -96,7 +97,7 @@ export function WriteActions() {
 			/>
 			<input ref={mdInputRef} type='file' accept='.md' className='hidden' onChange={handleMdFileChange} />
 
-			<ul className='absolute top-4 right-6 flex items-center gap-2'>
+			<ul className='flex items-center gap-2 justify-end w-full flex-wrap md:flex-nowrap'>
 				{mode === 'edit' && (
 					<>
 						<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='flex items-center gap-2'>
@@ -118,6 +119,7 @@ export function WriteActions() {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							onClick={handleCancel}
+							disabled={saving}
 							className='btn btn-sm btn-ghost rounded-xl'>
 							取消
 						</motion.button>

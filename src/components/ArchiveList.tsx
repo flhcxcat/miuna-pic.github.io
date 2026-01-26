@@ -1,18 +1,18 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { Archive, BookOpen, Calendar, Trash2, X } from 'lucide-react';
 import dayjs from 'dayjs';
-import { toast, Toaster } from 'sonner';
+import { showToast as toast } from './GlobalToaster';
 import { useAuthStore } from '@/components/write/hooks/use-auth';
 import { batchDeleteBlogs } from '@/components/write/services/batch-delete';
 import { readFileAsText } from '@/lib/file-utils';
 
 interface Post {
-  slug: string;
-  data: {
-    title: string;
-    pubDate: Date | string;
-    description?: string;
-  };
+    slug: string;
+    data: {
+        title: string;
+        pubDate: Date | string;
+        description?: string;
+    };
 }
 
 interface ArchiveListProps {
@@ -125,7 +125,7 @@ export default function ArchiveList({ posts, labels, dateFormat }: ArchiveListPr
 
     return (
         <>
-            <Toaster richColors position="top-center" />
+
             <input
                 ref={keyInputRef}
                 type='file'
@@ -147,29 +147,36 @@ export default function ArchiveList({ posts, labels, dateFormat }: ArchiveListPr
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        {editMode ? (
-                            <>
-                                <button
-                                    onClick={handleBatchDelete}
-                                    disabled={deleting || selectedSlugs.size === 0}
-                                    className="btn btn-error btn-sm gap-2"
-                                >
+                        {isAuth ? (
+                            editMode ? (
+                                <>
+                                    <button
+                                        onClick={handleBatchDelete}
+                                        disabled={deleting || selectedSlugs.size === 0}
+                                        className="btn btn-error btn-sm gap-2"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                        <span>删除 ({selectedSlugs.size})</span>
+                                    </button>
+                                    <button
+                                        onClick={toggleEditMode}
+                                        disabled={deleting}
+                                        className="btn btn-ghost btn-sm gap-2"
+                                    >
+                                        <X className="w-4 h-4" />
+                                        <span>取消</span>
+                                    </button>
+                                </>
+                            ) : (
+                                <button onClick={toggleEditMode} className="btn btn-outline btn-error btn-sm gap-2">
                                     <Trash2 className="w-4 h-4" />
-                                    <span>删除 ({selectedSlugs.size})</span>
+                                    <span>批量删除</span>
                                 </button>
-                                <button
-                                    onClick={toggleEditMode}
-                                    disabled={deleting}
-                                    className="btn btn-ghost btn-sm gap-2"
-                                >
-                                    <X className="w-4 h-4" />
-                                    <span>取消</span>
-                                </button>
-                            </>
+                            )
                         ) : (
-                            <button onClick={toggleEditMode} className="btn btn-outline btn-error btn-sm gap-2">
-                                <Trash2 className="w-4 h-4" />
-                                <span>批量删除</span>
+                            <button onClick={() => keyInputRef.current?.click()} className="btn btn-outline btn-primary btn-sm gap-2">
+                                <Archive className="w-4 h-4" />
+                                <span>导入密钥</span>
                             </button>
                         )}
                         <a href="/blog" className="btn btn-outline btn-sm gap-2">
