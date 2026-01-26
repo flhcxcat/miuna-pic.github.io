@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { showToast as toast } from '@/components/GlobalToaster';
 import { Loader2, Plus, GripVertical, Trash2, X } from 'lucide-react';
 import { putFile, readTextFileFromRepo, toBase64Utf8 } from '@/lib/github-client';
@@ -164,105 +165,111 @@ export default function FriendEditor() {
                     />
                 </>
             ) : (
-                <div className="fixed inset-0 bg-base-100 z-[100] overflow-y-auto">
-                    <div className="max-w-6xl mx-auto p-4 md:p-10 min-h-screen">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-bold flex items-center gap-2">
-                                <GripVertical className="w-8 h-8 text-primary" />
-                                Edit Friends
-                            </h2>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="btn btn-ghost btn-circle"
-                                >
-                                    <X className="w-6 h-6" />
-                                </button>
-                            </div>
-                        </div>
-
-                        {loading && !data.friends ? (
-                            <div className="flex justify-center p-12">
-                                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {/* Friends Section */}
-                                <div className="bg-base-200/50 p-6 rounded-2xl border border-base-200">
-                                    <h3 className="font-bold text-lg mb-4">Friends Cards</h3>
-                                    <div className="space-y-3">
-                                        {data.friends.map((item, index) => (
-                                            <div key={index} className="grid grid-cols-12 gap-2 items-center bg-base-100 p-3 rounded-lg shadow-sm border border-base-200">
-                                                <div className="col-span-12 md:col-span-2">
-                                                    <input
-                                                        placeholder="Name"
-                                                        value={item.name}
-                                                        onChange={e => updateFriend(index, 'name', e.target.value)}
-                                                        className="input input-sm input-bordered w-full font-bold"
-                                                    />
-                                                </div>
-                                                <div className="col-span-12 md:col-span-3">
-                                                    <input
-                                                        placeholder="Description"
-                                                        value={item.description}
-                                                        onChange={e => updateFriend(index, 'description', e.target.value)}
-                                                        className="input input-sm input-bordered w-full"
-                                                    />
-                                                </div>
-                                                <div className="col-span-12 md:col-span-3">
-                                                    <input
-                                                        placeholder="URL"
-                                                        value={item.url}
-                                                        onChange={e => updateFriend(index, 'url', e.target.value)}
-                                                        className="input input-sm input-bordered w-full text-blue-500"
-                                                    />
-                                                </div>
-                                                <div className="col-span-12 md:col-span-2">
-                                                    <input
-                                                        placeholder="Avatar URL"
-                                                        value={item.avatar}
-                                                        onChange={e => updateFriend(index, 'avatar', e.target.value)}
-                                                        className="input input-sm input-bordered w-full text-xs"
-                                                    />
-                                                </div>
-                                                <div className="col-span-12 md:col-span-1">
-                                                    <input
-                                                        placeholder="Badge"
-                                                        value={item.badge || ''}
-                                                        onChange={e => updateFriend(index, 'badge', e.target.value)}
-                                                        className="input input-sm input-bordered w-full text-xs"
-                                                    />
-                                                </div>
-                                                <div className="col-span-12 md:col-span-1 flex justify-end">
-                                                    <button
-                                                        onClick={() => removeFriend(index)}
-                                                        className="btn btn-ghost btn-xs btn-square text-error"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                        <button onClick={addFriend} className="btn btn-outline btn-sm w-full border-dashed">
-                                            <Plus className="w-4 h-4" /> Add Friend
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div className="flex gap-4 pt-4 border-t border-base-200">
-                                    <div className="flex-1"></div>
+                createPortal(
+                    <div className="fixed inset-0 bg-base-100 z-[100] overflow-y-auto">
+                        <div className="max-w-6xl mx-auto p-4 md:p-10 min-h-screen">
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-2xl font-bold flex items-center gap-2">
+                                    <GripVertical className="w-8 h-8 text-primary" />
+                                    Edit Friends
+                                </h2>
+                                <div className="flex gap-2">
                                     <button
-                                        onClick={handleSave}
-                                        disabled={loading}
-                                        className="btn btn-primary px-8 gap-2"
+                                        onClick={() => setIsOpen(false)}
+                                        className="btn btn-ghost btn-circle"
                                     >
-                                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Changes'}
+                                        <X className="w-6 h-6" />
                                     </button>
                                 </div>
                             </div>
-                        )}
-                    </div>
-                </div>
+
+                            {loading && !data.friends ? (
+                                <div className="flex justify-center p-12">
+                                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {/* Friends Section */}
+                                    <div className="bg-base-200/50 p-6 rounded-2xl border border-base-200">
+                                        <h3 className="font-bold text-lg mb-4 text-base-content/80 uppercase tracking-wider text-xs">Friends Cards</h3>
+                                        <div className="space-y-3">
+                                            {data.friends.map((item, index) => (
+                                                <div key={index} className="grid grid-cols-12 gap-2 items-center bg-base-100 p-3 rounded-lg shadow-sm border border-base-200">
+                                                    <div className="col-span-12 md:col-span-2">
+                                                        <input
+                                                            placeholder="Name"
+                                                            value={item.name}
+                                                            onChange={e => updateFriend(index, 'name', e.target.value)}
+                                                            className="input input-sm input-bordered w-full font-bold"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-3">
+                                                        <input
+                                                            placeholder="Description"
+                                                            value={item.description}
+                                                            onChange={e => updateFriend(index, 'description', e.target.value)}
+                                                            className="input input-sm input-bordered w-full"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-3">
+                                                        <input
+                                                            placeholder="URL"
+                                                            value={item.url}
+                                                            onChange={e => updateFriend(index, 'url', e.target.value)}
+                                                            className="input input-sm input-bordered w-full text-blue-500"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-2">
+                                                        <input
+                                                            placeholder="Avatar URL"
+                                                            value={item.avatar}
+                                                            onChange={e => updateFriend(index, 'avatar', e.target.value)}
+                                                            className="input input-sm input-bordered w-full text-xs"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-1">
+                                                        <input
+                                                            placeholder="Badge"
+                                                            value={item.badge || ''}
+                                                            onChange={e => updateFriend(index, 'badge', e.target.value)}
+                                                            className="input input-sm input-bordered w-full text-xs"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-1 flex justify-end">
+                                                        <button
+                                                            onClick={() => removeFriend(index)}
+                                                            className="btn btn-ghost btn-xs btn-square text-error"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <button
+                                                onClick={addFriend}
+                                                className="btn btn-ghost btn-sm btn-block border-dashed border-2 border-base-300 text-base-content/40 hover:border-primary hover:text-primary mt-2"
+                                            >
+                                                <Plus className="w-4 h-4 mr-2" /> Add Friend
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-4 pt-4 border-t border-base-200">
+                                        <div className="flex-1"></div>
+                                        <button
+                                            onClick={handleSave}
+                                            disabled={loading}
+                                            className="btn btn-primary px-8 gap-2"
+                                        >
+                                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Changes'}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>,
+                    document.body
+                )
             )}
         </>
     );

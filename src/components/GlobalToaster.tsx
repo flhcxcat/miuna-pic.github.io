@@ -18,8 +18,20 @@ export default function GlobalToaster() {
             }
         };
 
+        const handleClearToasts = () => {
+            // 在页面切换前清除所有通知，防止样式丢失导致的“鬼影”通知
+            toast.dismiss();
+        };
+
         window.addEventListener('app:toast', handleGlobalToast);
-        return () => window.removeEventListener('app:toast', handleGlobalToast);
+
+        // 监听 Astro 的视图转换事件
+        document.addEventListener('astro:before-swap', handleClearToasts);
+
+        return () => {
+            window.removeEventListener('app:toast', handleGlobalToast);
+            document.removeEventListener('astro:before-swap', handleClearToasts);
+        };
     }, []);
 
     return (

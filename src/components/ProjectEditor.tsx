@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { showToast as toast } from '@/components/GlobalToaster';
 import { Loader2, Plus, GripVertical, Trash2, X } from 'lucide-react';
 import { putFile, readTextFileFromRepo, toBase64Utf8 } from '@/lib/github-client';
@@ -130,7 +131,6 @@ export default function ProjectEditor() {
 
     return (
         <>
-
             {!isOpen ? (
                 <>
                     <button
@@ -153,101 +153,110 @@ export default function ProjectEditor() {
                     />
                 </>
             ) : (
-                <div className="fixed inset-0 bg-base-100 z-[100] overflow-y-auto">
-                    <div className="max-w-5xl mx-auto p-4 md:p-10 min-h-screen">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-bold flex items-center gap-2">
-                                <GripVertical className="w-8 h-8 text-primary" />
-                                Edit Projects
-                            </h2>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="btn btn-ghost btn-circle"
-                                >
-                                    <X className="w-6 h-6" />
-                                </button>
-                            </div>
-                        </div>
-
-                        {loading && data.length === 0 ? (
-                            <div className="flex justify-center p-12">
-                                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                            </div>
-                        ) : (
-                            <div className="space-y-6">
-                                <div className="space-y-3">
-                                    {data.map((item, index) => (
-                                        <div key={index} className="grid grid-cols-12 gap-2 items-center bg-base-200/50 p-3 rounded-lg shadow-sm group hover:shadow-md transition-shadow border border-base-200">
-                                            <div className="col-span-12 md:col-span-3">
-                                                <input
-                                                    placeholder="Name"
-                                                    value={item.name}
-                                                    onChange={e => updateItem(index, 'name', e.target.value)}
-                                                    className="input input-sm input-bordered w-full font-bold"
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-4">
-                                                <input
-                                                    placeholder="Description"
-                                                    value={item.description}
-                                                    onChange={e => updateItem(index, 'description', e.target.value)}
-                                                    className="input input-sm input-bordered w-full"
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-2">
-                                                <input
-                                                    placeholder="URL"
-                                                    value={item.url}
-                                                    onChange={e => updateItem(index, 'url', e.target.value)}
-                                                    className="input input-sm input-bordered w-full text-blue-500"
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-1">
-                                                <input
-                                                    placeholder="Icon URL"
-                                                    value={item.avatar}
-                                                    onChange={e => updateItem(index, 'avatar', e.target.value)}
-                                                    className="input input-sm input-bordered w-full text-xs"
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-1">
-                                                <input
-                                                    placeholder="Badge"
-                                                    value={item.badge || ''}
-                                                    onChange={e => updateItem(index, 'badge', e.target.value)}
-                                                    className="input input-sm input-bordered w-full text-xs"
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-1 flex justify-end">
-                                                <button
-                                                    onClick={() => removeItem(index)}
-                                                    className="btn btn-ghost btn-xs btn-square text-error opacity-20 group-hover:opacity-100"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="flex gap-4 pt-4 border-t border-base-200">
-                                    <button onClick={addItem} className="btn btn-outline gap-2">
-                                        <Plus className="w-4 h-4" /> Add Project
-                                    </button>
-                                    <div className="flex-1"></div>
+                createPortal(
+                    <div className="fixed inset-0 bg-base-100 z-[100] overflow-y-auto">
+                        <div className="max-w-6xl mx-auto p-4 md:p-10 min-h-screen">
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-2xl font-bold flex items-center gap-2">
+                                    <GripVertical className="w-8 h-8 text-primary" />
+                                    Edit Projects
+                                </h2>
+                                <div className="flex gap-2">
                                     <button
-                                        onClick={handleSave}
-                                        disabled={loading}
-                                        className="btn btn-primary px-8 gap-2"
+                                        onClick={() => setIsOpen(false)}
+                                        className="btn btn-ghost btn-circle"
                                     >
-                                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Changes'}
+                                        <X className="w-6 h-6" />
                                     </button>
                                 </div>
                             </div>
-                        )}
-                    </div>
-                </div>
+
+                            {loading && data.length === 0 ? (
+                                <div className="flex justify-center p-12">
+                                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                                </div>
+                            ) : (
+                                <div className="space-y-6">
+                                    <div className="bg-base-200/50 p-6 rounded-2xl border border-base-200">
+                                        <h3 className="font-bold text-lg mb-4 text-base-content/80 uppercase tracking-wider text-xs">Project List</h3>
+                                        <div className="space-y-3">
+                                            {data.map((item, index) => (
+                                                <div key={index} className="grid grid-cols-12 gap-2 items-center bg-base-100 p-3 rounded-lg shadow-sm group hover:shadow-md transition-shadow border border-base-200">
+                                                    <div className="col-span-12 md:col-span-3">
+                                                        <input
+                                                            placeholder="Name"
+                                                            value={item.name}
+                                                            onChange={e => updateItem(index, 'name', e.target.value)}
+                                                            className="input input-sm input-bordered w-full font-bold"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-4">
+                                                        <input
+                                                            placeholder="Description"
+                                                            value={item.description}
+                                                            onChange={e => updateItem(index, 'description', e.target.value)}
+                                                            className="input input-sm input-bordered w-full"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-2">
+                                                        <input
+                                                            placeholder="URL"
+                                                            value={item.url}
+                                                            onChange={e => updateItem(index, 'url', e.target.value)}
+                                                            className="input input-sm input-bordered w-full text-blue-500"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-1">
+                                                        <input
+                                                            placeholder="Icon URL"
+                                                            value={item.avatar}
+                                                            onChange={e => updateItem(index, 'avatar', e.target.value)}
+                                                            className="input input-sm input-bordered w-full text-xs"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-1">
+                                                        <input
+                                                            placeholder="Badge"
+                                                            value={item.badge || ''}
+                                                            onChange={e => updateItem(index, 'badge', e.target.value)}
+                                                            className="input input-sm input-bordered w-full text-xs"
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-12 md:col-span-1 flex justify-end">
+                                                        <button
+                                                            onClick={() => removeItem(index)}
+                                                            className="btn btn-ghost btn-xs btn-square text-error opacity-20 group-hover:opacity-100"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <button
+                                                onClick={addItem}
+                                                className="btn btn-ghost btn-sm btn-block border-dashed border-2 border-base-300 text-base-content/40 hover:border-primary hover:text-primary mt-2"
+                                            >
+                                                <Plus className="w-4 h-4 mr-2" /> Add Project
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-4 pt-4 border-t border-base-200">
+                                        <div className="flex-1"></div>
+                                        <button
+                                            onClick={handleSave}
+                                            disabled={loading}
+                                            className="btn btn-primary px-8 gap-2"
+                                        >
+                                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Changes'}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>,
+                    document.body
+                )
             )}
         </>
     );
