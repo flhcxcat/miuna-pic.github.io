@@ -22,8 +22,8 @@ import { getBilibiliVideoInfo, extractBilibiliVideoId, formatViewCount, formatVi
 import { getGitHubRepoInfo, extractGitHubRepo, formatGitHubCount, getLanguageColor } from "@utils/githubApi";
 import { getTMDBMovieInfo, getTMDBTVInfo, extractTMDBId, getTMDBImageUrl, formatTMDBRating, formatRuntime } from "@utils/tmdbApi";
 import { getYouTubeVideoInfo, extractYouTubeVideoId, formatYouTubeCount, parseYouTubeDuration, getYouTubeThumbnail } from "@utils/youtubeApi";
-import { getTikTokVideoInfo, extractTikTokId, getTikTokUrl } from "@utils/tiktokApi";
-import { getVNDBInfo, extractVNDBId, getVNDBUrl, formatVNDBRating, getVNDBLengthLabel } from "@utils/vndbApi";
+import { getTikTokVideoInfo, extractTikTokId } from "@utils/tiktokApi";
+import { getVNDBInfo, extractVNDBId, formatVNDBRating, getVNDBLengthLabel } from "@utils/vndbApi";
 
 import type { Page } from "astro";
 
@@ -170,6 +170,20 @@ async function renderContent(content: string, momentId: string) {
       tmdbLinks.push({ placeholder, url, mediaId });
       processedContent = processedContent.replace(match[0], placeholder);
       tmdbIndex++;
+    }
+  }
+  
+  // Detect YouTube links
+  let youtubeIndex = 0;
+  while ((match = youtubeLinkPattern.exec(content)) !== null) {
+    const url = match[2] || match[3];
+    const videoId = extractYouTubeVideoId(url);
+    
+    if (videoId) {
+      const placeholder = `<!--YOUTUBECARD${youtubeIndex}-->`;
+      youtubeLinks.push({ placeholder, url, videoId });
+      processedContent = processedContent.replace(match[0], placeholder);
+      youtubeIndex++;
     }
   }
   
@@ -570,6 +584,26 @@ async function renderContent(content: string, momentId: string) {
     }
   }
   
+  // Replace YouTube placeholders with actual cards
+  for (const { placeholder, url, videoId } of youtubeLinks) {
+    if (!videoId) continue;
+    const videoData = await getYouTubeVideoInfo(videoId);
+    
+    if (videoData) {
+      const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+      const viewCount = formatYouTubeCount(videoData.statistics.viewCount);
+      const duration = parseYouTubeDuration(videoData.contentDetails.duration);
+      const thumbnail = getYouTubeThumbnail(videoData.snippet.thumbnails);
+      
+      const youtubeCardHtml = `<div class="not-prose youtube-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${youtubeUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Watch ${videoData.snippet.title} on YouTube"><div class="relative w-full h-48 bg-base-300 overflow-hidden"><img src="${thumbnail}" alt="${videoData.snippet.title}" loading="lazy" class="w-full h-full object-cover"><div class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-white text-xs font-medium">${duration}</div></div><div class="p-4"><h3 class="font-bold text-base line-clamp-2 mb-2">${videoData.snippet.title}</h3><div class="flex items-center gap-2 mb-3"><span class="text-sm text-base-content/70">${videoData.snippet.channelTitle}</span></div><div class="flex items-center justify-between text-xs text-base-content/60"><div class="flex items-center gap-4"><span>▶ ${viewCount} 次观看</span></div><div class="flex items-center gap-1 text-primary"><svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg><span class="font-medium">YouTube</span></div></div></div></a></div>`;
+      
+      html = html.replace(placeholder, youtubeCardHtml);
+    } else {
+      // Fallback to a simple link if data fetch failed
+      html = html.replace(placeholder, `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">${url}</a>`);
+    }
+  }
+  
   // Replace TikTok placeholders with cards
   for (const { placeholder, url, videoInfo } of tiktokLinks) {
     if (!videoInfo) continue;
@@ -718,7 +752,8 @@ async function renderContent(content: string, momentId: string) {
     .github-card-moment,
     .tmdb-card-moment,
     .tiktok-card-moment,
-    .vndb-card-moment {
+    .vndb-card-moment,
+    .youtube-card-moment {
       max-width: 100%;
       width: 100%;
       box-sizing: border-box;
@@ -732,7 +767,8 @@ async function renderContent(content: string, momentId: string) {
     .github-card-moment img,
     .tmdb-card-moment img,
     .tiktok-card-moment img,
-    .vndb-card-moment img {
+    .vndb-card-moment img,
+    .youtube-card-moment img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -747,7 +783,8 @@ async function renderContent(content: string, momentId: string) {
       .github-card-moment,
       .tmdb-card-moment,
       .tiktok-card-moment,
-      .vndb-card-moment {
+      .vndb-card-moment,
+      .youtube-card-moment {
         margin-left: 0;
         margin-right: 0;
       }
