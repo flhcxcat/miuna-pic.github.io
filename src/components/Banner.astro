@@ -74,7 +74,7 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
       (hasTitle || hasSubtitle) && (
         <div class="relative z-20 h-[95%] w-full pointer-events-none">
           <div class="absolute left-1/2 top-1/2 w-4/5 -translate-x-1/2 -translate-y-1/2 lg:w-3/4">
-            <div class="flex flex-col pointer-events-auto">
+            <div class="flex flex-col pointer-events-auto" id="banner-text-container">
               {hasTitle && (
                 <div
                   class={`title font-banner ${useLargeFont ? "text-4xl md:text-6xl lg:text-8xl" : "text-3xl md:text-4xl lg:text-6xl"}`}
@@ -181,7 +181,7 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
           var type = function() {
             // 重新获取元素，防止 DOM 已更新
             var el = document.getElementById("typewriter-text");
-            if (!el) return;
+            if (!el || window.__BANNER_BUG_TRIGGERED__) return;
 
             var currentText = texts[textIndex] || "";
             if (isDeleting) {
@@ -206,6 +206,40 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
           type();
         }
       }
+
+      // 3. 复活节彩蛋：点击主页10次触发
+      var clickCount = 0;
+      var lastClickTime = 0;
+      var easterEggTriggered = false;
+
+      var handleHomeClick = function(e) {
+        // 只有在主页点击才计数
+        if (window.location.pathname !== '/') return;
+        
+        var now = Date.now();
+        // 2秒内连续点击
+        if (now - lastClickTime < 2000) {
+          clickCount++;
+        } else {
+          clickCount = 1;
+        }
+        lastClickTime = now;
+
+        if (clickCount >= 10 && !easterEggTriggered) {
+          easterEggTriggered = true;
+          var container = document.getElementById("banner-text-container");
+          if (container) {
+            container.innerHTML = '<div class="title font-banner text-4xl md:text-6xl lg:text-8xl animate-bounce text-white text-center">🐛你捉到了Bug</div>';
+            // 同时清理打字机定时器（通过删除 ID 元素已间接实现，但这里明确标记）
+            window.__BANNER_BUG_TRIGGERED__ = true;
+          }
+        }
+      };
+
+      // 为所有主页链接添加监听
+      document.querySelectorAll('a[href="/"]').forEach(function(link) {
+        link.addEventListener('click', handleHomeClick);
+      });
 
       // 2. 背景切换逻辑 (这里只处理初始化)
       var bgCurrent = document.getElementById("banner-bg-current");
