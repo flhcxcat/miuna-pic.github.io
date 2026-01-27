@@ -4,6 +4,20 @@ import { Icon } from "astro-icon/components";
 import MomentsEditor from "@/components/MomentsEditor";
 import MomentDeleteButton from "@/components/MomentDeleteButton";
 import momentsData from "@/data/moments.json";
+
+// HTML escape function to prevent compression errors
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// Get pagination from "@/components/widgets/Pagination.astro";
 import Pagination from "@/components/widgets/Pagination.astro";
 import { generatePageLinks } from "@utils/blogUtils";
 import Card from "@/components/temple/Card.astro";
@@ -254,7 +268,7 @@ async function renderContent(content: string, momentId: string) {
         platformIcons += '<svg class="w-4 h-4 text-base-content/60" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
       }
       if (game.platforms.linux) {
-        platformIcons += '<svg class="w-4 h-4 text-base-content/60" viewBox="0 0 24 24"><path fill="currentColor" d="M14.62 8.35c-.42 0-.77.34-.77.77s.35.77.77.77c.43 0 .78-.34.78-.77s-.35-.77-.78-.77zm-5.24 0c-.42 0-.77.34-.77.77s.35.77.77.77.77-.34.77-.77-.34-.77-.77-.77zm7.13-1.94c-.02 0-.04 0-.05.01L15.14 7.8c.47 1.37.68 2.78.62 4.18-.02.43-.04.85-.1 1.27-.44 3.11-2.29 5.5-4.14 5.32-1.85-.18-3.18-2.79-2.74-5.9.06-.42.15-.83.27-1.23-.37.03-.74.04-1.09.03-1.63-.03-3.07-.46-4.03-1.14C1.2 15.63 0 20.11 0 20.11s2.66 3.89 9.1 3.89c6.43 0 11.98-4.71 13.83-8.82.75-1.66 1.07-3.17 1.07-4.5 0-1.82-.51-3.13-1.41-3.88-.59-.5-1.29-.64-2.08-.39zm-3.76 15.64c-.35.07-.7.11-1.04-.01-.8-.28-2.04-1.7-2.67-3.39.64.56 1.53.84 2.44.62.68-.16 1.24-.65 1.6-1.31.36-.66.44-1.44.22-2.14-.23-.73-.78-1.31-1.5-1.63-.73-.31-1.57-.25-2.26.18-.38.24-.69.56-.91.94-.5.88-.5 1.96-.05 2.87-.07.36-.12.73-.16 1.11-.37 2.57.64 4.93 2.24 5.24.54.1.99.01 1.27-.09 1.18-.33 2.06-1.1 2.74-1.97l-.92-1.07c-.5.64-1.17 1.21-1.85 1.42-.25.08-.52.11-.79.14.05 0 .09.01.14.03.68.12 1.38-.01 2.01-.37.63-.36 1.14-.9 1.46-1.56.32-.66.43-1.41.31-2.13-.12-.71-.51-1.36-1.1-1.83-.59-.47-1.35-.71-2.11-.67-.28.01-.55.07-.81.19-.48.22-.89.57-1.15 1.01-.26.44-.35.96-.26 1.45.09.49.37.91.79 1.18.42.27.94.37 1.42.27.12-.03.24-.06.35-.12.29-.15.54-.38.7-.66.16-.28.23-.6.18-.91-.05-.31-.22-.58-.47-.77.22.04.43.13.6.27.17.14.28.33.32.54.04.21 0 .42-.11.61-.11.19-.29.34-.5.42-.43.16-.94.11-1.32-.15-.39-.26-.65-.67-.7-1.13-.05-.46.06-1.07.5-1.48.44-.41 1.06-.58 1.66-.48.6.1 1.14.47 1.48 1.01.34.54.46 1.21.32 1.84-.14.63-.53 1.17-1.08 1.51-.55.34-1.24.45-1.88.29-.07-.02-.14-.04-.21-.06-.35-.12-.67-.32-.93-.58-.5-.51-.79-1.21-.79-1.94 0-.22.02-.43.07-.64.23-.93.93-1.63 1.81-1.91.88-.28 1.84-.17 2.64.29.8.46 1.37 1.25 1.54 2.19.17.94-.02 1.96-.51 2.77-.49.81-1.24 1.42-2.14 1.66z"/></svg>';
+        platformIcons += '<svg class="w-4 h-4 text-base-content/60" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.53918 2.40715C4.82145 1.0075 6.06066 0 7.49996 0C8.93926 0 10.1785 1.0075 10.4607 2.40715L10.798 4.07944C10.9743 4.9539 11.3217 5.78562 11.8205 6.52763L12.4009 7.39103C12.7631 7.92978 12.9999 8.5385 13.0979 9.17323C13.6747 9.22167 14.1803 9.58851 14.398 10.1283L14.8897 11.3474C15.1376 11.962 14.9583 12.665 14.4455 13.0887L12.5614 14.6458C12.0128 15.0992 11.2219 15.1193 10.6506 14.6944L9.89192 14.1301C9.88189 14.1227 9.87197 14.1151 9.86216 14.1074C9.48973 14.2075 9.09793 14.261 8.69355 14.261H6.30637C5.90201 14.261 5.51023 14.2076 5.13782 14.1074C5.12802 14.1151 5.11811 14.1227 5.10808 14.1301L4.34942 14.6944C3.77811 15.1193 2.98725 15.0992 2.43863 14.6458L0.55446 13.0887C0.0417175 12.665 -0.1376 11.962 0.110281 11.3474L0.602025 10.1283C0.819715 9.58854 1.32527 9.2217 1.90198 9.17324C2 8.5385 2.2368 7.92978 2.59897 7.39103L3.17938 6.52763C3.67818 5.78562 4.02557 4.9539 4.20193 4.07944L4.53918 2.40715ZM10.8445 9.47585C10.6345 9.63293 10.4642 9.84382 10.3561 10.0938L9.58799 11.8713C9.20026 12.0979 8.75209 12.2237 8.28465 12.2237H6.7153C6.24789 12.2237 5.79975 12.0979 5.41203 11.8714L4.64386 10.0938C4.53581 9.8438 4.36552 9.6329 4.15546 9.47582C4.18121 9.15355 4.2689 8.83503 4.41853 8.53826L5.67678 6.04259L5.68433 6.05007C6.68715 7.04458 8.31304 7.04458 9.31585 6.05007L9.32324 6.04274L10.5814 8.53825C10.7311 8.83504 10.8187 9.15357 10.8445 9.47585ZM9.04068 4.26906V3.05592H8.01353V3.85713C8.23151 3.90123 8.44506 3.97371 8.64848 4.07458L9.04068 4.26906ZM6.98638 3.85718V3.05592H5.95923V4.26919L6.3517 4.07458C6.55504 3.97375 6.7685 3.90129 6.98638 3.85718ZM2.03255 10.1864C1.82255 10.1864 1.6337 10.3132 1.55571 10.5066L1.06397 11.7257C0.981339 11.9306 1.04111 12.1649 1.21203 12.3062L3.0962 13.8633C3.27907 14.0144 3.54269 14.0211 3.73313 13.8795L4.49179 13.3152C4.6813 13.1743 4.74901 12.923 4.6557 12.7071L3.69976 10.4951C3.61884 10.3078 3.43316 10.1864 3.22771 10.1864H2.03255ZM13.4443 10.5066C13.3663 10.3132 13.1775 10.1864 12.9674 10.1864H11.7723C11.5668 10.1864 11.3812 10.3078 11.3002 10.4951L10.3443 12.7071C10.251 12.923 10.3187 13.1743 10.5082 13.3152L11.2669 13.8795C11.4573 14.0211 11.7209 14.0144 11.9038 13.8633L13.788 12.3062C13.9589 12.1649 14.0187 11.9306 13.936 11.7257L13.4443 10.5066ZM6.81106 4.98568C7.24481 4.7706 7.75537 4.7706 8.18912 4.98568L8.68739 5.23275L8.58955 5.32978C7.98786 5.92649 7.01232 5.92649 6.41063 5.32978L6.31279 5.23275L6.81106 4.98568Z" fill="currentColor"/></svg>';
       }
       platformIcons += '</div>';
       
@@ -263,7 +277,7 @@ async function renderContent(content: string, momentId: string) {
       if (game.genres && game.genres.length > 0) {
         genresHtml = '<div class="flex flex-wrap gap-1 mb-2">';
         game.genres.slice(0, 5).forEach(genre => {
-          genresHtml += `<span class="badge badge-outline badge-sm">${genre.description}</span>`;
+          genresHtml += `<span class="badge badge-outline badge-sm">${escapeHtml(genre.description)}</span>`;
         });
         genresHtml += '</div>';
       }
@@ -271,9 +285,9 @@ async function renderContent(content: string, momentId: string) {
       // Build Steam card HTML
       const steamCardHtml = `
         <div class="not-prose steam-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-          <a href="${steamUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Visit ${game.name} on Steam">
+          <a href="${steamUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Visit ${escapeHtml(game.name)} on Steam">
             <div class="relative w-full h-40 bg-base-300 overflow-hidden">
-              <img src="${game.header_image}" alt="${game.name}" loading="lazy" class="w-full h-full object-cover">
+              <img src="${game.header_image}" alt="${escapeHtml(game.name)}" loading="lazy" class="w-full h-full object-cover">
               <div class="absolute bottom-2 left-2">
                 ${hasDiscount && game.price_overview ? `
                   <div class="flex items-center gap-2">
@@ -292,10 +306,10 @@ async function renderContent(content: string, momentId: string) {
             </div>
             <div class="p-3">
               <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="font-bold text-base line-clamp-1">${game.name}</h3>
+                <h3 class="font-bold text-base line-clamp-1">${escapeHtml(game.name)}</h3>
                 ${platformIcons}
               </div>
-              <p class="text-sm text-base-content/80 line-clamp-2 mb-2">${game.short_description}</p>
+              <p class="text-sm text-base-content/80 line-clamp-2 mb-2">${escapeHtml(game.short_description)}</p>
               ${genresHtml}
               <div class="flex items-center gap-1 text-primary text-xs mt-2">
                 <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
@@ -331,7 +345,7 @@ async function renderContent(content: string, momentId: string) {
       if (subject.tags && subject.tags.length > 0) {
         tagsHtml = '<div class="flex flex-wrap gap-1 mb-2">';
         subject.tags.slice(0, 5).forEach(tag => {
-          tagsHtml += `<span class="badge badge-outline badge-sm">${tag.name}</span>`;
+          tagsHtml += `<span class="badge badge-outline badge-sm">${escapeHtml(tag.name)}</span>`;
         });
         tagsHtml += '</div>';
       }
@@ -339,9 +353,9 @@ async function renderContent(content: string, momentId: string) {
       // Build Bangumi card HTML
       const bangumiCardHtml = `
         <div class="not-prose bangumi-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-          <a href="${bangumiUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Visit ${displayName} on Bangumi">
+          <a href="${bangumiUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Visit ${escapeHtml(displayName)} on Bangumi">
             <div class="relative w-full h-40 bg-base-300 overflow-hidden">
-              <img src="${subject.images.large}" alt="${displayName}" loading="lazy" class="w-full h-full object-cover">
+              <img src="${subject.images.large}" alt="${escapeHtml(displayName)}" loading="lazy" class="w-full h-full object-cover">
               ${subject.rating && subject.rating.score > 0 ? `
                 <div class="absolute bottom-2 left-2 bg-base-100/90 backdrop-blur-sm px-2 py-1 rounded flex items-center gap-1">
                   <svg class="w-4 h-4 text-warning" viewBox="0 0 24 24" fill="currentColor"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg>
@@ -352,10 +366,10 @@ async function renderContent(content: string, momentId: string) {
             </div>
             <div class="p-3">
               <div class="mb-1">
-                <h3 class="font-bold text-base line-clamp-1 break-words">${displayName}</h3>
-                ${originalName ? `<p class="text-xs text-base-content/60 line-clamp-1 break-words">${originalName}</p>` : ''}
+                <h3 class="font-bold text-base line-clamp-1 break-words">${escapeHtml(displayName)}</h3>
+                ${originalName ? `<p class="text-xs text-base-content/60 line-clamp-1 break-words">${escapeHtml(originalName)}</p>` : ''}
               </div>
-              <p class="text-sm text-base-content/80 line-clamp-2 mb-2 break-words">${subject.summary || '暂无简介'}</p>
+              <p class="text-sm text-base-content/80 line-clamp-2 mb-2 break-words">${escapeHtml(subject.summary || '暂无简介')}</p>
               ${tagsHtml}
               <div class="flex items-center gap-1 text-primary text-xs mt-2">
                 <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
@@ -387,15 +401,15 @@ async function renderContent(content: string, momentId: string) {
       
       const neteaseCardHtml = `
         <div class="not-prose netease-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-          <a href="${neteaseUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Play ${songData.name} on NetEase Cloud Music">
+          <a href="${neteaseUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Play ${escapeHtml(songData.name)} on NetEase Cloud Music">
             <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
               <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden shadow-md shrink-0">
-                <img src="${songData.album.picUrl}" alt="${songData.album.name}" loading="lazy" class="w-full h-full object-cover">
+                <img src="${songData.album.picUrl}" alt="${escapeHtml(songData.album.name)}" loading="lazy" class="w-full h-full object-cover">
               </div>
               <div class="flex-1 min-w-0">
-                <h3 class="font-bold text-base line-clamp-1 mb-0.5 sm:mb-1 break-words">${songData.name}</h3>
-                <p class="text-sm text-base-content/70 line-clamp-1 mb-0.5 sm:mb-1 break-words">${artistNames}</p>
-                <p class="text-xs text-base-content/60 line-clamp-1 break-words">${songData.album.name}</p>
+                <h3 class="font-bold text-base line-clamp-1 mb-0.5 sm:mb-1 break-words">${escapeHtml(songData.name)}</h3>
+                <p class="text-sm text-base-content/70 line-clamp-1 mb-0.5 sm:mb-1 break-words">${escapeHtml(artistNames)}</p>
+                <p class="text-xs text-base-content/60 line-clamp-1 break-words">${escapeHtml(songData.album.name)}</p>
               </div>
               <div class="flex flex-col items-end gap-1 sm:gap-2 shrink-0 ml-1">
                 <div class="flex items-center gap-1 text-primary">
@@ -430,18 +444,18 @@ async function renderContent(content: string, momentId: string) {
       
       const bilibiliCardHtml = `
         <div class="not-prose bilibili-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-          <a href="${bilibiliUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Watch ${videoData.title} on Bilibili">
+          <a href="${bilibiliUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Watch ${escapeHtml(videoData.title)} on Bilibili">
             <div class="relative w-full h-48 bg-base-300 overflow-hidden">
-              <img src="${videoData.pic}" alt="${videoData.title}" loading="lazy" class="w-full h-full object-cover" referrerpolicy="no-referrer">
+              <img src="${videoData.pic}" alt="${escapeHtml(videoData.title)}" loading="lazy" class="w-full h-full object-cover" referrerpolicy="no-referrer">
               <div class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-white text-xs font-medium">
                 ${duration}
               </div>
             </div>
             <div class="p-4">
-              <h3 class="font-bold text-base line-clamp-2 mb-2 break-words">${videoData.title}</h3>
+              <h3 class="font-bold text-base line-clamp-2 mb-2 break-words">${escapeHtml(videoData.title)}</h3>
               <div class="flex items-center gap-2 mb-3">
-                <img src="${videoData.owner.face}" alt="${videoData.owner.name}" class="w-6 h-6 rounded-full" referrerpolicy="no-referrer">
-                <span class="text-sm text-base-content/70 truncate">${videoData.owner.name}</span>
+                <img src="${videoData.owner.face}" alt="${escapeHtml(videoData.owner.name)}" class="w-6 h-6 rounded-full" referrerpolicy="no-referrer">
+                <span class="text-sm text-base-content/70 truncate">${escapeHtml(videoData.owner.name)}</span>
               </div>
               <div class="flex items-center justify-between text-xs text-base-content/60">
                 <div class="flex items-center gap-4">
@@ -479,22 +493,22 @@ async function renderContent(content: string, momentId: string) {
       
       const githubCardHtml = `
         <div class="not-prose github-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-          <a href="${repoData.html_url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${repoData.full_name} on GitHub">
+          <a href="${repoData.html_url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${escapeHtml(repoData.full_name)} on GitHub">
             <div class="p-4">
               <div class="flex items-start gap-3 mb-3">
                 <svg class="w-5 h-5 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                 </svg>
                 <div class="flex-1 min-w-0">
-                  <h3 class="font-bold text-base mb-1 break-words">${repoData.full_name}</h3>
-                  <p class="text-sm text-base-content/70 line-clamp-2 break-words">${repoData.description || '无描述'}</p>
+                  <h3 class="font-bold text-base mb-1 break-words">${escapeHtml(repoData.full_name)}</h3>
+                  <p class="text-sm text-base-content/70 line-clamp-2 break-words">${escapeHtml(repoData.description || '无描述')}</p>
                 </div>
               </div>
               <div class="flex items-center gap-4 text-xs text-base-content/60">
                 ${repoData.language ? `
                   <div class="flex items-center gap-1.5">
                     <span class="w-3 h-3 rounded-full" style="background-color: ${languageColor}"></span>
-                    <span>${repoData.language}</span>
+                    <span>${escapeHtml(repoData.language)}</span>
                   </div>
                 ` : ''}
                 <div class="flex items-center gap-1">
@@ -545,10 +559,10 @@ async function renderContent(content: string, momentId: string) {
       
       const tmdbCardHtml = `
         <div class="not-prose tmdb-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-          <a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${title} on TMDB">
+          <a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${escapeHtml(title)} on TMDB">
             <div class="flex flex-col xs:flex-row gap-3 sm:gap-4 p-3 sm:p-4">
               <div class="w-full xs:w-32 h-64 xs:h-48 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300">
-                <img src="${posterUrl}" alt="${title}" loading="lazy" class="w-full h-full object-cover" referrerpolicy="no-referrer">
+                <img src="${posterUrl}" alt="${escapeHtml(title)}" loading="lazy" class="w-full h-full object-cover" referrerpolicy="no-referrer">
               </div>
               <div class="flex-1 min-w-0 flex flex-col">
                 <div class="mb-2">
@@ -556,10 +570,10 @@ async function renderContent(content: string, momentId: string) {
                     <span class="badge badge-primary badge-sm">${mediaType}</span>
                     <span class="text-xs text-base-content/60">${year}</span>
                   </div>
-                  <h3 class="font-bold text-base line-clamp-1 mb-0.5 sm:mb-1 break-words">${title}</h3>
-                  ${originalTitle !== title ? `<p class="text-xs text-base-content/60 line-clamp-1 mb-2 break-words">${originalTitle}</p>` : ''}
+                  <h3 class="font-bold text-base line-clamp-1 mb-0.5 sm:mb-1 break-words">${escapeHtml(title)}</h3>
+                  ${originalTitle !== title ? `<p class="text-xs text-base-content/60 line-clamp-1 mb-2 break-words">${escapeHtml(originalTitle)}</p>` : ''}
                 </div>
-                <p class="text-sm text-base-content/70 line-clamp-2 xs:line-clamp-3 mb-auto break-words">${mediaData.overview || '暂无简介'}</p>
+                <p class="text-sm text-base-content/70 line-clamp-2 xs:line-clamp-3 mb-auto break-words">${escapeHtml(mediaData.overview || '暂无简介')}</p>
                 <div class="flex items-center gap-x-4 gap-y-1 flex-wrap text-xs text-base-content/60 mt-3">
                   <div class="flex items-center gap-1">
                     <svg class="w-4 h-4 text-yellow-500" viewBox="0 0 24 24" fill="currentColor">
@@ -567,7 +581,7 @@ async function renderContent(content: string, momentId: string) {
                     </svg>
                     <span class="font-medium">${rating}</span>
                   </div>
-                  ${genres ? `<span class="truncate max-w-[120px]">${genres}</span>` : ''}
+                  ${genres ? `<span class="truncate max-w-[120px]">${escapeHtml(genres)}</span>` : ''}
                   <span>${extraInfo}</span>
                 </div>
               </div>
@@ -594,7 +608,7 @@ async function renderContent(content: string, momentId: string) {
       const duration = parseYouTubeDuration(videoData.contentDetails.duration);
       const thumbnail = getYouTubeThumbnail(videoData.snippet.thumbnails);
       
-      const youtubeCardHtml = `<div class="not-prose youtube-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${youtubeUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Watch ${videoData.snippet.title} on YouTube"><div class="relative w-full h-48 bg-base-300 overflow-hidden"><img src="${thumbnail}" alt="${videoData.snippet.title}" loading="lazy" class="w-full h-full object-cover"><div class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-white text-xs font-medium">${duration}</div></div><div class="p-4"><h3 class="font-bold text-base line-clamp-2 mb-2">${videoData.snippet.title}</h3><div class="flex items-center gap-2 mb-3"><span class="text-sm text-base-content/70">${videoData.snippet.channelTitle}</span></div><div class="flex items-center justify-between text-xs text-base-content/60"><div class="flex items-center gap-4"><span>▶ ${viewCount} 次观看</span></div><div class="flex items-center gap-1 text-primary"><svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg><span class="font-medium">YouTube</span></div></div></div></a></div>`;
+      const youtubeCardHtml = `<div class="not-prose youtube-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${youtubeUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Watch ${escapeHtml(videoData.snippet.title)} on YouTube"><div class="relative w-full h-48 bg-base-300 overflow-hidden"><img src="${thumbnail}" alt="${escapeHtml(videoData.snippet.title)}" loading="lazy" class="w-full h-full object-cover"><div class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-white text-xs font-medium">${duration}</div></div><div class="p-4"><h3 class="font-bold text-base line-clamp-2 mb-2">${escapeHtml(videoData.snippet.title)}</h3><div class="flex items-center gap-2 mb-3"><span class="text-sm text-base-content/70">${escapeHtml(videoData.snippet.channelTitle)}</span></div><div class="flex items-center justify-between text-xs text-base-content/60"><div class="flex items-center gap-4"><span>▶ ${viewCount} 次观看</span></div><div class="flex items-center gap-1 text-primary"><svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg><span class="font-medium">YouTube</span></div></div></div></a></div>`;
       
       html = html.replace(placeholder, youtubeCardHtml);
     } else {
@@ -610,7 +624,7 @@ async function renderContent(content: string, momentId: string) {
     const videoData = await getTikTokVideoInfo(url);
     
     if (videoData) {
-      const tiktokCardHtml = `<div class="not-prose tiktok-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${videoData.title} on TikTok"><div class="flex flex-col xs:flex-row gap-3 sm:gap-4 p-3 sm:p-4"><div class="w-full xs:w-32 h-48 xs:h-40 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300"><img src="${videoData.thumbnail_url}" alt="${videoData.title}" loading="lazy" class="w-full h-full object-cover"></div><div class="flex-1 min-w-0 flex flex-col"><div class="mb-2"><div class="flex items-center gap-2 mb-1"><span class="badge badge-error badge-sm font-medium">TikTok</span><span class="text-xs text-base-content/60 truncate">@${videoData.author_name}</span></div><h3 class="font-bold text-base line-clamp-2 mb-1 break-words">${videoData.title}</h3></div><div class="mt-auto"><div class="flex items-center gap-2 text-primary text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>在 TikTok 上观看</span></div></div></div></div></a></div>`;
+      const tiktokCardHtml = `<div class="not-prose tiktok-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${escapeHtml(videoData.title)} on TikTok"><div class="flex flex-col xs:flex-row gap-3 sm:gap-4 p-3 sm:p-4"><div class="w-full xs:w-32 h-48 xs:h-40 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300"><img src="${videoData.thumbnail_url}" alt="${escapeHtml(videoData.title)}" loading="lazy" class="w-full h-full object-cover"></div><div class="flex-1 min-w-0 flex flex-col"><div class="mb-2"><div class="flex items-center gap-2 mb-1"><span class="badge badge-error badge-sm font-medium">TikTok</span><span class="text-xs text-base-content/60 truncate">@${escapeHtml(videoData.author_name)}</span></div><h3 class="font-bold text-base line-clamp-2 mb-1 break-words">${escapeHtml(videoData.title)}</h3></div><div class="mt-auto"><div class="flex items-center gap-2 text-primary text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>在 TikTok 上观看</span></div></div></div></div></a></div>`;
       
       html = html.replace(placeholder, tiktokCardHtml);
     } else {
@@ -631,7 +645,7 @@ async function renderContent(content: string, momentId: string) {
       const developer = vnData.developers && vnData.developers.length > 0 ? vnData.developers[0].name : 'Unknown';
       const imageUrl = vnData.image?.url || '';
       
-      const vndbCardHtml = `<div class="not-prose vndb-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${vnData.title} on VNDB"><div class="flex flex-col xs:flex-row gap-3 sm:gap-4 p-3 sm:p-4"><div class="w-full xs:w-32 h-56 xs:h-44 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300">${imageUrl ? `<img src="${imageUrl}" alt="${vnData.title}" loading="lazy" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-base-content/30"><svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>'}</div><div class="flex-1 min-w-0 flex flex-col"><div class="mb-2"><div class="flex items-center gap-2 mb-1"><span class="badge badge-info badge-sm font-medium">VNDB</span><span class="text-xs text-base-content/60 truncate">${developer}</span></div><h3 class="font-bold text-base line-clamp-2 mb-1 break-words">${vnData.title}</h3>${vnData.alttitle ? `<p class="text-sm text-base-content/60 line-clamp-1 break-words">${vnData.alttitle}</p>` : ''}</div><div class="mt-auto space-y-1"><div class="flex items-center gap-3 text-sm"><div class="flex items-center gap-1"><svg class="w-4 h-4 text-warning" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="font-medium">${rating}</span></div><div class="text-base-content/60">•</div><div class="text-base-content/60 truncate">${length}</div></div><div class="flex items-center gap-2 text-primary text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>在 VNDB 上查看</span></div></div></div></div></a></div>`;
+      const vndbCardHtml = `<div class="not-prose vndb-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${escapeHtml(vnData.title)} on VNDB"><div class="flex flex-col xs:flex-row gap-3 sm:gap-4 p-3 sm:p-4"><div class="w-full xs:w-32 h-56 xs:h-44 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300">${imageUrl ? `<img src="${imageUrl}" alt="${escapeHtml(vnData.title)}" loading="lazy" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-base-content/30"><svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>'}</div><div class="flex-1 min-w-0 flex flex-col"><div class="mb-2"><div class="flex items-center gap-2 mb-1"><span class="badge badge-info badge-sm font-medium">VNDB</span><span class="text-xs text-base-content/60 truncate">${escapeHtml(developer)}</span></div><h3 class="font-bold text-base line-clamp-2 mb-1 break-words">${escapeHtml(vnData.title)}</h3>${vnData.alttitle ? `<p class="text-sm text-base-content/60 line-clamp-1 break-words">${escapeHtml(vnData.alttitle)}</p>` : ''}</div><div class="mt-auto space-y-1"><div class="flex items-center gap-3 text-sm"><div class="flex items-center gap-1"><svg class="w-4 h-4 text-warning" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="font-medium">${rating}</span></div><div class="text-base-content/60">•</div><div class="text-base-content/60 truncate">${length}</div></div><div class="flex items-center gap-2 text-primary text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>在 VNDB 上查看</span></div></div></div></div></a></div>`;
       
       html = html.replace(placeholder, vndbCardHtml);
     } else {

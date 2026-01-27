@@ -209,21 +209,13 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
 
       // 3. 复活节彩蛋：点击主页10次触发
       var clickCount = 0;
-      var lastClickTime = 0;
       var easterEggTriggered = false;
 
       var handleHomeClick = function() {
         // 只有在主页点击才计数
         if (window.location.pathname !== '/') return;
         
-        var now = Date.now();
-        // 2秒内连续点击
-        if (now - lastClickTime < 2000) {
-          clickCount++;
-        } else {
-          clickCount = 1;
-        }
-        lastClickTime = now;
+        clickCount++;
 
         if (clickCount >= 10 && !easterEggTriggered) {
           easterEggTriggered = true;
@@ -236,9 +228,18 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
         }
       };
 
-      // 为所有主页链接添加监听
-      document.querySelectorAll('a[href="/"]').forEach(function(link) {
+      // 为所有主页链接添加监听（支持多种 URL 格式）
+      document.querySelectorAll('a[href="/"], a[href="/#"], a[href^="/?"]').forEach(function(link) {
         link.addEventListener('click', handleHomeClick);
+      });
+      
+      // 同时扫描导航栏中的所有链接，确保捕获头像链接
+      var navbarLinks = document.querySelectorAll('nav a');
+      navbarLinks.forEach(function(link) {
+        var href = link.getAttribute('href');
+        if (href === '/' || href === '/#' || href.startsWith('/?')) {
+          link.addEventListener('click', handleHomeClick);
+        }
       });
 
       // 2. 背景切换逻辑 (这里只处理初始化)
