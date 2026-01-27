@@ -352,10 +352,10 @@ async function renderContent(content: string, momentId: string) {
             </div>
             <div class="p-3">
               <div class="mb-1">
-                <h3 class="font-bold text-base line-clamp-1">${displayName}</h3>
-                ${originalName ? `<p class="text-xs text-base-content/60 line-clamp-1">${originalName}</p>` : ''}
+                <h3 class="font-bold text-base line-clamp-1 break-words">${displayName}</h3>
+                ${originalName ? `<p class="text-xs text-base-content/60 line-clamp-1 break-words">${originalName}</p>` : ''}
               </div>
-              <p class="text-sm text-base-content/80 line-clamp-2 mb-2">${subject.summary || '暂无简介'}</p>
+              <p class="text-sm text-base-content/80 line-clamp-2 mb-2 break-words">${subject.summary || '暂无简介'}</p>
               ${tagsHtml}
               <div class="flex items-center gap-1 text-primary text-xs mt-2">
                 <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
@@ -388,23 +388,23 @@ async function renderContent(content: string, momentId: string) {
       const neteaseCardHtml = `
         <div class="not-prose netease-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
           <a href="${neteaseUrl}" target="_blank" rel="noopener noreferrer" class="block" aria-label="Play ${songData.name} on NetEase Cloud Music">
-            <div class="flex items-center gap-4 p-4">
-              <div class="w-20 h-20 rounded-lg overflow-hidden shadow-md shrink-0">
+            <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden shadow-md shrink-0">
                 <img src="${songData.album.picUrl}" alt="${songData.album.name}" loading="lazy" class="w-full h-full object-cover">
               </div>
               <div class="flex-1 min-w-0">
-                <h3 class="font-bold text-base line-clamp-1 mb-1">${songData.name}</h3>
-                <p class="text-sm text-base-content/70 line-clamp-1 mb-1">${artistNames}</p>
-                <p class="text-xs text-base-content/60 line-clamp-1">${songData.album.name}</p>
+                <h3 class="font-bold text-base line-clamp-1 mb-0.5 sm:mb-1 break-words">${songData.name}</h3>
+                <p class="text-sm text-base-content/70 line-clamp-1 mb-0.5 sm:mb-1 break-words">${artistNames}</p>
+                <p class="text-xs text-base-content/60 line-clamp-1 break-words">${songData.album.name}</p>
               </div>
-              <div class="flex flex-col items-end gap-2 shrink-0">
-                <div class="flex items-center gap-1.5 text-primary">
-                  <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <div class="flex flex-col items-end gap-1 sm:gap-2 shrink-0 ml-1">
+                <div class="flex items-center gap-1 text-primary">
+                  <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M10,16.5V7.5L16,12M12,13.5L13.5,12.75L12,12V13.5Z"/>
                   </svg>
-                  <span class="text-xs font-medium">网易云音乐</span>
+                  <span class="text-[10px] sm:text-xs font-medium truncate max-w-[40px] sm:max-w-none">网易云</span>
                 </div>
-                <span class="text-xs text-base-content/60">${duration}</span>
+                <span class="text-[10px] sm:text-xs text-base-content/60">${duration}</span>
               </div>
             </div>
           </a>
@@ -438,10 +438,10 @@ async function renderContent(content: string, momentId: string) {
               </div>
             </div>
             <div class="p-4">
-              <h3 class="font-bold text-base line-clamp-2 mb-2">${videoData.title}</h3>
+              <h3 class="font-bold text-base line-clamp-2 mb-2 break-words">${videoData.title}</h3>
               <div class="flex items-center gap-2 mb-3">
                 <img src="${videoData.owner.face}" alt="${videoData.owner.name}" class="w-6 h-6 rounded-full" referrerpolicy="no-referrer">
-                <span class="text-sm text-base-content/70">${videoData.owner.name}</span>
+                <span class="text-sm text-base-content/70 truncate">${videoData.owner.name}</span>
               </div>
               <div class="flex items-center justify-between text-xs text-base-content/60">
                 <div class="flex items-center gap-4">
@@ -486,8 +486,8 @@ async function renderContent(content: string, momentId: string) {
                   <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                 </svg>
                 <div class="flex-1 min-w-0">
-                  <h3 class="font-bold text-base mb-1">${repoData.full_name}</h3>
-                  <p class="text-sm text-base-content/70 line-clamp-2">${repoData.description || '无描述'}</p>
+                  <h3 class="font-bold text-base mb-1 break-words">${repoData.full_name}</h3>
+                  <p class="text-sm text-base-content/70 line-clamp-2 break-words">${repoData.description || '无描述'}</p>
                 </div>
               </div>
               <div class="flex items-center gap-4 text-xs text-base-content/60">
@@ -546,8 +546,8 @@ async function renderContent(content: string, momentId: string) {
       const tmdbCardHtml = `
         <div class="not-prose tmdb-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
           <a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${title} on TMDB">
-            <div class="flex gap-4 p-4">
-              <div class="w-32 h-48 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300">
+            <div class="flex flex-col xs:flex-row gap-3 sm:gap-4 p-3 sm:p-4">
+              <div class="w-full xs:w-32 h-64 xs:h-48 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300">
                 <img src="${posterUrl}" alt="${title}" loading="lazy" class="w-full h-full object-cover" referrerpolicy="no-referrer">
               </div>
               <div class="flex-1 min-w-0 flex flex-col">
@@ -556,19 +556,18 @@ async function renderContent(content: string, momentId: string) {
                     <span class="badge badge-primary badge-sm">${mediaType}</span>
                     <span class="text-xs text-base-content/60">${year}</span>
                   </div>
-                  <h3 class="font-bold text-base line-clamp-1 mb-1">${title}</h3>
-                  ${originalTitle !== title ? `<p class="text-xs text-base-content/60 line-clamp-1 mb-2">${originalTitle}</p>` : ''}
+                  <h3 class="font-bold text-base line-clamp-1 mb-0.5 sm:mb-1 break-words">${title}</h3>
+                  ${originalTitle !== title ? `<p class="text-xs text-base-content/60 line-clamp-1 mb-2 break-words">${originalTitle}</p>` : ''}
                 </div>
-                <p class="text-sm text-base-content/70 line-clamp-3 mb-auto">${mediaData.overview || '暂无简介'}</p>
-                <div class="flex items-center gap-4 text-xs text-base-content/60 mt-3">
+                <p class="text-sm text-base-content/70 line-clamp-2 xs:line-clamp-3 mb-auto break-words">${mediaData.overview || '暂无简介'}</p>
+                <div class="flex items-center gap-x-4 gap-y-1 flex-wrap text-xs text-base-content/60 mt-3">
                   <div class="flex items-center gap-1">
                     <svg class="w-4 h-4 text-yellow-500" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
                     <span class="font-medium">${rating}</span>
-                    <span>(${mediaData.vote_count})</span>
                   </div>
-                  ${genres ? `<span>${genres}</span>` : ''}
+                  ${genres ? `<span class="truncate max-w-[120px]">${genres}</span>` : ''}
                   <span>${extraInfo}</span>
                 </div>
               </div>
@@ -611,7 +610,7 @@ async function renderContent(content: string, momentId: string) {
     const videoData = await getTikTokVideoInfo(url);
     
     if (videoData) {
-      const tiktokCardHtml = `<div class="not-prose tiktok-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${videoData.title} on TikTok"><div class="flex gap-4 p-4"><div class="w-32 h-40 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300"><img src="${videoData.thumbnail_url}" alt="${videoData.title}" loading="lazy" class="w-full h-full object-cover"></div><div class="flex-1 min-w-0 flex flex-col"><div class="mb-2"><div class="flex items-center gap-2 mb-1"><span class="badge badge-error badge-sm font-medium">TikTok</span><span class="text-xs text-base-content/60">@${videoData.author_name}</span></div><h3 class="font-bold text-base line-clamp-2 mb-1">${videoData.title}</h3></div><div class="mt-auto"><div class="flex items-center gap-2 text-primary text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>在 TikTok 上观看</span></div></div></div></div></a></div>`;
+      const tiktokCardHtml = `<div class="not-prose tiktok-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${videoData.title} on TikTok"><div class="flex flex-col xs:flex-row gap-3 sm:gap-4 p-3 sm:p-4"><div class="w-full xs:w-32 h-48 xs:h-40 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300"><img src="${videoData.thumbnail_url}" alt="${videoData.title}" loading="lazy" class="w-full h-full object-cover"></div><div class="flex-1 min-w-0 flex flex-col"><div class="mb-2"><div class="flex items-center gap-2 mb-1"><span class="badge badge-error badge-sm font-medium">TikTok</span><span class="text-xs text-base-content/60 truncate">@${videoData.author_name}</span></div><h3 class="font-bold text-base line-clamp-2 mb-1 break-words">${videoData.title}</h3></div><div class="mt-auto"><div class="flex items-center gap-2 text-primary text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>在 TikTok 上观看</span></div></div></div></div></a></div>`;
       
       html = html.replace(placeholder, tiktokCardHtml);
     } else {
@@ -632,7 +631,7 @@ async function renderContent(content: string, momentId: string) {
       const developer = vnData.developers && vnData.developers.length > 0 ? vnData.developers[0].name : 'Unknown';
       const imageUrl = vnData.image?.url || '';
       
-      const vndbCardHtml = `<div class="not-prose vndb-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${vnData.title} on VNDB"><div class="flex gap-4 p-4"><div class="w-32 h-44 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300">${imageUrl ? `<img src="${imageUrl}" alt="${vnData.title}" loading="lazy" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-base-content/30"><svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>'}</div><div class="flex-1 min-w-0 flex flex-col"><div class="mb-2"><div class="flex items-center gap-2 mb-1"><span class="badge badge-info badge-sm font-medium">VNDB</span><span class="text-xs text-base-content/60">${developer}</span></div><h3 class="font-bold text-base line-clamp-2 mb-1">${vnData.title}</h3>${vnData.alttitle ? `<p class="text-sm text-base-content/60 line-clamp-1">${vnData.alttitle}</p>` : ''}</div><div class="mt-auto space-y-1"><div class="flex items-center gap-3 text-sm"><div class="flex items-center gap-1"><svg class="w-4 h-4 text-warning" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="font-medium">${rating}</span></div><div class="text-base-content/60">•</div><div class="text-base-content/60">${length}</div></div><div class="flex items-center gap-2 text-primary text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>在 VNDB 上查看</span></div></div></div></div></a></div>`;
+      const vndbCardHtml = `<div class="not-prose vndb-card-moment my-4 card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"><a href="${url}" target="_blank" rel="noopener noreferrer" class="block" aria-label="View ${vnData.title} on VNDB"><div class="flex flex-col xs:flex-row gap-3 sm:gap-4 p-3 sm:p-4"><div class="w-full xs:w-32 h-56 xs:h-44 rounded-lg overflow-hidden shadow-md shrink-0 bg-base-300">${imageUrl ? `<img src="${imageUrl}" alt="${vnData.title}" loading="lazy" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-base-content/30"><svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>'}</div><div class="flex-1 min-w-0 flex flex-col"><div class="mb-2"><div class="flex items-center gap-2 mb-1"><span class="badge badge-info badge-sm font-medium">VNDB</span><span class="text-xs text-base-content/60 truncate">${developer}</span></div><h3 class="font-bold text-base line-clamp-2 mb-1 break-words">${vnData.title}</h3>${vnData.alttitle ? `<p class="text-sm text-base-content/60 line-clamp-1 break-words">${vnData.alttitle}</p>` : ''}</div><div class="mt-auto space-y-1"><div class="flex items-center gap-3 text-sm"><div class="flex items-center gap-1"><svg class="w-4 h-4 text-warning" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="font-medium">${rating}</span></div><div class="text-base-content/60">•</div><div class="text-base-content/60 truncate">${length}</div></div><div class="flex items-center gap-2 text-primary text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>在 VNDB 上查看</span></div></div></div></div></a></div>`;
       
       html = html.replace(placeholder, vndbCardHtml);
     } else {
@@ -660,8 +659,8 @@ async function renderContent(content: string, momentId: string) {
       {page.data.map(async (moment) => {
         const htmlContent = await renderContent(moment.content, moment.id);
         return (
-          <Card class="p-6 transition-all hover:shadow-lg">
-            <div class="flex gap-4">
+          <Card class="p-4 sm:p-6 transition-all hover:shadow-lg">
+            <div class="flex gap-3 sm:gap-4">
               <div class="flex-shrink-0">
                  <div class="w-12 h-12 rounded-full ring-2 ring-primary/20 overflow-hidden">
                    <img src="https://blog.000.moe/images/uploads/1768632093006-5ozymr.jpg" alt="Avatar" class="w-full h-full object-cover" />
@@ -785,8 +784,31 @@ async function renderContent(content: string, momentId: string) {
       .tiktok-card-moment,
       .vndb-card-moment,
       .youtube-card-moment {
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+        width: calc(100% + 1rem);
+      }
+    }
+    
+    /* Global word break to prevent overflow */
+    :global(.prose) {
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    
+    /* Extra small screen helper */
+    @media (min-width: 480px) {
+      .xs\:flex-row {
+        flex-direction: row !important;
+      }
+      .xs\:w-32 {
+        width: 8rem !important;
+      }
+      .xs\:h-40 {
+        height: 10rem !important;
+      }
+      .xs\:h-44 {
+        height: 11rem !important;
       }
     }
   </style>
