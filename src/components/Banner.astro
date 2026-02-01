@@ -163,27 +163,45 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
     if (window.__BANNER_INIT__) return;
     window.__BANNER_INIT__ = true;
 
+    // 用于存储打字机定时器，防止速度叠加
+    var typewriterTimer = null;
+
     var initBanner = function() {
       var dataEl = document.getElementById("banner-data");
       if (!dataEl) return;
 
-      var texts = JSON.parse(dataEl.getAttribute("data-texts") || "[]");
       var enabled = dataEl.getAttribute("data-typewriter") === "true";
 
-      // 1. 打字机效果
-      if (enabled && texts.length > 0) {
+      // 1. 打字机效果 - 使用一言API
+      if (enabled) {
         var bannerSubtitle = document.getElementById("typewriter-text");
         if (bannerSubtitle) {
-          var textIndex = 0;
+          // 清理之前的定时器，防止速度叠加
+          if (typewriterTimer) {
+            clearTimeout(typewriterTimer);
+            typewriterTimer = null;
+          }
+
+          var currentText = "";
           var charIndex = 0;
           var isDeleting = false;
           
-          var type = function() {
-            // 重新获取元素，防止 DOM 已更新
-            var el = document.getElementById("typewriter-text");
-            if (!el || window.__BANNER_BUG_TRIGGERED__) return;
+          // 从一言API获取新句子
+          var fetchHitokoto = function(callback) {
+            fetch("https://v1.hitokoto.cn/")
+              .then(function(res) { return res.json(); })
+              .then(function(data) {
+                callback(data.hitokoto || "欢迎来到我的博客");
+              })
+              .catch(function() {
+                callback("欢迎来到我的博客");
+              });
+          };
 
-            var currentText = texts[textIndex] || "";
+          var type = function() {
+            var el = document.getElementById("typewriter-text");
+            if (!el) return;
+
             if (isDeleting) {
               el.textContent = currentText.substring(0, charIndex - 1);
               charIndex--;
@@ -198,49 +216,24 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
               typeSpeed = 2000;
             } else if (isDeleting && charIndex === 0) {
               isDeleting = false;
-              textIndex = (textIndex + 1) % texts.length;
-              typeSpeed = 500;
+              // 删除完成后获取新句子
+              fetchHitokoto(function(text) {
+                currentText = text;
+                typeSpeed = 500;
+                typewriterTimer = setTimeout(type, typeSpeed);
+              });
+              return;
             }
-            setTimeout(type, typeSpeed);
+            typewriterTimer = setTimeout(type, typeSpeed);
           };
-          type();
+
+          // 初始化：获取第一条一言
+          fetchHitokoto(function(text) {
+            currentText = text;
+            type();
+          });
         }
       }
-
-      // 3. 复活节彩蛋：点击主页10次触发
-      var clickCount = 0;
-      var easterEggTriggered = false;
-
-      var handleHomeClick = function() {
-        // 只有在主页点击才计数
-        if (window.location.pathname !== '/') return;
-        
-        clickCount++;
-
-        if (clickCount >= 10 && !easterEggTriggered) {
-          easterEggTriggered = true;
-          var container = document.getElementById("banner-text-container");
-          if (container) {
-            container.innerHTML = '<div class="title font-banner text-4xl md:text-6xl lg:text-8xl animate-bounce text-white text-center">🐛你捉到了Bug</div>';
-            // 同时清理打字机定时器（通过删除 ID 元素已间接实现，但这里明确标记）
-            window.__BANNER_BUG_TRIGGERED__ = true;
-          }
-        }
-      };
-
-      // 为所有主页链接添加监听（支持多种 URL 格式）
-      document.querySelectorAll('a[href="/"], a[href="/#"], a[href^="/?"]').forEach(function(link) {
-        link.addEventListener('click', handleHomeClick);
-      });
-      
-      // 同时扫描导航栏中的所有链接，确保捕获头像链接
-      var navbarLinks = document.querySelectorAll('nav a');
-      navbarLinks.forEach(function(link) {
-        var href = link.getAttribute('href');
-        if (href === '/' || href === '/#' || href.startsWith('/?')) {
-          link.addEventListener('click', handleHomeClick);
-        }
-      });
 
       // 2. 背景切换逻辑 (这里只处理初始化)
       var bgCurrent = document.getElementById("banner-bg-current");

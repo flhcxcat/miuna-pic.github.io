@@ -7,17 +7,42 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import hljs from 'highlight.js/lib/core'
+// Import only common languages to reduce bundle size
+import javascript from 'highlight.js/lib/languages/javascript'
+import typescript from 'highlight.js/lib/languages/typescript'
+import python from 'highlight.js/lib/languages/python'
+import css from 'highlight.js/lib/languages/css'
+import xml from 'highlight.js/lib/languages/xml'
+import json from 'highlight.js/lib/languages/json'
+import bash from 'highlight.js/lib/languages/bash'
+import markdown from 'highlight.js/lib/languages/markdown'
+
+// Register languages
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('js', javascript)
+hljs.registerLanguage('typescript', typescript)
+hljs.registerLanguage('ts', typescript)
+hljs.registerLanguage('python', python)
+hljs.registerLanguage('py', python)
+hljs.registerLanguage('css', css)
+hljs.registerLanguage('html', xml)
+hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('json', json)
+hljs.registerLanguage('bash', bash)
+hljs.registerLanguage('sh', bash)
+hljs.registerLanguage('markdown', markdown)
+hljs.registerLanguage('md', markdown)
 
 // Import styles
 import 'katex/dist/katex.min.css'
+import 'highlight.js/styles/github-dark.css'
 
 type WritePreviewProps = {
-	form: PublishForm
-	coverPreviewUrl: string | null
-	onClose: () => void
-	slug?: string
+    form: PublishForm
+    coverPreviewUrl: string | null
+    onClose: () => void
+    slug?: string
 }
 
 export function WritePreview({ form, coverPreviewUrl, onClose }: WritePreviewProps) {
@@ -33,7 +58,7 @@ export function WritePreview({ form, coverPreviewUrl, onClose }: WritePreviewPro
 
     if (!mounted) return null
 
-	return createPortal(
+    return createPortal(
         <>
             <div className="fixed inset-0 z-[100] overflow-y-auto bg-base-200/90 backdrop-blur-sm">
                 <div className="w-full max-w-[900px] mx-auto relative animate-in fade-in zoom-in duration-300 py-12 px-4">
@@ -42,9 +67,9 @@ export function WritePreview({ form, coverPreviewUrl, onClose }: WritePreviewPro
                         {coverPreviewUrl ? (
                             <div className="relative">
                                 <div className="aspect-video w-full overflow-hidden">
-                                    <img 
-                                        src={coverPreviewUrl} 
-                                        alt={form.title} 
+                                    <img
+                                        src={coverPreviewUrl}
+                                        alt={form.title}
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
@@ -120,7 +145,7 @@ export function WritePreview({ form, coverPreviewUrl, onClose }: WritePreviewPro
 
                             {/* Content */}
                             <div className="mt-8">
-                                <article 
+                                <article
                                     id="content"
                                     className="prose prose-lg prose-code:text-base max-w-none text-justify prose-headings:scroll-mt-20 prose-img:rounded-2xl prose-img:mx-auto prose-img:cursor-pointer"
                                 >
@@ -128,18 +153,37 @@ export function WritePreview({ form, coverPreviewUrl, onClose }: WritePreviewPro
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                         components={{
-                                            code({node, inline, className, children, ...props}: any) {
+                                            code({ node, inline, className, children, ...props }: any) {
                                                 const match = /language-(\w+)/.exec(className || '')
-                                                return !inline && match ? (
-                                                    <SyntaxHighlighter
-                                                        style={oneDark}
-                                                        language={match[1]}
-                                                        PreTag="div"
-                                                        {...props}
-                                                    >
-                                                        {String(children).replace(/\n$/, '')}
-                                                    </SyntaxHighlighter>
-                                                ) : (
+                                                const codeString = String(children).replace(/\n$/, '')
+
+                                                if (!inline && match) {
+                                                    const lang = match[1]
+                                                    let highlighted: string
+
+                                                    try {
+                                                        // Check if language is registered
+                                                        if (hljs.getLanguage(lang)) {
+                                                            highlighted = hljs.highlight(codeString, { language: lang }).value
+                                                        } else {
+                                                            // Fallback to auto-detection for unregistered languages
+                                                            highlighted = hljs.highlightAuto(codeString).value
+                                                        }
+                                                    } catch {
+                                                        highlighted = codeString
+                                                    }
+
+                                                    return (
+                                                        <pre className={`hljs ${className || ''}`} {...props}>
+                                                            <code
+                                                                className={className}
+                                                                dangerouslySetInnerHTML={{ __html: highlighted }}
+                                                            />
+                                                        </pre>
+                                                    )
+                                                }
+
+                                                return (
                                                     <code className={className} {...props}>
                                                         {children}
                                                     </code>
@@ -177,5 +221,5 @@ export function WritePreview({ form, coverPreviewUrl, onClose }: WritePreviewPro
             </motion.button>
         </>,
         document.body
-	)
+    )
 }

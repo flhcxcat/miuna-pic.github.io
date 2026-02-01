@@ -34,7 +34,6 @@ export default function WritePage({ categories = [] }: WritePageProps) {
 
     return (
         <>
-
             {isPreview ? (
                 <WritePreview form={form} coverPreviewUrl={coverPreviewUrl} onClose={closePreview} slug={slug || undefined} />
             ) : (
@@ -58,3 +57,4 @@ export default function WritePage({ categories = [] }: WritePageProps) {
         </>
     )
 }
+

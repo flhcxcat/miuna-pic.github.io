@@ -21,16 +21,16 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 				<h2 className='text-sm font-bold text-primary'>图片管理</h2>
 			</div>
 
-			<div className='mt-3 flex items-center gap-2'>
+			<div className='mt-3 flex flex-col gap-2 md:flex-row md:items-center'>
 				<input
 					type='text'
 					placeholder='https://...'
-					className='input input-bordered input-sm flex-1 bg-base-100 focus:input-primary'
+					className='input input-bordered input-sm w-full bg-base-100 focus:input-primary md:flex-1'
 					value={urlInput}
 					onChange={e => setUrlInput(e.target.value)}
 				/>
 				<button
-					className='btn btn-sm btn-ghost border-base-300'
+					className='btn btn-sm btn-ghost border-base-300 w-full md:w-auto'
 					onClick={() => {
 						const v = urlInput.trim()
 						if (!v) return

@@ -211,6 +211,35 @@ const themes = [
       </details>
     </li>
 
+    <!-- Extra Features -->
+    <li>
+      <details>
+        <summary class="font-medium flex justify-between items-center p-2 hover:bg-base-200 rounded-lg w-full">
+          <div class="flex items-center gap-2">
+            <Icon name="material-symbols:auto-awesome" class="w-5 h-5" />
+            Extra Features
+          </div>
+        </summary>
+        <div class="p-2 bg-base-100 rounded-box flex flex-col gap-2">
+          <!-- Snowflakes Toggle -->
+          <div class="flex justify-between items-center px-1">
+            <span class="text-sm">Snowflakes</span>
+            <input type="checkbox" id="toggle-snowflakes" class="toggle toggle-primary toggle-sm" />
+          </div>
+          <!-- FPS Counter Toggle -->
+          <div class="flex justify-between items-center px-1">
+            <span class="text-sm">FPS Counter</span>
+            <input type="checkbox" id="toggle-fps" class="toggle toggle-primary toggle-sm" />
+          </div>
+          <!-- Heart Click Toggle -->
+          <div class="flex justify-between items-center px-1">
+            <span class="text-sm">Heart Click</span>
+            <input type="checkbox" id="toggle-heart" class="toggle toggle-primary toggle-sm" />
+          </div>
+        </div>
+      </details>
+    </li>
+
     <!-- Anime Trace Tool -->
     <li>
       <details>
@@ -233,39 +262,18 @@ const themes = [
         </div>
       </details>
     </li>
-    <!-- Chaos Mode -->
-    <li>
-      <details>
-        <summary class="font-bold flex justify-between items-center p-2 hover:bg-base-200 rounded-lg w-full">
-          <div class="flex items-center gap-2">
-             <Icon name="material-symbols:warning-outline" class="w-5 h-5" />
-             Don't click on it!
-          </div>
-        </summary>
-        <div id="desktop-chaos-container" class="p-2 bg-base-100 rounded-box">
-          <button id="chaos-btn" class="btn btn-sm btn-error w-full font-bold text-white chaos-btn-animate">
-             DO NOT PRESS
-          </button>
-        </div>
-      </details>
-    </li>
+
   </ul>
 </details>
 
 <script is:inline define:vars={{ SITE_THEME }}>
   document.addEventListener("astro:page-load", () => {
-    // Prevent closing dropdowns when clicking inside containers
-    const containers = ['desktop-animetrace-container', 'desktop-chaos-container'];
-    containers.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.addEventListener('click', (e) => e.stopPropagation());
-        }
-    });
+    // Prevent dropdown close on container click
+    document.getElementById('desktop-animetrace-container')?.addEventListener('click', e => e.stopPropagation());
 
-    // ... (Existing Theme Helper & Color Logic)
-    // Theme Helper
-    const isDarkTheme = (theme) => ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee', 'dim', 'sunset'].includes(theme);
+    // Theme classification
+    const DARK_THEMES = ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee', 'dim', 'sunset'];
+    const isDarkTheme = (theme) => DARK_THEMES.includes(theme);
 
     // Base64 Logic
     const b64Input = document.getElementById('b64-input');
@@ -430,13 +438,7 @@ const themes = [
     }
     checkNetworkStatus();
 
-    // Color conversion helper (Hex to OKLCH approximation)
-    // ... (rest of the script)
-    // Since implementing full conversion is heavy, we will use a simplified approach
-    // or rely on the fact that we can set hex if we don't strictly need OKLCH channels?
-    // NO, global.scss uses `oklch(var(--p))`. We match that format.
-    // Source: https://github.com/mina86/hex-to-oklch/ (simplified)
-    // Actually, we can use a simpler sRGB to Linear to OKLCH flow.
+    // Color conversion: Hex -> OKLCH
     
     function hexToRgb(hex) {
         const bigint = parseInt(hex.slice(1), 16);
@@ -562,7 +564,6 @@ const themes = [
     const desktopThemeToggle = document.getElementById("desktop-theme-toggle");
     
     const updateDesktopThemeIcons = (theme) => {
-      // ... same as before
       const isDark = isDarkTheme(theme);
       
       // Update attribute
@@ -599,11 +600,8 @@ const themes = [
       });
     }
     
-    // ... Banner Mode (same) ...
-    // Banner Mode Logic
+    // Banner Mode
     const bannerButtons = document.querySelectorAll("[data-set-banner-desktop]");
-    
-    // ...
     const updateActiveBannerButton = () => {
       const currentMode = document.documentElement.getAttribute("data-banner-mode") || localStorage.getItem("banner-mode") || "normal";
       bannerButtons.forEach(btn => {
@@ -658,12 +656,9 @@ const themes = [
         document.documentElement.setAttribute("data-theme", theme);
         localStorage.setItem('theme', theme);
         
-        // Remove Custom Color when switching theme?
-        document.documentElement.style.removeProperty('--p');
-        document.documentElement.style.removeProperty('--s');
-        document.documentElement.style.removeProperty('--a');
+        // Reset custom primary color when switching theme
+        ['--p', '--s', '--a'].forEach(p => document.documentElement.style.removeProperty(p));
         localStorage.removeItem('custom-primary-hex');
-        // Reset picker value if possible?
         
         updateDesktopThemeIcons(theme);
         updateActiveThemeButton();
@@ -741,92 +736,311 @@ const themes = [
         });
     }
 
-    // Chaos Mode Logic
-    // Chaos Mode Logic
-    const chaosBtn = document.getElementById('chaos-btn');
-    let isChaosRunning = false;
 
-    if (chaosBtn) {
-        chaosBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (isChaosRunning) {
-                location.reload();
-                return;
-            }
 
-            if (confirm("⚠️ FINAL WARNING ⚠️\nThis is a dangerous action.\nDo you really want to proceed?")) {
-                startChaos(chaosBtn);
-            }
-        });
-    }
-
-    function startChaos(btn) {
-        isChaosRunning = true;
-        btn.textContent = "Stop";
+    // ========== Extra Features Logic ==========
+    
+    // Storage keys
+    const STORAGE_SNOWFLAKES = 'extra-snowflakes';
+    const STORAGE_FPS = 'extra-fps';
+    const STORAGE_HEART = 'extra-heart';
+    
+    // Toggle elements
+    const toggleSnowflakes = document.getElementById('toggle-snowflakes');
+    const toggleFps = document.getElementById('toggle-fps');
+    const toggleHeart = document.getElementById('toggle-heart');
+    
+    // ===== Snowflakes Feature =====
+    let snowflakesInstance = null;
+    let snowflakesStyleEl = null;
+    let snowflakesAnimationId = null;
+    
+    function startSnowflakes() {
+        if (snowflakesInstance) return;
         
-        // Inject Chaos Styles
-        if (!document.getElementById('chaos-style')) {
-            const style = document.createElement('style');
-            style.id = 'chaos-style';
-            style.innerHTML = `
-                :root {
-                    --chaos-color: oklch(0.7 0.3 0);
+        // Inject styles
+        if (!document.getElementById('snowflakes-style')) {
+            snowflakesStyleEl = document.createElement('style');
+            snowflakesStyleEl.id = 'snowflakes-style';
+            snowflakesStyleEl.textContent = `
+                .snowflake {
+                    position: fixed;
+                    color: #fff;
+                    font-size: 1em;
+                    top: -20px;
+                    z-index: 99999;
+                    pointer-events: none;
+                    user-select: none;
+                    text-shadow: 0 0 5px rgba(255,255,255,0.7);
+                    animation: snowfall linear forwards;
                 }
-                /* Force Input/Search/Placeholder colors */
-                input, textarea, select, ::placeholder, .input, .textarea {
-                    color: var(--chaos-color) !important;
-                    border-color: var(--chaos-color) !important;
-                }
-                ::placeholder {
-                    color: var(--chaos-color) !important;
-                    opacity: 0.7 !important;
-                }
-                /* Force Archives/Categories/Tags text */
-                .text-gray-500, .text-gray-400, .text-base-content, .text-primary, .text-secondary, a {
-                    color: var(--chaos-color) !important;
-                }
-                /* Force Borders */
-                .border-secondary, .border-base-content, .border-primary {
-                    border-color: var(--chaos-color) !important;
-                }
-                /* Force Icons (SVGs) */
-                svg, [data-icon] {
-                     color: var(--chaos-color) !important;
-                }
-                /* Force Sidebar Header Bars (Pseudo-elements) */
-                .card-base .font-bold::before {
-                    background-color: var(--chaos-color) !important;
-                }
-                /* Force Banner Title & Subtitle */
-                .title, .subtitle {
-                     color: var(--chaos-color) !important;
+                @keyframes snowfall {
+                    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                    100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
                 }
             `;
-            document.head.appendChild(style);
+            document.head.appendChild(snowflakesStyleEl);
         }
-
-        let hue = 0;
-
-
-        // Visual Chaos Loop (Colors)
-        setInterval(() => {
-            hue = (hue + 5) % 360; 
-            const oklchVal = `0.7 0.3 ${hue}`;
-            const colorFunc = `oklch(${oklchVal})`;
+        
+        const snowflakes = ['❄', '❅', '❆', '✻', '✼'];
+        snowflakesInstance = [];
+        
+        function createSnowflake() {
+            const el = document.createElement('div');
+            el.className = 'snowflake';
+            el.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            el.style.opacity = Math.random() * 0.5 + 0.5;
+            document.body.appendChild(el);
+            snowflakesInstance.push(el);
             
-            // Update Chaos Variable
-            document.documentElement.style.setProperty('--chaos-color', colorFunc);
-
-            document.documentElement.style.setProperty('--p', oklchVal);
-            document.documentElement.style.setProperty('--s', oklchVal);
-            document.documentElement.style.setProperty('--bc', oklchVal);
-            document.documentElement.style.setProperty('--nc', oklchVal);
-            document.body.style.color = colorFunc;
-        }, 100); 
-
-
+            el.addEventListener('animationend', () => {
+                el.remove();
+                const idx = snowflakesInstance.indexOf(el);
+                if (idx > -1) snowflakesInstance.splice(idx, 1);
+            });
+        }
+        
+        // Create initial batch
+        for (let i = 0; i < 10; i++) {
+            setTimeout(() => createSnowflake(), i * 300);
+        }
+        
+        // Keep creating snowflakes
+        snowflakesAnimationId = setInterval(createSnowflake, 800);
+    }
+    
+    function stopSnowflakes() {
+        if (snowflakesAnimationId) {
+            clearInterval(snowflakesAnimationId);
+            snowflakesAnimationId = null;
+        }
+        if (snowflakesInstance) {
+            snowflakesInstance.forEach(el => el.remove());
+            snowflakesInstance = null;
+        }
+        if (snowflakesStyleEl) {
+            snowflakesStyleEl.remove();
+            snowflakesStyleEl = null;
+        }
+    }
+    
+    // ===== FPS Counter Feature =====
+    let fpsEl = null;
+    let fpsStyleEl = null;
+    let fpsRunning = false;
+    let fpsFrames = 0;
+    let fpsLastTime = 0;
+    
+    function startFps() {
+        if (fpsRunning) return;
+        fpsRunning = true;
+        
+        // Inject styles
+        if (!document.getElementById('fps-style')) {
+            fpsStyleEl = document.createElement('style');
+            fpsStyleEl.id = 'fps-style';
+            fpsStyleEl.textContent = `
+                #fps-counter {
+                    position: fixed;
+                    top: 5px;
+                    left: 8px;
+                    z-index: 999999;
+                    font-family: 'Courier New', Courier, monospace;
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #00ff00;
+                    text-shadow: 1px 1px 2px #000000;
+                    pointer-events: none;
+                    user-select: none;
+                }
+            `;
+            document.head.appendChild(fpsStyleEl);
+        }
+        
+        // Create element
+        if (!document.getElementById('fps-counter')) {
+            fpsEl = document.createElement('div');
+            fpsEl.id = 'fps-counter';
+            fpsEl.textContent = 'FPS: --';
+            document.body.appendChild(fpsEl);
+        } else {
+            fpsEl = document.getElementById('fps-counter');
+        }
+        
+        fpsFrames = 0;
+        fpsLastTime = performance.now();
+        
+        function fpsLoop() {
+            if (!fpsRunning) return;
+            const now = performance.now();
+            fpsFrames++;
+            if (now - fpsLastTime >= 1000) {
+                const fps = Math.round((fpsFrames * 1000) / (now - fpsLastTime));
+                if (fpsEl) fpsEl.textContent = 'FPS: ' + fps;
+                fpsFrames = 0;
+                fpsLastTime = now;
+            }
+            requestAnimationFrame(fpsLoop);
+        }
+        fpsLoop();
+    }
+    
+    function stopFps() {
+        fpsRunning = false;
+        if (fpsEl) {
+            fpsEl.remove();
+            fpsEl = null;
+        }
+        if (fpsStyleEl) {
+            fpsStyleEl.remove();
+            fpsStyleEl = null;
+        }
+    }
+    
+    // ===== Heart Click Feature =====
+    let heartStyleEl = null;
+    let heartEnabled = false;
+    let heartAnimationId = null;
+    let hearts = [];
+    
+    function startHeart() {
+        if (heartEnabled) return;
+        heartEnabled = true;
+        
+        // Inject styles
+        if (!document.getElementById('heart-style')) {
+            heartStyleEl = document.createElement('style');
+            heartStyleEl.id = 'heart-style';
+            heartStyleEl.textContent = `
+                .heart {
+                    width: 10px;
+                    height: 10px;
+                    position: fixed;
+                    background: #f00;
+                    transform: rotate(45deg);
+                    pointer-events: none;
+                    z-index: 99999;
+                }
+                .heart:after, .heart:before {
+                    content: '';
+                    width: inherit;
+                    height: inherit;
+                    background: inherit;
+                    border-radius: 50%;
+                    position: fixed;
+                }
+                .heart:after { top: -5px; }
+                .heart:before { left: -5px; }
+            `;
+            document.head.appendChild(heartStyleEl);
+        }
+        
+        function getRandomColor() {
+            return 'rgb(' + ~~(255 * Math.random()) + ',' + ~~(255 * Math.random()) + ',' + ~~(255 * Math.random()) + ')';
+        }
+        
+        function heartLoop() {
+            if (!heartEnabled) return;
+            for (let i = 0; i < hearts.length; i++) {
+                if (hearts[i].alpha <= 0) {
+                    hearts[i].el.remove();
+                    hearts.splice(i, 1);
+                    i--;
+                } else {
+                    hearts[i].y--;
+                    hearts[i].scale += 0.004;
+                    hearts[i].alpha -= 0.013;
+                    hearts[i].el.style.cssText = 
+                        'left:' + hearts[i].x + 'px;' +
+                        'top:' + hearts[i].y + 'px;' +
+                        'opacity:' + hearts[i].alpha + ';' +
+                        'transform:scale(' + hearts[i].scale + ',' + hearts[i].scale + ') rotate(45deg);' +
+                        'background:' + hearts[i].color + ';' +
+                        'z-index:99999;';
+                }
+            }
+            heartAnimationId = requestAnimationFrame(heartLoop);
+        }
+        
+        function createHeart(e) {
+            if (!heartEnabled) return;
+            const el = document.createElement('div');
+            el.className = 'heart';
+            hearts.push({
+                el: el,
+                x: e.clientX - 5,
+                y: e.clientY - 5,
+                scale: 1,
+                alpha: 1,
+                color: getRandomColor()
+            });
+            document.body.appendChild(el);
+        }
+        
+        window.__heartClickHandler = createHeart;
+        document.addEventListener('click', window.__heartClickHandler);
+        heartLoop();
+    }
+    
+    function stopHeart() {
+        heartEnabled = false;
+        if (heartAnimationId) {
+            cancelAnimationFrame(heartAnimationId);
+            heartAnimationId = null;
+        }
+        if (window.__heartClickHandler) {
+            document.removeEventListener('click', window.__heartClickHandler);
+            window.__heartClickHandler = null;
+        }
+        hearts.forEach(h => h.el.remove());
+        hearts = [];
+        if (heartStyleEl) {
+            heartStyleEl.remove();
+            heartStyleEl = null;
+        }
+    }
+    
+    // ===== Initialize Toggles =====
+    if (toggleSnowflakes) {
+        const savedSnow = localStorage.getItem(STORAGE_SNOWFLAKES) === 'true';
+        toggleSnowflakes.checked = savedSnow;
+        if (savedSnow) startSnowflakes();
+        
+        toggleSnowflakes.addEventListener('change', () => {
+            const enabled = toggleSnowflakes.checked;
+            localStorage.setItem(STORAGE_SNOWFLAKES, enabled);
+            if (enabled) startSnowflakes();
+            else stopSnowflakes();
+        });
+    }
+    
+    if (toggleFps) {
+        const savedFps = localStorage.getItem(STORAGE_FPS) === 'true';
+        toggleFps.checked = savedFps;
+        if (savedFps) startFps();
+        
+        toggleFps.addEventListener('change', () => {
+            const enabled = toggleFps.checked;
+            localStorage.setItem(STORAGE_FPS, enabled);
+            if (enabled) startFps();
+            else stopFps();
+        });
+    }
+    
+    if (toggleHeart) {
+        const savedHeart = localStorage.getItem(STORAGE_HEART) === 'true';
+        toggleHeart.checked = savedHeart;
+        if (savedHeart) startHeart();
+        
+        toggleHeart.addEventListener('change', () => {
+            const enabled = toggleHeart.checked;
+            localStorage.setItem(STORAGE_HEART, enabled);
+            if (enabled) startHeart();
+            else stopHeart();
+        });
     }
 
     // Observer for external changes
@@ -852,12 +1066,4 @@ const themes = [
   });
 </script>
 
-<style>
-  @keyframes breathe {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(0.9); }
-  }
-  .chaos-btn-animate {
-    animation: breathe 2s infinite ease-in-out;
-  }
-</style>
+
