@@ -155,19 +155,18 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
 
 <script is:inline>
   (function() {
-    // 使用 window 全局存储，确保页面切换时能正确清理
-    window.__hitokotoTimer = window.__hitokotoTimer || null;
-    
-    // 清理函数
-    var cleanupTypewriter = function() {
+    // 清理函数 - 始终定义
+    function cleanupTypewriter() {
       if (window.__hitokotoTimer) {
         clearTimeout(window.__hitokotoTimer);
         window.__hitokotoTimer = null;
       }
-    };
+      // 标记当前实例已停止
+      window.__hitokotoInstanceId = null;
+    }
 
-    var initBanner = function() {
-      // 先清理之前的定时器
+    function initBanner() {
+      // 1. 先清理之前的定时器
       cleanupTypewriter();
       
       var dataEl = document.getElementById("banner-data");
@@ -175,16 +174,20 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
 
       var enabled = dataEl.getAttribute("data-typewriter") === "true";
 
-      // 1. 打字机效果 - 使用一言API
+      // 2. 打字机效果 - 使用一言API
       if (enabled) {
         var bannerSubtitle = document.getElementById("typewriter-text");
         if (bannerSubtitle) {
+          // 生成唯一实例ID，用于检测是否应该停止
+          var instanceId = Date.now() + Math.random();
+          window.__hitokotoInstanceId = instanceId;
+          
           var currentText = "";
           var charIndex = 0;
           var isDeleting = false;
           
           // 从一言API获取新句子
-          var fetchHitokoto = function(callback) {
+          function fetchHitokoto(callback) {
             fetch("https://v1.hitokoto.cn/")
               .then(function(res) { return res.json(); })
               .then(function(data) {
@@ -193,9 +196,14 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
               .catch(function() {
                 callback("欢迎来到我的博客");
               });
-          };
+          }
 
-          var type = function() {
+          function type() {
+            // 检查是否应该停止（实例已更换或被清理）
+            if (window.__hitokotoInstanceId !== instanceId) {
+              return;
+            }
+            
             var el = document.getElementById("typewriter-text");
             if (!el) {
               cleanupTypewriter();
@@ -218,44 +226,51 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
               isDeleting = false;
               // 删除完成后获取新句子
               fetchHitokoto(function(text) {
+                // 再次检查实例是否仍有效
+                if (window.__hitokotoInstanceId !== instanceId) return;
                 currentText = text;
-                typeSpeed = 500;
-                window.__hitokotoTimer = setTimeout(type, typeSpeed);
+                window.__hitokotoTimer = setTimeout(type, 500);
               });
               return;
             }
             window.__hitokotoTimer = setTimeout(type, typeSpeed);
-          };
+          }
 
           // 初始化：获取第一条一言
           fetchHitokoto(function(text) {
+            // 检查实例是否仍有效
+            if (window.__hitokotoInstanceId !== instanceId) return;
             currentText = text;
             type();
           });
         }
       }
 
-      // 2. 背景切换逻辑 (这里只处理初始化)
+      // 3. 背景切换逻辑
       var bgCurrent = document.getElementById("banner-bg-current");
       if (bgCurrent && bgCurrent.style.backgroundImage) {
         document.documentElement.style.setProperty('--banner-image-url', bgCurrent.style.backgroundImage);
       }
-    };
-
-    // 初始加载
-    if (document.readyState === 'loading') {
-      document.addEventListener("DOMContentLoaded", initBanner);
-    } else {
-      initBanner();
     }
-    
-    // 防止重复注册事件监听器
+
+    // 只注册一次事件监听器
     if (!window.__bannerAstroListenersRegistered) {
       window.__bannerAstroListenersRegistered = true;
       // Astro View Transitions 页面切换前清理
       document.addEventListener("astro:before-swap", cleanupTypewriter);
       // Astro View Transitions 页面切换后重新初始化
       document.addEventListener("astro:page-load", initBanner);
+    }
+    
+    // 首次加载时初始化（astro:page-load 在首次也会触发，但以防万一）
+    if (document.readyState === 'loading') {
+      document.addEventListener("DOMContentLoaded", initBanner);
+    } else {
+      // 只在首次加载时执行，页面切换时由 astro:page-load 处理
+      if (!window.__bannerInitialLoadDone) {
+        window.__bannerInitialLoadDone = true;
+        initBanner();
+      }
     }
   })();
 </script>
