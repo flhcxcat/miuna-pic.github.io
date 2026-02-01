@@ -46,9 +46,9 @@ const { envId } = Astro.props;
   initTwikoo();
   
   // 防止重复注册事件监听器
-  if (!window.__twikooSwupListenerRegistered) {
-    window.__twikooSwupListenerRegistered = true;
-    // swup 页面切换后重新初始化
-    document.addEventListener('swup:contentReplaced', initTwikoo);
+  if (!window.__twikooAstroListenerRegistered) {
+    window.__twikooAstroListenerRegistered = true;
+    // Astro View Transitions 页面切换后重新初始化
+    document.addEventListener('astro:page-load', initTwikoo);
   }
 </script>

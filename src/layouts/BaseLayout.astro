@@ -163,8 +163,8 @@ const bannerSubtitle = pageConfig?.subtitle || "";
           document.documentElement.setAttribute("data-banner-mode", m);
         }
 
-        // swup 页面切换
-        document.addEventListener("swup:contentReplaced", applyTheme);
+        // Astro View Transitions 页面切换
+        document.addEventListener("astro:page-load", applyTheme);
       })();
     </script>
 
@@ -207,8 +207,8 @@ const bannerSubtitle = pageConfig?.subtitle || "";
         // 初始页面加载
         initPageScripts();
         
-        // swup 页面切换后
-        document.addEventListener('swup:contentReplaced', initPageScripts);
+        // Astro View Transitions 页面切换后
+        document.addEventListener('astro:page-load', initPageScripts);
       })();
     </script>
 

@@ -58,6 +58,6 @@ const domain = new URL(url).hostname;
   // 初始加载时调用
   initShowcase();
   
-  // swup 页面切换后重新初始化
-  document.addEventListener('swup:contentReplaced', initShowcase);
+  // Astro View Transitions 页面切换后重新初始化
+  document.addEventListener('astro:page-load', initShowcase);
 </script>

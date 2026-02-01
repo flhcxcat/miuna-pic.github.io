@@ -176,6 +176,6 @@ const accessibleHelpText = `${helpText}: ${title}`;
   // 初始加载时调用
   initCopyButtons();
   
-  // swup 页面切换后重新初始化
-  document.addEventListener('swup:contentReplaced', initCopyButtons);
+  // Astro View Transitions 页面切换后重新初始化
+  document.addEventListener('astro:page-load', initCopyButtons);
 </script>

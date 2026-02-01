@@ -297,6 +297,6 @@ const { headings = [], showTOC = true } = Astro.props as TOCBarProps;
   // 初始加载时调用
   initTOC();
   
-  // swup 页面切换后重新初始化
-  document.addEventListener('swup:contentReplaced', initTOC);
+  // Astro View Transitions 页面切换后重新初始化
+  document.addEventListener('astro:page-load', initTOC);
 </script>

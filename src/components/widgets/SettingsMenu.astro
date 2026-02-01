@@ -767,7 +767,7 @@ const themes = [
         window.__snowflakesSwupBefore = function() {
             window.__snowflakesCleanup();
         };
-        document.addEventListener('swup:willReplaceContent', window.__snowflakesSwupBefore);
+        document.addEventListener('astro:before-swap', window.__snowflakesSwupBefore);
     }
     
     // 页面切换后重新启动雪花（如果启用）
@@ -781,7 +781,7 @@ const themes = [
                 }, 300);
             }
         };
-        document.addEventListener('swup:contentReplaced', window.__snowflakesSwupAfter);
+        document.addEventListener('astro:page-load', window.__snowflakesSwupAfter);
     }
     
     function startSnowflakesGlobal() {

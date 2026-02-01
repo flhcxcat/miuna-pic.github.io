@@ -457,8 +457,8 @@ const dateYearMonth = dateObj.format('YYYY / MM');
   // 初始加载时初始化
   initShareModule();
   
-  // swup 页面切换后重新初始化
-  document.addEventListener('swup:contentReplaced', initShareModule);
+  // Astro View Transitions 页面切换后重新初始化
+  document.addEventListener('astro:page-load', initShareModule);
 </script>
 
 <style>  

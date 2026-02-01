@@ -411,8 +411,8 @@ function initTagsToggle() {
   // 初始加载时调用
   initProfile();
   
-  // swup 页面切换后重新初始化
-  document.addEventListener('swup:contentReplaced', initProfile);
+  // Astro View Transitions 页面切换后重新初始化
+  document.addEventListener('astro:page-load', initProfile);
 </script> 
   
 <style>  

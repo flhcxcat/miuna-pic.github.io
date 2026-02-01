@@ -672,7 +672,7 @@ const averageRating = ratedItems.length > 0
     // 初始加载时调用
     initAnimePage();
     
-    // swup 页面切换后重新初始化
-    document.addEventListener('swup:contentReplaced', initAnimePage);
+    // Astro View Transitions 页面切换后重新初始化
+    document.addEventListener('astro:page-load', initAnimePage);
   </script>
 </BaseLayout>
