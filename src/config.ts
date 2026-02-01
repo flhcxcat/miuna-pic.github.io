@@ -23,7 +23,6 @@ export const SITE_THEME = config.site.theme;
 export const DATE_FORMAT = config.site.date_format;
 
 // Banner 配置 - 使用安全访问  
-export const BANNER_CONFIG = config.site.banner;
 export const BANNER_IMAGES = config.site.banner?.images || [];
 export const BANNER_HEIGHT = config.site.banner?.height || "60vh";
 export const SITE_PAGES = config.site.pages || {};
@@ -31,7 +30,6 @@ export const SITE_PAGES = config.site.pages || {};
 export const TYPEWRITER_TEXTS = config.site.pages?.home?.typewriterTexts || [];
 
 // 博客配置
-export const BLOG_CONFIG = config.site.blog;
 export const BLOG_PAGE_SIZE = config.site.blog.pageSize;
 
 // TMDB 配置
