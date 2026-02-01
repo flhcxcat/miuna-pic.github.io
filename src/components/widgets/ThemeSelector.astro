@@ -55,7 +55,7 @@ const themes = [
 </div>
 
 <script is:inline>
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const themeButtons = document.querySelectorAll('[data-set-theme]');
     
     // 更新选中状态的函数

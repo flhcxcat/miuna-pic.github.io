@@ -68,7 +68,7 @@ const { headings = [], showTOC = true } = Astro.props as TOCBarProps;
 
 <script>
   // Highlight active heading in TOC and manage the active indicator
-  document.addEventListener("astro:page-load", () => {
+  function initTOC() {
     // Cache DOM elements and reduce DOM queries
     const tocNav = document.querySelector(".toc-nav") as HTMLElement;
     const activeIndicator = document.getElementById("active-indicator") as HTMLElement;
@@ -292,5 +292,11 @@ const { headings = [], showTOC = true } = Astro.props as TOCBarProps;
         disableObserverUpdates = false;
       }, 1000);
     });
-  });
+  }
+
+  // 初始加载时调用
+  initTOC();
+  
+  // swup 页面切换后重新初始化
+  document.addEventListener('swup:contentReplaced', initTOC);
 </script>

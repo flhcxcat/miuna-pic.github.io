@@ -146,7 +146,7 @@ const accessibleHelpText = `${helpText}: ${title}`;
 </Card>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
+  function initCopyButtons() {
     // Get all info buttons and dropdown contents
     const infoButtons = document.querySelectorAll(".dropdown label");
     const dropdownContents = document.querySelectorAll(".dropdown-content");
@@ -171,5 +171,11 @@ const accessibleHelpText = `${helpText}: ${title}`;
         }
       });
     });
-  });
+  }
+
+  // 初始加载时调用
+  initCopyButtons();
+  
+  // swup 页面切换后重新初始化
+  document.addEventListener('swup:contentReplaced', initCopyButtons);
 </script>

@@ -267,7 +267,7 @@ const themes = [
 </details>
 
 <script is:inline define:vars={{ SITE_THEME }}>
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     // Prevent dropdown close on container click
     document.getElementById('desktop-animetrace-container')?.addEventListener('click', e => e.stopPropagation());
 
@@ -751,18 +751,48 @@ const themes = [
     const toggleHeart = document.getElementById('toggle-heart');
     
     // ===== Snowflakes Feature =====
-    let snowflakesInstance = null;
-    let snowflakesStyleEl = null;
-    let snowflakesAnimationId = null;
+    // 使用 window 对象存储状态，确保页面切换时可以正确清理
     
-    function startSnowflakes() {
-        if (snowflakesInstance) return;
+    // 清理函数
+    window.__snowflakesCleanup = function() {
+        if (window.__snowflakesAnimationId) {
+            clearInterval(window.__snowflakesAnimationId);
+            window.__snowflakesAnimationId = null;
+        }
+        document.querySelectorAll('.snowflake').forEach(el => el.remove());
+    };
+    
+    // 页面切换前清理雪花（使用 willReplaceContent 确保在替换前清理）
+    if (!window.__snowflakesSwupBefore) {
+        window.__snowflakesSwupBefore = function() {
+            window.__snowflakesCleanup();
+        };
+        document.addEventListener('swup:willReplaceContent', window.__snowflakesSwupBefore);
+    }
+    
+    // 页面切换后重新启动雪花（如果启用）
+    if (!window.__snowflakesSwupAfter) {
+        window.__snowflakesSwupAfter = function() {
+            if (localStorage.getItem('extra-snowflakes') === 'true') {
+                setTimeout(() => {
+                    if (!window.__snowflakesAnimationId) {
+                        startSnowflakesGlobal();
+                    }
+                }, 300);
+            }
+        };
+        document.addEventListener('swup:contentReplaced', window.__snowflakesSwupAfter);
+    }
+    
+    function startSnowflakesGlobal() {
+        // 防止重复启动
+        if (window.__snowflakesAnimationId) return;
         
         // Inject styles
         if (!document.getElementById('snowflakes-style')) {
-            snowflakesStyleEl = document.createElement('style');
-            snowflakesStyleEl.id = 'snowflakes-style';
-            snowflakesStyleEl.textContent = `
+            const styleEl = document.createElement('style');
+            styleEl.id = 'snowflakes-style';
+            styleEl.textContent = `
                 .snowflake {
                     position: fixed;
                     color: #fff;
@@ -779,11 +809,10 @@ const themes = [
                     100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
                 }
             `;
-            document.head.appendChild(snowflakesStyleEl);
+            document.head.appendChild(styleEl);
         }
         
         const snowflakes = ['❄', '❅', '❆', '✻', '✼'];
-        snowflakesInstance = [];
         
         function createSnowflake() {
             const el = document.createElement('div');
@@ -794,37 +823,21 @@ const themes = [
             el.style.animationDuration = (Math.random() * 5 + 5) + 's';
             el.style.opacity = Math.random() * 0.5 + 0.5;
             document.body.appendChild(el);
-            snowflakesInstance.push(el);
             
-            el.addEventListener('animationend', () => {
-                el.remove();
-                const idx = snowflakesInstance.indexOf(el);
-                if (idx > -1) snowflakesInstance.splice(idx, 1);
-            });
+            el.addEventListener('animationend', () => el.remove());
         }
         
-        // Create initial batch
-        for (let i = 0; i < 10; i++) {
-            setTimeout(() => createSnowflake(), i * 300);
+        // Create initial batch - 增加到25个
+        for (let i = 0; i < 25; i++) {
+            setTimeout(() => createSnowflake(), i * 150);
         }
         
-        // Keep creating snowflakes
-        snowflakesAnimationId = setInterval(createSnowflake, 800);
+        // Keep creating snowflakes - 更频繁
+        window.__snowflakesAnimationId = setInterval(createSnowflake, 600);
     }
     
-    function stopSnowflakes() {
-        if (snowflakesAnimationId) {
-            clearInterval(snowflakesAnimationId);
-            snowflakesAnimationId = null;
-        }
-        if (snowflakesInstance) {
-            snowflakesInstance.forEach(el => el.remove());
-            snowflakesInstance = null;
-        }
-        if (snowflakesStyleEl) {
-            snowflakesStyleEl.remove();
-            snowflakesStyleEl = null;
-        }
+    function stopSnowflakesGlobal() {
+        window.__snowflakesCleanup();
     }
     
     // ===== FPS Counter Feature =====
@@ -1007,13 +1020,13 @@ const themes = [
     if (toggleSnowflakes) {
         const savedSnow = localStorage.getItem(STORAGE_SNOWFLAKES) === 'true';
         toggleSnowflakes.checked = savedSnow;
-        if (savedSnow) startSnowflakes();
+        if (savedSnow) startSnowflakesGlobal();
         
         toggleSnowflakes.addEventListener('change', () => {
             const enabled = toggleSnowflakes.checked;
             localStorage.setItem(STORAGE_SNOWFLAKES, enabled);
-            if (enabled) startSnowflakes();
-            else stopSnowflakes();
+            if (enabled) startSnowflakesGlobal();
+            else stopSnowflakesGlobal();
         });
     }
     

@@ -30,14 +30,10 @@ if (currentPath === "/") {
 const cleanPageKey = pageKey.replace(/\/$/, "");
 const pageConfig =
   SITE_PAGES[cleanPageKey] ?? SITE_PAGES[pageKey] ?? SITE_PAGES["home"];
-const useLargeFont =
-  pageKey === "home" ||
-  (currentPath.startsWith("/blog/") &&
-    !currentPath.includes("/blog/page/") &&
-    currentPath !== "/blog" &&
-    !currentPath.includes("/blog/tag/") &&
-    !currentPath.includes("/blog/category/"));
-const useTypewriter = currentPath === "/";
+// 所有页面都使用大字体
+const useLargeFont = true;
+// 所有页面的副标题都使用一言打字机效果
+const useTypewriter = true;
 const displayTitle = pageConfig.title || "";
 const displaySubtitle = pageConfig.subtitle || "";
 const hasTitle = displayTitle !== undefined && displayTitle !== "";
@@ -159,14 +155,21 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
 
 <script is:inline>
   (function() {
-    // 使用命名空间保护
-    if (window.__BANNER_INIT__) return;
-    window.__BANNER_INIT__ = true;
-
-    // 用于存储打字机定时器，防止速度叠加
-    var typewriterTimer = null;
+    // 使用 window 全局存储，确保页面切换时能正确清理
+    window.__hitokotoTimer = window.__hitokotoTimer || null;
+    
+    // 清理函数
+    var cleanupTypewriter = function() {
+      if (window.__hitokotoTimer) {
+        clearTimeout(window.__hitokotoTimer);
+        window.__hitokotoTimer = null;
+      }
+    };
 
     var initBanner = function() {
+      // 先清理之前的定时器
+      cleanupTypewriter();
+      
       var dataEl = document.getElementById("banner-data");
       if (!dataEl) return;
 
@@ -176,12 +179,6 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
       if (enabled) {
         var bannerSubtitle = document.getElementById("typewriter-text");
         if (bannerSubtitle) {
-          // 清理之前的定时器，防止速度叠加
-          if (typewriterTimer) {
-            clearTimeout(typewriterTimer);
-            typewriterTimer = null;
-          }
-
           var currentText = "";
           var charIndex = 0;
           var isDeleting = false;
@@ -200,7 +197,10 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
 
           var type = function() {
             var el = document.getElementById("typewriter-text");
-            if (!el) return;
+            if (!el) {
+              cleanupTypewriter();
+              return;
+            }
 
             if (isDeleting) {
               el.textContent = currentText.substring(0, charIndex - 1);
@@ -220,11 +220,11 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
               fetchHitokoto(function(text) {
                 currentText = text;
                 typeSpeed = 500;
-                typewriterTimer = setTimeout(type, typeSpeed);
+                window.__hitokotoTimer = setTimeout(type, typeSpeed);
               });
               return;
             }
-            typewriterTimer = setTimeout(type, typeSpeed);
+            window.__hitokotoTimer = setTimeout(type, typeSpeed);
           };
 
           // 初始化：获取第一条一言
@@ -242,7 +242,17 @@ const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
       }
     };
 
-    document.addEventListener("astro:page-load", initBanner);
+    // 初始加载
+    if (document.readyState === 'loading') {
+      document.addEventListener("DOMContentLoaded", initBanner);
+    } else {
+      initBanner();
+    }
+    
+    // swup 页面切换前清理
+    document.addEventListener("swup:willReplaceContent", cleanupTypewriter);
+    // swup 页面切换后重新初始化
+    document.addEventListener("swup:contentReplaced", initBanner);
   })();
 </script>
 

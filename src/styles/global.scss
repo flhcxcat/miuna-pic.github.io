@@ -996,3 +996,44 @@ code {
     font-size: 1.1rem !important;
   }
 }
+
+// ===== Extra Features Styles =====
+// FPS Counter
+#fps-counter {
+  position: fixed;
+  top: 5px;
+  left: 8px;
+  z-index: 999999;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  font-weight: bold;
+  color: #00ff00;
+  text-shadow: 1px 1px 2px #000000;
+  pointer-events: none;
+  user-select: none;
+}
+
+// Snowflakes
+.snowflake {
+  position: fixed;
+  color: #fff;
+  font-size: 1em;
+  top: -20px;
+  z-index: 99999;
+  pointer-events: none;
+  user-select: none;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  animation: snowfall linear forwards;
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0.3;
+  }
+}

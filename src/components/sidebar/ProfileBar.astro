@@ -403,10 +403,16 @@ function initTagsToggle() {
   }  
     
   // 监听 Astro 页面转换事件  
-  document.addEventListener('astro:page-load', () => {  
+  function initProfile() {  
     // 页面切换时重新初始化  
     init();  
-  });  
+  }
+  
+  // 初始加载时调用
+  initProfile();
+  
+  // swup 页面切换后重新初始化
+  document.addEventListener('swup:contentReplaced', initProfile);
 </script> 
   
 <style>  

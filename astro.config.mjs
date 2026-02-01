@@ -5,6 +5,7 @@ import react from "@astrojs/react";
 import playformCompress from "@playform/compress";
 import terser from "@rollup/plugin-terser";
 import icon from "astro-icon";
+import swup from "@swup/astro";
 import { defineConfig } from "astro/config";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
@@ -61,6 +62,21 @@ export default defineConfig({
   },
   integrations: [
     updateConfig(),
+    swup({
+      theme: false,
+      animationClass: "transition-",
+      containers: ["#swup-banner", "#swup-grid"],
+      smoothScrolling: false,
+      cache: true,
+      preload: true,
+      accessibility: true,
+      updateHead: true,
+      updateBodyClass: false,
+      globalInstance: true,
+      animateHistoryBrowsing: false,
+      // 跳过写作页面（React 组件需要完整页面加载）
+      ignoreVisit: (url) => url.includes('/write'),
+    }),
     react(),
     mdx(),
     icon(),

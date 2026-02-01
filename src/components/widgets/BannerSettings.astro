@@ -35,7 +35,7 @@ import { Icon } from "astro-icon/components";
 </div>
 
 <script is:inline>
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const buttons = document.querySelectorAll("[data-set-banner]");
     
     // Update active state in menu

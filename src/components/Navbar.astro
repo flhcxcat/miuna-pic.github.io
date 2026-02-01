@@ -157,7 +157,7 @@ const typedMenu = SITE_MENU as MenuItem[];
 </nav>
       
 <script>      
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     // 导航栏淡入淡出逻辑
     let lastScrollY = window.scrollY;
     const navbarDesktop = document.getElementById("navbar-desktop");

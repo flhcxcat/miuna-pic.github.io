@@ -56,7 +56,7 @@ const { headings = [], showTOC = true } = Astro.props as TOCBarProps;
 </dialog>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const tocButton = document.getElementById("mobile-toc-button");
     if (!tocButton) return;
 

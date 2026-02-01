@@ -273,7 +273,7 @@ const themes = [
 </details>
 
 <script is:inline define:vars={{ SITE_THEME }}>
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     // Prevent dropdown close on container click
     document.getElementById('mobile-animetrace-container')?.addEventListener('click', e => e.stopPropagation());
 

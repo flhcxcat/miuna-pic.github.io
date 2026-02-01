@@ -29,7 +29,11 @@ const { envId } = Astro.props;
   }
 
   // 视图转换兼容 - 移除 once: true，通过 class 防止重复初始化
-  document.addEventListener('astro:page-load', initTwikoo);
+  // 初始加载时初始化
+  initTwikoo();
+  
+  // swup 页面切换后重新初始化
+  document.addEventListener('swup:contentReplaced', initTwikoo);
 </script>
 
 

@@ -8,7 +8,7 @@ import {
   SITE_PAGES,
   umamiConfig,
 } from "@config";
-import { ClientRouter } from "astro:transitions";
+import "../styles/transition.css";
 // import ElementCrossing from "astro-vtbot/components/ElementCrossing.astro";
 // import PointerOnNavigation from "astro-vtbot/components/PointerOnNavigation.astro";
 import Header from "@components/Header.astro";
@@ -47,7 +47,6 @@ const bannerSubtitle = pageConfig?.subtitle || "";
   data-theme-type="light"
 >
   <head>
-    <ClientRouter />
     <!-- <ElementCrossing /> -->
     <!-- <PointerOnNavigation /> -->
     <Header
@@ -110,11 +109,14 @@ const bannerSubtitle = pageConfig?.subtitle || "";
     class="flex flex-col min-h-screen bg-[var(--banner-wave-bg)] overflow-x-hidden w-full"
     {...isIndexed ? { "data-pagefind-body": true } : {}}
   >
-    {showBanner && <Banner title={bannerTitle} subtitle={bannerSubtitle} />}
+    <div id="swup-banner">
+      {showBanner && <Banner title={bannerTitle} subtitle={bannerSubtitle} />}
+    </div>
     <Navbar />
     <div class={`max-w-blog mx-auto w-full flex-grow page-content-animate ${showBanner ? 'mt-8' : 'mt-24'}`}>
       <div
-        class={`grid grid-cols-1 ${showSidebar ? "md:grid-cols-5 lg:grid-cols-4" : ""} gap-4 px-4 pb-4 h-full`}
+        id="swup-grid"
+        class={`transition-main grid grid-cols-1 ${showSidebar ? "md:grid-cols-5 lg:grid-cols-4" : ""} gap-4 px-4 pb-4 h-full`}
       >
         <main
           class={`col-span-1 ${showSidebar ? "md:col-span-4 lg:col-span-3" : "w-full"} bg-transparent order-1 md:order-2 flex flex-col gap-4`}
@@ -148,64 +150,66 @@ const bannerSubtitle = pageConfig?.subtitle || "";
         if (window.__THEME_SWAP_INIT__) return;
         window.__THEME_SWAP_INIT__ = true;
 
-        document.addEventListener("astro:after-swap", () => {
-        var t = localStorage.getItem("theme");
-        var m = localStorage.getItem("banner-mode") || "normal";
-        
-        if (t) {
-          document.documentElement.setAttribute("data-theme", t);
-          var isDark = t === 'dark' || ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(t);
-          document.documentElement.setAttribute("data-theme-type", isDark ? "dark" : "light");
+        function applyTheme() {
+          var t = localStorage.getItem("theme");
+          var m = localStorage.getItem("banner-mode") || "normal";
+          
+          if (t) {
+            document.documentElement.setAttribute("data-theme", t);
+            var isDark = t === 'dark' || ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(t);
+            document.documentElement.setAttribute("data-theme-type", isDark ? "dark" : "light");
+          }
+          
+          document.documentElement.setAttribute("data-banner-mode", m);
         }
-        
-        document.documentElement.setAttribute("data-banner-mode", m);
-      });
+
+        // swup 页面切换
+        document.addEventListener("swup:contentReplaced", applyTheme);
       })();
     </script>
 
     <script is:inline>
-      document.addEventListener('click', (e) => {
-        if (e.target.closest('a')) {
-          console.log('🔗 Link Clicked:', Date.now());
-        }
-      });
-      document.addEventListener('astro:before-preparation', () => console.log('🚀 Before Prep:', Date.now()));
-      document.addEventListener('astro:after-preparation', () => console.log('📦 After Prep:', Date.now()));
-      document.addEventListener('astro:before-swap', () => console.log('🔄 Before Swap:', Date.now()));
-      document.addEventListener('astro:page-load', () => {
-        console.log('✅ Page Loaded:', Date.now());
-        document.querySelectorAll(".btn-copy").forEach((button) => {
-          button.addEventListener("click", async () => {
-            const codeBlock = button.closest(".ryuchan-code");
-            const code = codeBlock.querySelector("code").textContent;
-            const copyIcon = button.querySelector(
-              ".ryuchan-code-toolbar-copy-icon",
-            );
-            const successIcon = button.querySelector(
-              ".ryuchan-code-toolbar-copy-success",
-            );
-            try {
-              await navigator.clipboard.writeText(code);
-              copyIcon.classList.add("hidden");
-              successIcon.classList.remove("hidden");
-              button.classList.add("copy-success");
-              window.dispatchEvent(new CustomEvent('app:toast', { 
-                detail: { 
-                  type: 'success', 
-                  message: '代码已复制到剪贴板' 
-                } 
-              }));
-              setTimeout(() => {
-                copyIcon.classList.remove("hidden");
-                successIcon.classList.add("hidden");
-                button.classList.remove("copy-success");
-              }, 2000);
-            } catch (err) {
-              console.error("Failed to copy:", err);
-            }
+      (function() {
+        if (window.__PAGE_SCRIPTS_INIT__) return;
+        window.__PAGE_SCRIPTS_INIT__ = true;
+        
+        function initPageScripts() {
+          document.querySelectorAll(".btn-copy").forEach((button) => {
+            // 避免重复绑定
+            if (button.hasAttribute('data-copy-init')) return;
+            button.setAttribute('data-copy-init', 'true');
+            
+            button.addEventListener("click", async () => {
+              const codeBlock = button.closest(".ryuchan-code");
+              const code = codeBlock.querySelector("code").textContent;
+              const copyIcon = button.querySelector(".ryuchan-code-toolbar-copy-icon");
+              const successIcon = button.querySelector(".ryuchan-code-toolbar-copy-success");
+              try {
+                await navigator.clipboard.writeText(code);
+                copyIcon.classList.add("hidden");
+                successIcon.classList.remove("hidden");
+                button.classList.add("copy-success");
+                window.dispatchEvent(new CustomEvent('app:toast', { 
+                  detail: { type: 'success', message: '代码已复制到剪贴板' } 
+                }));
+                setTimeout(() => {
+                  copyIcon.classList.remove("hidden");
+                  successIcon.classList.add("hidden");
+                  button.classList.remove("copy-success");
+                }, 2000);
+              } catch (err) {
+                console.error("Failed to copy:", err);
+              }
+            });
           });
-        });
-      });
+        }
+
+        // 初始页面加载
+        initPageScripts();
+        
+        // swup 页面切换后
+        document.addEventListener('swup:contentReplaced', initPageScripts);
+      })();
     </script>
 
     <style is:inline>

@@ -86,7 +86,7 @@ const initialSong = musicList[0] || {};
             }
             
             // Listen for future navigations
-            document.addEventListener('astro:page-load', () => this.handlePageLoad());
+            document.addEventListener('DOMContentLoaded', () => this.handlePageLoad());
         }
 
         handlePageLoad() {
