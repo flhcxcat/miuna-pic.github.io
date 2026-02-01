@@ -171,7 +171,14 @@ const typedMenu = SITE_MENU as MenuItem[];
   </div>
 </nav>
       
-<script>      
+<script>
+  // 扩展 Window 接口
+  declare global {
+    interface Window {
+      __navbarAstroListenerRegistered?: boolean;
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     // 导航栏淡入淡出逻辑
     let lastScrollY = window.scrollY;
@@ -223,7 +230,7 @@ const typedMenu = SITE_MENU as MenuItem[];
   });
 
   // 判断路径是否匹配激活状态
-  function isPathActive(href, currentPath) {
+  function isPathActive(href: string | null, currentPath: string): boolean {
     if (!href) return false;
     if (currentPath === href) return true;
     if (href !== '/' && currentPath.startsWith(href)) return true;
