@@ -27,7 +27,6 @@ try {
 // 2. 如果配置了 API Key，尝试从 TMDB 获取最新数据
 if (TMDB_API_KEY) {
   try {
-    console.log(`Fetching TMDB list: ${TMDB_LIST_ID}...`);
     
     // 第一次请求获取总页数
     const firstResponse = await fetch(`https://api.themoviedb.org/3/list/${TMDB_LIST_ID}?api_key=${TMDB_API_KEY}&language=zh-CN&page=1`);
@@ -59,8 +58,6 @@ if (TMDB_API_KEY) {
         ...firstData,
         items: allItems
       }];
-      
-      console.log(`Successfully fetched ${allItems.length} items from TMDB (Total pages: ${totalPages}).`);
     } else {
       console.error(`Failed to fetch TMDB list: ${firstResponse.status} ${firstResponse.statusText}`);
     }
@@ -83,7 +80,6 @@ let bilibiliItems: any[] = [];
 
 if (BILIBILI_UID) {
   try {
-    console.log(`Fetching Bilibili list for UID: ${BILIBILI_UID}...`);
     const ps = 30;
     let pn = 1;
     let hasMore = true;
@@ -106,7 +102,6 @@ if (BILIBILI_UID) {
       // Safety break to prevent infinite loops
       if (pn > 20) break; 
     }
-    console.log(`Successfully fetched ${bilibiliItems.length} items from Bilibili.`);
   } catch (e) {
     console.error("Error fetching Bilibili list:", e);
   }
@@ -118,7 +113,6 @@ let bangumiItems: any[] = [];
 
 if (BANGUMI_UID) {
   try {
-    console.log(`Fetching Bangumi list for UID: ${BANGUMI_UID}...`);
     const limit = 50;
     // let offset = 0;
     // let hasMore = true;
@@ -165,8 +159,6 @@ if (BANGUMI_UID) {
            if (typeOffset > 1000) break;
        }
     }
-
-    console.log(`Successfully fetched ${bangumiItems.length} items from Bangumi.`);
   } catch (e) {
     console.error("Error fetching Bangumi list:", e);
   }

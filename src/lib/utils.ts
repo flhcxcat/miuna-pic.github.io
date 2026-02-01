@@ -5,19 +5,19 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
-export function thousandsSeparator(n: string | number | any, sign: string = ',') {
+export function thousandsSeparator(n: string | number | unknown, sign: string = ',') {
 	if (typeof n === 'string' || typeof n === 'number') {
-		n = String(n)
+		const str = String(n)
 		const reg = /\B(?=(\d{3})+($|\.))/g
 
-		if (n.includes('.')) {
-			const nArr = n.split('.')
+		if (str.includes('.')) {
+			const nArr = str.split('.')
 			nArr[0] = nArr[0].replace(reg, `$&${sign}`)
 
 			return nArr.join('.')
 		}
 
-		return n.replace(reg, `$&${sign}`)
+		return str.replace(reg, `$&${sign}`)
 	} else return 0
 }
 

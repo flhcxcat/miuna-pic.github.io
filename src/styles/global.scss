@@ -27,7 +27,6 @@
 }
 
 /* Color scheme configuration to prevent Chrome's auto dark theme */
-/* Color scheme configuration to prevent Chrome's auto dark theme */
 :root {
   --custom-page-bg: oklch(var(--b2));
   --banner-wave-bg: oklch(var(--b2));
@@ -338,10 +337,6 @@ code {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.page-content-animate {
-  // animation: fade-in-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 // Optimization for View Transitions

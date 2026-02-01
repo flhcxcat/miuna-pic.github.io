@@ -221,7 +221,6 @@ const [_, repoName] = repo.split("/");
       // 检查缓存
       const cachedData = this.getCachedData(this.repoFullName);
       if (cachedData) {
-        console.log("Using cached repository data");
         this.updateUI(cachedData);
         return;
       }
@@ -245,7 +244,7 @@ const [_, repoName] = repo.split("/");
         this.updateUI(data);
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
-          console.log("Fetch aborted");
+          // Fetch was aborted, no action needed
         } else {
           console.error("Error fetching repository data:", error);
           this.showError("Failed to load repository data");

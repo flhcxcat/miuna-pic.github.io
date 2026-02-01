@@ -131,14 +131,6 @@ export interface RepositoryCardProps {
   showStats?: boolean;
 }
 
-export interface FeatureCardProps {
-  title: string;
-  description: string;
-  icon?: string;
-  iconColor?: string;
-  link?: string;
-}
-
 export interface GitHubStatsProps {
   username: string;
   showPrivate?: boolean;

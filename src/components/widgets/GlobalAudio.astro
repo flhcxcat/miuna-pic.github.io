@@ -4,7 +4,7 @@ import { musicList } from "@/data/music";
 const initialPlaylist = JSON.stringify(musicList);
 const initialSong = musicList[0] || {};
 ---
-<div transition:persist="ryuchan-global-audio-wrapper">
+<div id="global-audio-wrapper">
     <!-- 全局音频元素，持久化 -->
     <audio id="global-audio-player"></audio>
 
@@ -90,66 +90,12 @@ const initialSong = musicList[0] || {};
         }
 
         handlePageLoad() {
-            // Re-acquire all DOM references to handle persistence failures or DOM updates
-            this.bindGlobalAudioEvents();
-            this.bindMiniPlayerEvents();
-            
-            // Check for Main Player widget
-            this.container = document.querySelector('.music-player-widget');
-            if (this.container) {
-                // Bind Main Player UI
-                this.playBtn = document.getElementById('play-btn');
-                this.prevBtn = document.getElementById('prev-btn');
-                this.nextBtn = document.getElementById('next-btn');
-                this.shuffleBtn = document.getElementById('shuffle-btn');
-                this.repeatBtn = document.getElementById('repeat-btn');
-                this.iconPlay = document.getElementById('icon-play');
-                this.iconPause = document.getElementById('icon-pause');
-                this.recordOuter = document.getElementById('record-outer');
-                this.recordInner = document.getElementById('record-inner');
-                this.needle = document.getElementById('player-needle');
-                this.statusDot = document.getElementById('player-status-dot');
-                this.statusText = document.getElementById('player-status-text');
-                this.currentTimeEl = document.getElementById('current-time');
-                this.totalTimeEl = document.getElementById('total-time');
-                this.progressBar = document.getElementById('progress-bar');
-                this.progressContainer = document.getElementById('progress-container');
-                this.lyricsContainer = document.getElementById('lyrics-container');
-                this.volumeControl = document.getElementById('volume-control');
-                this.volumeBar = document.getElementById('volume-bar');
-                this.btnPlaylist = document.getElementById('btn-show-playlist');
-                this.btnLyrics = document.getElementById('btn-show-lyrics');
-                this.playlistContainer = document.getElementById('playlist-container');
-                this.playerTitle = document.getElementById('player-title');
-                this.playerArtist = document.getElementById('player-artist');
-                this.bgCover = document.getElementById('player-bg-cover');
-                this.playerCover = document.getElementById('player-cover');
-                
-                this.bindUIEvents();
-                // If we have lyrics loaded in memory, render them
-                if (this.lyrics.length > 0 && this.lyricsContainer) {
-                     this.renderLyrics();
-                     this.syncLyrics(this.audio ? this.audio.currentTime : 0);
-                } else if(this.lrcUrl) {
-                    this.loadLyrics();
-                }
-                
-                this.updatePlaylistDurations();
-                this.bindPlaylistEvents();
-            }
-
-            // Sync playback status with audio element
-            if (this.audio && !this.audio.paused) {
-                 this.isPlaying = true;
-            }
-
-            // Update UI State (syncs both Mini and Main players)
-            this.updateUI();
-
-            // Handle Mini Player Visibility
+            // Priority 1: Update Mini Player visibility immediately (critical for leaving music page)
             const path = window.location.pathname;
             const isMusicPage = path.includes('/music');
             
+            // Quick Mini Player visibility update - do this first for fast perceived navigation
+            this.bindMiniPlayerEvents();
             if (this.miniContainer) {
                 if (isMusicPage) {
                     this.miniContainer.classList.add('opacity-0', 'hidden');
@@ -159,6 +105,65 @@ const initialSong = musicList[0] || {};
                     this.miniContainer.classList.remove('opacity-0', 'hidden');
                     this.miniContainer.classList.add('opacity-100');
                 }
+            }
+            
+            // Priority 2: Bind global audio events (lightweight)
+            this.bindGlobalAudioEvents();
+            
+            // Sync playback status
+            if (this.audio && !this.audio.paused) {
+                 this.isPlaying = true;
+            }
+            
+            // Priority 3: Main Player binding - only on music page and defer to next frame
+            this.container = document.querySelector('.music-player-widget');
+            if (this.container) {
+                // Use requestAnimationFrame to defer heavy DOM operations
+                requestAnimationFrame(() => {
+                    // Bind Main Player UI elements
+                    this.playBtn = document.getElementById('play-btn');
+                    this.prevBtn = document.getElementById('prev-btn');
+                    this.nextBtn = document.getElementById('next-btn');
+                    this.shuffleBtn = document.getElementById('shuffle-btn');
+                    this.repeatBtn = document.getElementById('repeat-btn');
+                    this.iconPlay = document.getElementById('icon-play');
+                    this.iconPause = document.getElementById('icon-pause');
+                    this.recordOuter = document.getElementById('record-outer');
+                    this.recordInner = document.getElementById('record-inner');
+                    this.needle = document.getElementById('player-needle');
+                    this.statusDot = document.getElementById('player-status-dot');
+                    this.statusText = document.getElementById('player-status-text');
+                    this.currentTimeEl = document.getElementById('current-time');
+                    this.totalTimeEl = document.getElementById('total-time');
+                    this.progressBar = document.getElementById('progress-bar');
+                    this.progressContainer = document.getElementById('progress-container');
+                    this.lyricsContainer = document.getElementById('lyrics-container');
+                    this.volumeControl = document.getElementById('volume-control');
+                    this.volumeBar = document.getElementById('volume-bar');
+                    this.btnPlaylist = document.getElementById('btn-show-playlist');
+                    this.btnLyrics = document.getElementById('btn-show-lyrics');
+                    this.playlistContainer = document.getElementById('playlist-container');
+                    this.playerTitle = document.getElementById('player-title');
+                    this.playerArtist = document.getElementById('player-artist');
+                    this.bgCover = document.getElementById('player-bg-cover');
+                    this.playerCover = document.getElementById('player-cover');
+                    
+                    this.bindUIEvents();
+                    // If we have lyrics loaded in memory, render them
+                    if (this.lyrics.length > 0 && this.lyricsContainer) {
+                         this.renderLyrics();
+                         this.syncLyrics(this.audio ? this.audio.currentTime : 0);
+                    } else if(this.lrcUrl) {
+                        this.loadLyrics();
+                    }
+                    
+                    this.updatePlaylistDurations();
+                    this.bindPlaylistEvents();
+                    this.updateUI();
+                });
+            } else {
+                // Not on music page - just update mini player UI
+                this.updateUI();
             }
         }
 
@@ -805,25 +810,9 @@ const initialSong = musicList[0] || {};
     if (!window.globalMusicPlayer) {
         window.globalMusicPlayer = new GlobalMusicPlayer();
     } else {
-        // HMR - Re-init logic
-         const oldInstance = window.globalMusicPlayer;
-         const newInstance = new GlobalMusicPlayer();
-         
-         // Transfer state
-         newInstance.playlist = oldInstance.playlist;
-         newInstance.currentIndex = oldInstance.currentIndex;
-         newInstance.isPlaying = oldInstance.isPlaying;
-         newInstance.isShuffle = oldInstance.isShuffle;
-         newInstance.repeatMode = oldInstance.repeatMode;
-         newInstance.lyrics = oldInstance.lyrics;
-         newInstance.lrcUrl = oldInstance.lrcUrl;
-         newInstance.audio = oldInstance.audio;
-         newInstance.isMiniOpen = oldInstance.isMiniOpen;
-         
-         if(oldInstance.closeTimer) clearTimeout(oldInstance.closeTimer);
-         
-         window.globalMusicPlayer = newInstance;
-         window.globalMusicPlayer.handlePageLoad();
+        // Swup page transition - just update DOM bindings on existing instance
+        // No need to create a new instance, which is expensive
+        window.globalMusicPlayer.handlePageLoad();
     }
 </script>
 
