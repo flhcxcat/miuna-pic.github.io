@@ -48,7 +48,7 @@ const playlistData = list ? JSON.stringify(list) : "[]";
             </div>
             <!-- Record Inner (Cover) -->
             <div id="record-inner" class="relative w-[38%] h-[38%] rounded-full overflow-hidden border-[4px] border-[#111] shadow-xl animate-spin-slow" style="animation-play-state: paused;">
-              <img id="player-cover" alt="Cover" class="w-full h-full object-cover" src={currentCover || "https://8t2b6pwmhiggowix.public.blob.vercel-storage.com/%E6%88%AA%E5%B1%8F2025-12-24%2010.28.08-ioJSbipqjjLy1o59xus85KpAMYlFdu.png"}>
+              <img id="player-cover" alt="Cover" loading="lazy" decoding="async" class="w-full h-full object-cover" src={currentCover || "https://8t2b6pwmhiggowix.public.blob.vercel-storage.com/%E6%88%AA%E5%B1%8F2025-12-24%2010.28.08-ioJSbipqjjLy1o59xus85KpAMYlFdu.png"}>
               <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#e5e5e5] rounded-full border border-gray-400 shadow-inner"></div>
             </div>
             <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-white/10 to-transparent pointer-events-none z-10 opacity-60"></div>
@@ -75,7 +75,7 @@ const playlistData = list ? JSON.stringify(list) : "[]";
         <!-- Main Screen -->
         <div class="flex-1 relative rounded-[24px] overflow-hidden flex flex-col shadow-neu-in border border-neu-border bg-neu-base min-h-[340px] transition-colors duration-300">
           <div class="absolute inset-0 z-0 opacity-20 dark:opacity-40 overflow-hidden">
-            <img id="player-bg-cover" class="w-full h-full object-cover blur-[50px] scale-150 transition-all duration-700" alt="" src={cover || "https://music.apple.com/assets/product/1000/images/default-cover-icon-d36802.svg"}>
+            <img id="player-bg-cover" loading="lazy" decoding="async" class="w-full h-full object-cover blur-[50px] scale-150 transition-all duration-700" alt="" src={cover || "https://music.apple.com/assets/product/1000/images/default-cover-icon-d36802.svg"}>
           </div>
           <div class="absolute inset-0 z-[1] bg-white/40 dark:bg-black/40 pointer-events-none mix-blend-overlay dark:mix-blend-normal"></div>
           
@@ -118,7 +118,7 @@ const playlistData = list ? JSON.stringify(list) : "[]";
                         <span class="font-mono text-neu-text-muted text-sm font-bold w-6 text-center group-hover:text-neu-accent transition-colors">{(index + 1).toString().padStart(2, '0')}</span>
                         <!-- Cover -->
                         <div class="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-neu-border/50">
-                            <img src={item.cover || "https://music.apple.com/assets/product/1000/images/default-cover-icon-d36802.svg"} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="cover"/>
+                            <img src={item.cover || "https://music.apple.com/assets/product/1000/images/default-cover-icon-d36802.svg"} loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="cover"/>
                             <div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-[.active]:opacity-100 transition-opacity">
                                  <div class="w-1.5 h-4 gap-0.5 flex items-end justify-center">
                                     <div class="w-0.5 bg-white h-2 animate-pulse"></div>
@@ -224,19 +224,4 @@ const playlistData = list ? JSON.stringify(list) : "[]";
     }
   </style>
 
-  <script is:inline>
-    // Stop animations before page swap to prevent blocking transitions
-    function stopMusicAnimations() {
-      const recordOuter = document.getElementById('record-outer');
-      const recordInner = document.getElementById('record-inner');
-      if (recordOuter) recordOuter.style.animationPlayState = 'paused';
-      if (recordInner) recordInner.style.animationPlayState = 'paused';
-      // Also stop any animate-spin-slow elements
-      document.querySelectorAll('.animate-spin-slow').forEach(el => {
-        el.style.animationPlayState = 'paused';
-      });
-    }
-    
-    document.addEventListener('astro:before-swap', stopMusicAnimations);
-  </script>
 </div>

@@ -1,5 +1,20 @@
 /* Page transition animations with Swup - Enhanced version inspired by yukina */
 
+/* CRITICAL: Force disable music player animations during page transitions */
+/* Swup adds html.is-changing when a transition starts */
+html.is-changing .music-player-widget,
+html.is-changing .music-player-widget *,
+html.is-changing .animate-spin-slow,
+html.is-animating .music-player-widget,
+html.is-animating .music-player-widget *,
+html.is-animating .animate-spin-slow {
+    animation: none !important;
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    transition: none !important;
+    transition-duration: 0ms !important;
+}
+
 /* 主要内容区域的过渡动画 - 参考yukina的侧滑效果 */
 .transition-main {
     transition:

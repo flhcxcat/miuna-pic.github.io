@@ -10,22 +10,57 @@
 <script is:inline src="/lib/sakana-widget/sakana.min.js"></script>
 
 <script is:inline>
-  function initSakanaWidget() {
-    if (typeof SakanaWidget !== 'undefined') {
-      new SakanaWidget().mount('#sakana-widget');
-    }
-  }
-  
-  // Initial load
-  if (document.readyState === 'complete') {
-      initSakanaWidget();
-  } else {
-      window.addEventListener('load', initSakanaWidget);
-  }
+  (function() {
+    // 防止重复注册事件监听器
+    if (window.__sakanaInitialized) return;
+    window.__sakanaInitialized = true;
 
-  // Handle View Transitions
-  document.addEventListener('DOMContentLoaded', initSakanaWidget);
+    function destroySakana() {
+      if (window.__sakanaInstance) {
+        try {
+          // 使用 unmount 方法正确销毁实例
+          window.__sakanaInstance.unmount();
+        } catch (e) { /* ignore */ }
+        window.__sakanaInstance = null;
+      }
+      // 彻底清空容器，移除所有 DOM 子元素
+      const container = document.getElementById('sakana-widget');
+      if (container) {
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
+        }
+      }
+    }
+
+    function initSakanaWidget() {
+      const container = document.getElementById('sakana-widget');
+      // 如果容器不存在或已有实例，不重新初始化
+      if (!container || window.__sakanaInstance) return;
+      
+      if (typeof SakanaWidget !== 'undefined') {
+        // 使用 setTimeout 延迟初始化，让主线程先完成过渡
+        setTimeout(() => {
+          if (!window.__sakanaInstance && document.getElementById('sakana-widget')) {
+            window.__sakanaInstance = new SakanaWidget().mount('#sakana-widget');
+          }
+        }, 100);
+      }
+    }
+
+    // Initial load
+    if (document.readyState === 'complete') {
+      initSakanaWidget();
+    } else {
+      window.addEventListener('load', initSakanaWidget, { once: true });
+    }
+
+    // 页面切换前彻底销毁
+    document.addEventListener('astro:before-swap', destroySakana);
+    // 页面加载后重新初始化
+    document.addEventListener('astro:page-load', initSakanaWidget);
+  })();
 </script>
+
 
 <style>
   #sakana-widget {

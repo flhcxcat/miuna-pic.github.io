@@ -167,6 +167,46 @@ const bannerSubtitle = pageConfig?.subtitle || "";
 
     <!-- 其余脚本保持不变 -->
     <GlobalToaster client:only="react" />
+    
+    <!-- Music Player Cleanup Script - MUST be in BaseLayout to run on every page -->
+    <script is:inline>
+      (function() {
+        if (window.__MUSIC_CLEANUP_INIT__) return;
+        window.__MUSIC_CLEANUP_INIT__ = true;
+        
+        function stopMusicAnimations() {
+          const container = document.querySelector('.music-player-widget');
+          if (container) {
+            console.log('[BaseLayout] Force removing music widget at', new Date().toISOString());
+            container.remove();
+          }
+          // Also stop any lingering animations on the page
+          document.querySelectorAll('.animate-spin-slow').forEach(el => {
+            el.style.animation = 'none';
+            el.style.transition = 'none';
+          });
+        }
+
+        // Use Swup hooks API directly (globalInstance: true makes window.swup available)
+        function bindSwupHooks() {
+          if (window.swup && window.swup.hooks) {
+            console.log('[BaseLayout] Binding Swup hooks');
+            window.swup.hooks.on('visit:start', stopMusicAnimations);
+            window.swup.hooks.on('animation:out:start', stopMusicAnimations);
+          }
+        }
+
+        // Try immediately (if Swup is already initialized)
+        bindSwupHooks();
+        
+        // Also listen for Swup enable event (in case it initializes later)
+        document.addEventListener('swup:enable', bindSwupHooks);
+        
+        // Fallback: Astro events (these ARE standard DOM events)
+        document.addEventListener('astro:before-preparation', stopMusicAnimations);
+        document.addEventListener('astro:before-swap', stopMusicAnimations);
+      })();
+    </script>
     <script is:inline>
       (function() {
         if (window.__THEME_SWAP_INIT__) return;

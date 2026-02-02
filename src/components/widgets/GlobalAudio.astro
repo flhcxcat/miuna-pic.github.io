@@ -14,7 +14,7 @@ const initialSong = musicList[0] || {};
         <div id="mini-player-card" class="bg-neu-base/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md p-4 rounded-3xl shadow-neu-out border border-white/20 dark:border-white/10 w-64 translate-y-4 opacity-0 scale-95 transition-all duration-300 origin-bottom-left pointer-events-none">
             <div class="flex gap-4">
                 <div class="w-16 h-16 rounded-xl overflow-hidden shadow-md shrink-0">
-                    <img id="mini-cover" src={initialSong.cover || "/favicon.svg"} class="w-full h-full object-cover" alt="cover"/>
+                    <img id="mini-cover" loading="lazy" decoding="async" src={initialSong.cover || "/favicon.svg"} class="w-full h-full object-cover" alt="cover"/>
                 </div>
                 <div class="flex flex-col justify-center min-w-0 flex-1">
                     <h3 id="mini-title" class="font-bold text-neu-text text-sm truncate">{initialSong.title || "RyuChan"}</h3>
@@ -38,7 +38,7 @@ const initialSong = musicList[0] || {};
         <!-- 悬浮圆形按钮 -->
         <button id="mini-fab" class="w-16 h-16 rounded-full bg-neu-base/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md shadow-neu-out border border-white/20 dark:border-white/10 flex items-center justify-center relative overflow-hidden group pointer-events-auto transition-transform hover:scale-105 active:scale-95">
             <div class="absolute inset-0 rounded-full animate-spin-slow" id="mini-fab-spin" style="animation-play-state: paused;">
-                <img id="mini-fab-cover" src={initialSong.cover || "/favicon.svg"} class="w-full h-full object-cover opacity-60" alt="fab-cover"/>
+                <img id="mini-fab-cover" loading="lazy" decoding="async" src={initialSong.cover || "/favicon.svg"} class="w-full h-full object-cover opacity-60" alt="fab-cover"/>
             </div>
             <!-- Center Icon -->
             <div class="relative z-10 w-9 h-9 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white">
@@ -57,6 +57,37 @@ const initialSong = musicList[0] || {};
         </button>
     </div>
 </div>
+
+<script is:inline>
+    // Global Music Player Cleanup Logic
+    // This must be outside the non-swapped containers to ensure it persists and runs for all navigations
+    (function() {
+        function stopMusicAnimations() {
+            // Find the widget container
+            const container = document.querySelector('.music-player-widget');
+            
+            if (container) {
+                console.log('[Global] Force removing music widget to prevent transition blocking');
+                // Nuclear option: Remove the element entirely from the DOM
+                container.remove();
+            }
+
+            // Cleanup global fallback animations
+            document.querySelectorAll('.animate-spin-slow').forEach(el => {
+                el.style.animation = 'none !important';
+                el.style.transition = 'none !important';
+            });
+        }
+
+        // Listen for Swup events globally
+        // visit:start is the earliest point we can intervene
+        document.addEventListener('swup:visit:start', stopMusicAnimations);
+        document.addEventListener('swup:animation:out:start', stopMusicAnimations);
+        
+        // Also listen for standard Astro events for safety
+        document.addEventListener('astro:before-preparation', stopMusicAnimations);
+    })();
+</script>
 
 <script define:vars={{ initialPlaylist }} is:inline>
     class GlobalMusicPlayer {
@@ -808,6 +839,25 @@ const initialSong = musicList[0] || {};
     // Initialize Singleton
     if (!window.globalMusicPlayer) {
         window.globalMusicPlayer = new GlobalMusicPlayer();
+        
+        // Add cleanup handler for page transitions (only once)
+        document.addEventListener('astro:before-swap', () => {
+            // Stop mini player animations before swap
+            const miniFabSpin = document.getElementById('mini-fab-spin');
+            if (miniFabSpin) {
+                miniFabSpin.style.animationPlayState = 'paused';
+            }
+            
+            // Pause visualizer bars animation
+            document.querySelectorAll('#mini-fab-visualizer div').forEach(bar => {
+                bar.classList.remove('animate-pulse');
+            });
+            
+            // Close mini player if open to prevent animation during transition
+            if (window.globalMusicPlayer && window.globalMusicPlayer.isMiniOpen) {
+                window.globalMusicPlayer.closeMiniPlayer();
+            }
+        });
     } else {
         // Swup page transition - just update DOM bindings on existing instance
         // No need to create a new instance, which is expensive
