@@ -2,42 +2,7 @@
 import { USER_AVATAR, USER_SIDEBAR_SOCIAL_ICONS, umamiConfig, USER_DESCRIPTION, USER_NAME } from "../../config";  
 import { Icon } from "astro-icon/components";   
 import { Image } from "astro:assets";  
-import { getAllPosts, getCategoriesWithPosts, getTagsWithCount } from "@utils/blogUtils";  
 import CalendarBar from "./CalendarBar.astro";  
-  
-// 获取所有博客文章和分类信息  
-const allPosts = await getAllPosts();  
-const categoryMap = getCategoriesWithPosts(allPosts);  
-const categoryEntries = Array.from(categoryMap.entries());  
-  
-// 修改分类排序：按文章数量从高到低排序  
-categoryEntries.sort((a, b) => b[1].length - a[1].length);
-  
-// 分类名称映射：英文到中文  
-const categoryNameMap = {  
-  "Course": "教程",  
-  "Anime": "动漫",   
-  "TV": "电视剧",  
-  "Documentation": "文档",  
-  "Examples": "示例",  
-  "Tutorial": "教程",  
-  "Tech": "技术",  
-  "Life": "生活",  
-  "Blog": "博客",  
-  "Project": "项目",  
-  "Note": "笔记",  
-  "Review": "评测"  
-}; 
-
-// 获取标签信息  
-const tagMap = getTagsWithCount(allPosts);  
-const tagEntries = Array.from(tagMap.entries());  
-tagEntries.sort((a, b) => b[1] - a[1]); // 按使用频率排序
-  
-// 获取中文分类名称的函数  
-const getCategoryDisplayName = (category: string): string => {  
-  return (categoryNameMap as Record<string, string>)[category] || category;  
-}; 
 ---  
   
 <!-- 第一个盒子：用户信息 -->  
@@ -153,104 +118,6 @@ const getCategoryDisplayName = (category: string): string => {
   <CalendarBar />
 </div>
 
-<!-- 第二个盒子：分类列表 -->  
-<div class="card-base p-3 mb-4">  
-  <div class="font-bold transition text-lg text-base-content relative ml-4 mb-2 before:w-1 before:h-4 before:rounded-md before:bg-primary before:absolute before:left-[-16px] before:top-[5.5px]">  
-    分类  
-  </div>  
-    
-  <div id="categories" class="collapse-wrapper px-2 overflow-hidden" style="--collapsedHeight: 7.5rem;">  
-    {categoryEntries.slice(0, 3).map(([category, posts]) => (  
-      <a href={`/blog/category/${category}`} aria-label={`View all posts in the ${category} category`}>  
-        <button class="w-full h-10 rounded-lg bg-none hover:bg-base-200 active:bg-base-300 transition-all pl-2 hover:pl-3 text-base-content hover:text-primary">  
-          <div class="flex items-center justify-between relative mr-2">  
-            <div class="overflow-hidden text-left whitespace-nowrap overflow-ellipsis">  
-              {getCategoryDisplayName(category)}  
-            </div>  
-            <div class="transition px-2 h-7 ml-4 min-w-[2rem] rounded-lg text-sm font-bold text-base-content bg-base-200 flex items-center justify-center">  
-              {posts.length}  
-            </div>  
-          </div>  
-        </button>  
-      </a>  
-    ))}  
-      
-    {categoryEntries.length > 3 && (  
-      <div class="hidden-categories" style="display: none;">  
-        {categoryEntries.slice(3).map(([category, posts]) => (  
-          <a href={`/blog/category/${category}`} aria-label={`View all posts in the ${category} category`}>  
-            <button class="w-full h-10 rounded-lg bg-none hover:bg-base-200 active:bg-base-300 transition-all pl-2 hover:pl-3 text-base-content hover:text-primary">  
-              <div class="flex items-center justify-between relative mr-2">  
-                <div class="overflow-hidden text-left whitespace-nowrap overflow-ellipsis">  
-                  {getCategoryDisplayName(category)}  
-                </div>  
-                <div class="transition px-2 h-7 ml-4 min-w-[2rem] rounded-lg text-sm font-bold text-base-content bg-base-200 flex items-center justify-center">  
-                  {posts.length}  
-                </div>  
-              </div>  
-            </button>  
-          </a>  
-        ))}  
-      </div>  
-    )}  
-  </div>  
-    
-  <!-- 分类展开按钮 -->  
-  {categoryEntries.length > 3 && (  
-    <div class="expand-btn px-2 -mb-2">  
-      <button class="btn btn-ghost rounded-lg w-full h-9" id="expand-categories">  
-        <div class="text-primary flex items-center justify-center" id="categories-more">  
-          <Icon name="lucide:chevron-down" class="w-5 h-5 mr-1" /> 更多  
-        </div>
-        <div class="text-primary flex items-center justify-center hidden" id="categories-collapse" style="display: none;">  
-          <Icon name="lucide:chevron-up" class="w-5 h-5 mr-1" /> 收起  
-        </div>  
-      </button>  
-    </div>  
-  )}   
-</div> 
-
-<!-- 第三个盒子：标签列表 -->  
-<div class="card-base p-3">  
-  <div class="font-bold transition text-lg text-base-content relative ml-4 mb-2 before:w-1 before:h-4 before:rounded-md before:bg-primary before:absolute before:left-[-16px] before:top-[5.5px]">  
-    标签  
-  </div>  
-    
-  <div id="tags" class="collapse-wrapper px-2 overflow-hidden" style="--collapsedHeight: 7.5rem;">  
-    <div class="flex gap-1 flex-wrap">  
-      {tagEntries.slice(0, 8).map(([tag]) => (  
-        <a href={`/blog/tag/${tag}`} aria-label={`View all posts with the ${tag} tag`} class="h-6 text-base px-2 rounded-md border border-secondary text-base-content hover:bg-secondary hover:text-secondary-content hover:scale-110 transition-all inline-flex items-center justify-center">  
-          {tag}  
-        </a>
-      ))}  
-    </div>  
-      
-    {tagEntries.length > 8 && (  
-      <div class="hidden-tags" style="display: none;">  
-        <div class="flex gap-1 flex-wrap mt-1">  
-          {tagEntries.slice(8).map(([tag]) => (  
-            <a href={`/blog/tag/${tag}`} aria-label={`View all posts with the ${tag} tag`} class="h-6 text-base px-2 rounded-md border border-secondary text-base-content hover:bg-secondary hover:text-secondary-content hover:scale-110 transition-all inline-flex items-center justify-center">  
-              {tag}  
-            </a>  
-          ))}  
-        </div>  
-      </div>  
-    )}  
-  </div>  
-    
-  {tagEntries.length > 8 && (  
-    <div class="expand-btn px-2 -mb-2">  
-      <button class="btn btn-ghost rounded-lg w-full h-9" id="expand-tags">  
-        <div class="text-primary flex items-center justify-center" id="tags-more">  
-          <Icon name="lucide:chevron-down" class="w-5 h-5 mr-1" /> 更多  
-        </div>
-        <div class="text-primary flex items-center justify-center hidden" id="tags-collapse" style="display: none;">  
-          <Icon name="lucide:chevron-up" class="w-5 h-5 mr-1" /> 收起  
-        </div>  
-      </button>  
-    </div>  
-  )}  
-</div>
   
 <script is:inline define:vars={{ umamiConfig }}> 
   // 使用 sessionStorage 来避免重复加载  
@@ -332,67 +199,12 @@ const getCategoryDisplayName = (category: string): string => {
     
   
     
-  // 分类展开/折叠功能      
-function initCategoriesToggle() {      
-  const expandBtn = document.getElementById('expand-categories');      
-  const hiddenCategories = document.querySelector('.hidden-categories');      
-          
-  if (expandBtn && hiddenCategories) {      
-    let isExpanded = false;      
-    const moreDiv = expandBtn.querySelector('#categories-more');
-    const collapseDiv = expandBtn.querySelector('#categories-collapse');
-            
-    expandBtn.addEventListener('click', () => {      
-      if (isExpanded) {      
-        hiddenCategories.style.display = 'none';  
-        moreDiv.style.display = 'flex';
-        collapseDiv.style.display = 'none';
-      } else {      
-        hiddenCategories.style.display = 'block';  
-        moreDiv.style.display = 'none';
-        collapseDiv.style.display = 'flex';
-      }      
-      isExpanded = !isExpanded;      
-    });      
-  }      
-}
-  
- // 标签展开/折叠功能      
-function initTagsToggle() {      
-  const expandBtn = document.getElementById('expand-tags');      
-  const hiddenTags = document.querySelector('.hidden-tags');      
-  
-  if (expandBtn && hiddenTags) {      
-    let isExpanded = false;      
-    const moreDiv = expandBtn.querySelector('#tags-more');
-    const collapseDiv = expandBtn.querySelector('#tags-collapse');
-    
-    expandBtn.addEventListener('click', () => {      
-      if (isExpanded) {      
-        hiddenTags.style.display = 'none';  
-        moreDiv.style.display = 'flex';
-        collapseDiv.style.display = 'none';
-      } else {      
-        hiddenTags.style.display = 'block';  
-        moreDiv.style.display = 'none';
-        collapseDiv.style.display = 'flex';
-      }      
-      isExpanded = !isExpanded;      
-    });      
-  }      
-}
-
   // 初始化函数  
   function init() {  
     if (umamiConfig.enable) {
       // 总是加载最新数据，以保持实时更新
       loadSiteStats();  
     }
-      
-    // 初始化分类切换功能  
-    initCategoriesToggle(); 
-    // 初始化标签切换功能  
-    initTagsToggle() 
   }  
     
   // DOM 加载完成后初始化  

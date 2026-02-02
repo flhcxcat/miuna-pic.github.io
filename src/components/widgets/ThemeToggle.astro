@@ -51,11 +51,15 @@ const { className = "" } = Astro.props as ThemeToggleProps;
     }  
   };  
   
-  // Apply correct icons on page load and navigation  
-  document.addEventListener("DOMContentLoaded", () => {  
+  // Initialize theme toggle functionality
+  function initThemeToggle() {  
     // Use the unique ID to get this specific toggle button  
     const themeToggle = document.getElementById(uniqueId);  
     if (!themeToggle) return;  
+    
+    // Avoid re-binding if already initialized
+    if (themeToggle.hasAttribute('data-theme-toggle-initialized')) return;
+    themeToggle.setAttribute('data-theme-toggle-initialized', 'true');
   
     const currentTheme = document.documentElement.getAttribute("data-theme");  
   
@@ -90,7 +94,17 @@ const { className = "" } = Astro.props as ThemeToggleProps;
         themeToggle.classList.remove("animate-spin-once");  
       }, 300);  
     });  
-  });  
+  }
+  
+  // Initialize on first load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThemeToggle);
+  } else {
+    initThemeToggle();
+  }
+  
+  // Re-initialize after Astro page transitions
+  document.addEventListener('astro:page-load', initThemeToggle);
 </script>  
   
 <style>  

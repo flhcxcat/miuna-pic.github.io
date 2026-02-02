@@ -263,6 +263,33 @@ const themes = [
       </details>
     </li>
 
+    <!-- Site Info -->
+    <li>
+      <details>
+        <summary class="font-medium flex justify-between items-center p-2 hover:bg-base-200 rounded-lg w-full">
+          <div class="flex items-center gap-2">
+            <Icon name="material-symbols:info-outline" class="w-5 h-5" />
+            Site Info
+          </div>
+        </summary>
+        <div class="p-2 bg-base-100 rounded-box flex flex-col gap-1 cursor-default min-w-[200px]">
+          <div class="flex justify-between items-center px-1">
+            <span class="text-xs opacity-70">Last Update</span>
+            <span id="site-last-update" class="text-xs font-mono truncate max-w-[120px]">...</span>
+          </div>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-xs opacity-70">Commit</span>
+            <a id="site-commit-hash" href="#" target="_blank" class="text-xs font-mono text-base-content hover:underline truncate max-w-[120px]">...</a>
+          </div>
+          <div class="flex justify-between items-center px-1">
+            <span class="text-xs opacity-70">Actions</span>
+            <span id="site-actions-status" class="text-xs font-mono">...</span>
+          </div>
+          <button id="refresh-site-info" class="btn btn-xs btn-outline w-full mt-2">Refresh</button>
+        </div>
+      </details>
+    </li>
+
   </ul>
 </details>
 
@@ -1069,6 +1096,145 @@ const themes = [
             else stopHeart();
         });
     }
+
+    // ========== Site Info Logic ==========
+    const GITHUB_REPO = 'flhcxcat/miuna-pic.github.io';
+    const SITE_INFO_CACHE_KEY = 'site-info-cache';
+    const SITE_INFO_CACHE_TTL = 300000; // 5 minutes
+
+    const fetchSiteInfo = async () => {
+        const lastUpdateEl = document.getElementById('site-last-update');
+        const commitHashEl = document.getElementById('site-commit-hash');
+        const actionsStatusEl = document.getElementById('site-actions-status');
+
+        if (!lastUpdateEl || !commitHashEl || !actionsStatusEl) return;
+
+        // Reset
+        lastUpdateEl.textContent = '...';
+        commitHashEl.textContent = '...';
+        commitHashEl.href = '#';
+        actionsStatusEl.textContent = '...';
+        actionsStatusEl.className = 'text-xs font-mono';
+
+        // Check cache
+        const cachedStr = sessionStorage.getItem(SITE_INFO_CACHE_KEY);
+        if (cachedStr) {
+            try {
+                const { data, timestamp } = JSON.parse(cachedStr);
+                if (Date.now() - timestamp < SITE_INFO_CACHE_TTL) {
+                    // Use cached data
+                    lastUpdateEl.textContent = data.lastUpdate;
+                    commitHashEl.textContent = data.commitHash;
+                    commitHashEl.href = data.commitUrl;
+                    actionsStatusEl.textContent = data.actionsStatus;
+                    actionsStatusEl.className = 'text-xs font-mono ' + data.actionsClass;
+                    return;
+                }
+            } catch (e) {
+                // Cache parse error, continue to fetch
+            }
+        }
+
+        try {
+            // Fetch latest commit info
+            const commitRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/commits?per_page=1`);
+            const commits = await commitRes.json();
+            
+            if (commits && commits.length > 0) {
+                const latestCommit = commits[0];
+                const commitDate = new Date(latestCommit.commit.committer.date);
+                const shortHash = latestCommit.sha.substring(0, 7);
+                
+                // Format date as relative time or short date
+                const now = new Date();
+                const diffMs = now - commitDate;
+                const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                
+                let timeStr;
+                if (diffHours < 1) {
+                    timeStr = 'Just now';
+                } else if (diffHours < 24) {
+                    timeStr = `${diffHours}h ago`;
+                } else if (diffDays < 7) {
+                    timeStr = `${diffDays}d ago`;
+                } else {
+                    timeStr = commitDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                }
+                
+                lastUpdateEl.textContent = timeStr;
+                lastUpdateEl.title = commitDate.toLocaleString();
+                commitHashEl.textContent = shortHash;
+                commitHashEl.href = latestCommit.html_url;
+                commitHashEl.title = latestCommit.commit.message.split('\n')[0];
+            } else {
+                lastUpdateEl.textContent = 'N/A';
+                commitHashEl.textContent = 'N/A';
+            }
+        } catch (e) {
+            lastUpdateEl.textContent = 'Error';
+            commitHashEl.textContent = 'Error';
+        }
+
+        // Fetch Actions status
+        try {
+            const runsRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/runs?per_page=5`);
+            const runsData = await runsRes.json();
+            
+            if (runsData && runsData.workflow_runs && runsData.workflow_runs.length > 0) {
+                const runs = runsData.workflow_runs;
+                
+                // Check if any are in progress or queued
+                const inProgress = runs.some(r => r.status === 'in_progress' || r.status === 'queued');
+                const latestRun = runs[0];
+                
+                if (inProgress) {
+                    actionsStatusEl.textContent = 'Running';
+                    actionsStatusEl.classList.add('text-warning');
+                } else if (latestRun.conclusion === 'success') {
+                    actionsStatusEl.textContent = 'Passed';
+                    actionsStatusEl.classList.add('text-success');
+                } else if (latestRun.conclusion === 'failure') {
+                    actionsStatusEl.textContent = 'Failed';
+                    actionsStatusEl.classList.add('text-error');
+                } else if (latestRun.conclusion === 'cancelled') {
+                    actionsStatusEl.textContent = 'Cancelled';
+                    actionsStatusEl.classList.add('text-warning');
+                } else {
+                    actionsStatusEl.textContent = latestRun.conclusion || 'Unknown';
+                }
+            } else {
+                actionsStatusEl.textContent = 'No runs';
+            }
+        } catch (e) {
+            actionsStatusEl.textContent = 'Error';
+            actionsStatusEl.classList.add('text-error');
+        }
+
+        // Save to cache
+        const cacheData = {
+            lastUpdate: lastUpdateEl.textContent,
+            commitHash: commitHashEl.textContent,
+            commitUrl: commitHashEl.href,
+            actionsStatus: actionsStatusEl.textContent,
+            actionsClass: actionsStatusEl.className.replace('text-xs font-mono ', '')
+        };
+        sessionStorage.setItem(SITE_INFO_CACHE_KEY, JSON.stringify({
+            data: cacheData,
+            timestamp: Date.now()
+        }));
+    };
+
+    const refreshSiteInfoBtn = document.getElementById('refresh-site-info');
+    if (refreshSiteInfoBtn) {
+        refreshSiteInfoBtn.addEventListener('click', () => {
+            sessionStorage.removeItem(SITE_INFO_CACHE_KEY);
+            fetchSiteInfo();
+        });
+    }
+    
+    // Auto-fetch on load
+    fetchSiteInfo();
 
     // Observer for external changes
     const observer = new MutationObserver((mutations) => {
