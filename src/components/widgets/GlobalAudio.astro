@@ -90,36 +90,46 @@ const initialSong = musicList[0] || {};
         }
 
         handlePageLoad() {
-            // Priority 1: Update Mini Player visibility immediately (critical for leaving music page)
+            // Priority 1: Update Mini Player visibility immediately with requestAnimationFrame
+            // This is critical for smooth page transitions on mobile
             const path = window.location.pathname;
             const isMusicPage = path.includes('/music');
             
-            // Quick Mini Player visibility update - do this first for fast perceived navigation
-            this.bindMiniPlayerEvents();
-            if (this.miniContainer) {
-                if (isMusicPage) {
-                    this.miniContainer.classList.add('opacity-0', 'hidden');
-                    this.miniContainer.classList.remove('opacity-100');
-                    this.closeMiniPlayer();
-                } else {
-                    this.miniContainer.classList.remove('opacity-0', 'hidden');
-                    this.miniContainer.classList.add('opacity-100');
+            // Use a single RAF for the critical visibility update - ensures no blocking
+            requestAnimationFrame(() => {
+                // Quick Mini Player visibility update
+                this.miniContainer = document.getElementById('mini-player-container');
+                this.miniCard = document.getElementById('mini-player-card');
+                this.miniFab = document.getElementById('mini-fab');
+                
+                if (this.miniContainer) {
+                    if (isMusicPage) {
+                        this.miniContainer.classList.add('opacity-0', 'hidden');
+                        this.miniContainer.classList.remove('opacity-100');
+                        this.closeMiniPlayer();
+                    } else {
+                        this.miniContainer.classList.remove('opacity-0', 'hidden');
+                        this.miniContainer.classList.add('opacity-100');
+                    }
                 }
-            }
+            });
             
-            // Priority 2: Bind global audio events (lightweight)
-            this.bindGlobalAudioEvents();
-            
-            // Sync playback status
-            if (this.audio && !this.audio.paused) {
-                 this.isPlaying = true;
-            }
-            
-            // Priority 3: Main Player binding - only on music page and defer to next frame
-            this.container = document.querySelector('.music-player-widget');
-            if (this.container) {
-                // Use requestAnimationFrame to defer heavy DOM operations
-                requestAnimationFrame(() => {
+            // Priority 2: Defer heavy operations using requestIdleCallback or setTimeout
+            const deferredInit = () => {
+                // Bind mini player events (lighter operation)
+                this.bindMiniPlayerEvents();
+                
+                // Bind global audio events (lightweight)
+                this.bindGlobalAudioEvents();
+                
+                // Sync playback status
+                if (this.audio && !this.audio.paused) {
+                    this.isPlaying = true;
+                }
+                
+                // Priority 3: Main Player binding - only on music page
+                this.container = document.querySelector('.music-player-widget');
+                if (this.container) {
                     // Bind Main Player UI elements
                     this.playBtn = document.getElementById('play-btn');
                     this.prevBtn = document.getElementById('prev-btn');
@@ -151,8 +161,8 @@ const initialSong = musicList[0] || {};
                     this.bindUIEvents();
                     // If we have lyrics loaded in memory, render them
                     if (this.lyrics.length > 0 && this.lyricsContainer) {
-                         this.renderLyrics();
-                         this.syncLyrics(this.audio ? this.audio.currentTime : 0);
+                        this.renderLyrics();
+                        this.syncLyrics(this.audio ? this.audio.currentTime : 0);
                     } else if(this.lrcUrl) {
                         this.loadLyrics();
                     }
@@ -160,10 +170,18 @@ const initialSong = musicList[0] || {};
                     this.updatePlaylistDurations();
                     this.bindPlaylistEvents();
                     this.updateUI();
-                });
+                } else {
+                    // Not on music page - just update mini player UI
+                    this.updateUI();
+                }
+            };
+            
+            // Use requestIdleCallback for non-critical operations (better for mobile performance)
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(deferredInit, { timeout: 200 });
             } else {
-                // Not on music page - just update mini player UI
-                this.updateUI();
+                // Fallback: use setTimeout(0) to defer to next event loop tick
+                setTimeout(deferredInit, 0);
             }
         }
 
