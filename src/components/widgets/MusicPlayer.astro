@@ -223,4 +223,20 @@ const playlistData = list ? JSON.stringify(list) : "[]";
         text-shadow: 0 0 20px oklch(var(--p) / 0.6);
     }
   </style>
+
+  <script is:inline>
+    // Stop animations before page swap to prevent blocking transitions
+    function stopMusicAnimations() {
+      const recordOuter = document.getElementById('record-outer');
+      const recordInner = document.getElementById('record-inner');
+      if (recordOuter) recordOuter.style.animationPlayState = 'paused';
+      if (recordInner) recordInner.style.animationPlayState = 'paused';
+      // Also stop any animate-spin-slow elements
+      document.querySelectorAll('.animate-spin-slow').forEach(el => {
+        el.style.animationPlayState = 'paused';
+      });
+    }
+    
+    document.addEventListener('astro:before-swap', stopMusicAnimations);
+  </script>
 </div>
