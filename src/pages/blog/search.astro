@@ -23,7 +23,7 @@ import { Icon } from "astro-icon/components";
 
   <BaseCard>
     <div id="search-container" class="w-full">
-      <div id="pagefind-search" transition:persist></div>
+      <div id="pagefind-search"></div>
     </div>
   </BaseCard>
 </BaseLayout>
@@ -31,9 +31,15 @@ import { Icon } from "astro-icon/components";
 <script>
   document.addEventListener("astro:page-load", initSearch);
 
-  function initSearch() {
+  async function initSearch() {
     const pageFindSearch = document.querySelector("#pagefind-search");
     if (!pageFindSearch) return;
+
+    // Check if pagefind is already initialized (prevent duplicate init)
+    if (pageFindSearch.querySelector(".pagefind-ui")) {
+      console.log("[Search] Already initialized, skipping...");
+      return;
+    }
 
     const params = new URLSearchParams(window.location.search);
 
@@ -44,6 +50,9 @@ import { Icon } from "astro-icon/components";
       try {
         // @ts-ignore - Pagefind UI types
         const { PagefindUI } = await import("@pagefind/default-ui");
+
+        // Clear existing content first
+        pageFindSearch.innerHTML = "";
 
         // Initialize pagefind UI
         const search = new PagefindUI({
@@ -74,6 +83,8 @@ import { Icon } from "astro-icon/components";
             history.replaceState(history.state, "", window.location.pathname);
           }
         }
+
+        console.log("[Search] Pagefind initialized successfully");
       } catch (error) {
         console.error("Error initializing search:", error);
         const searchContainer = document.querySelector("#search-container");
@@ -81,7 +92,6 @@ import { Icon } from "astro-icon/components";
           searchContainer.innerHTML = `
             <div class="alert alert-error shadow-lg">
               <div>
-                <Icon name="lucide:alert-triangle" class="w-6 h-6" />
                 <span>Error loading search functionality. Please try again later.</span>
               </div>
             </div>
@@ -89,5 +99,12 @@ import { Icon } from "astro-icon/components";
         }
       }
     });
+  }
+
+  // Also initialize on DOMContentLoaded for initial load
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSearch);
+  } else {
+    initSearch();
   }
 </script>

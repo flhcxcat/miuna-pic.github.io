@@ -306,6 +306,7 @@ const themes = [
             </div>
             <span id="desktop-activity-music" class="text-xs font-bold tracking-wide bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Loading...</span>
           </div>
+          <button id="refresh-desktop-activity" class="btn btn-xs btn-outline w-full mt-2">Refresh</button>
         </div>
       </details>
     </li>
@@ -391,6 +392,12 @@ const themes = [
     updateDesktopActivity();
     if (window._desktopActivityInterval) clearInterval(window._desktopActivityInterval);
     window._desktopActivityInterval = setInterval(updateDesktopActivity, 10000);
+
+    // Refresh button for activity
+    const refreshDesktopActivityBtn = document.getElementById('refresh-desktop-activity');
+    if (refreshDesktopActivityBtn) {
+        refreshDesktopActivityBtn.addEventListener('click', updateDesktopActivity);
+    }
 
 
     // Theme classification

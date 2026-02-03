@@ -308,6 +308,7 @@ const themes = [
             </div>
             <span id="mobile-activity-music" class="text-xs font-bold tracking-wide bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Loading...</span>
           </div>
+          <button id="refresh-mobile-activity" class="btn btn-sm btn-outline w-full mt-2">Refresh</button>
         </div>
       </details>
     </li>
@@ -392,6 +393,12 @@ const themes = [
     updateMobileActivity();
     if (window._mobileActivityInterval) clearInterval(window._mobileActivityInterval);
     window._mobileActivityInterval = setInterval(updateMobileActivity, 10000);
+
+    // Refresh button for activity
+    const refreshMobileActivityBtn = document.getElementById('refresh-mobile-activity');
+    if (refreshMobileActivityBtn) {
+        refreshMobileActivityBtn.addEventListener('click', updateMobileActivity);
+    }
 
     // ========== Site Info Logic (Mobile) ==========
     const updateMobileSiteInfo = async () => {

@@ -94,7 +94,19 @@ const totalCategories = categoryMap.size;
   </BaseCard>
 </BaseLayout>
 <script>
-  document.addEventListener("astro:page-load", () => {
+  function initCategories() {
+    const categoryHeaders = document.querySelectorAll(".category-header");
+    
+    // Prevent duplicate initialization
+    if (categoryHeaders.length === 0) return;
+    
+    // Check if already initialized
+    const firstHeader = categoryHeaders[0];
+    if (firstHeader && firstHeader.hasAttribute('data-initialized')) {
+      console.log("[Categories] Already initialized, skipping...");
+      return;
+    }
+
     const MAX_HEIGHT_PX = 500;
 
     const collapseCategory = (contentEl: HTMLElement, iconEl: HTMLElement | null, innerEl: HTMLElement | null) => {
@@ -124,9 +136,10 @@ const totalCategories = categoryMap.size;
       }
     };
 
-    const categoryHeaders = document.querySelectorAll(".category-header");
-
     categoryHeaders.forEach((header) => {
+      // Mark as initialized
+      header.setAttribute('data-initialized', 'true');
+      
       const card = header.closest(".category-card");
       if (!card) return;
 
@@ -167,5 +180,18 @@ const totalCategories = categoryMap.size;
         }
       });
     });
-  });
+
+    console.log("[Categories] Initialized successfully");
+  }
+
+  // Initialize on astro page load (for page transitions)
+  document.addEventListener("astro:page-load", initCategories);
+
+  // Also initialize on DOMContentLoaded for direct page access
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCategories);
+  } else {
+    // DOM is already ready, initialize immediately
+    initCategories();
+  }
 </script>
